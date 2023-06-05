@@ -12,6 +12,8 @@ public class TravelManager : Singleton
     [SerializeField] float _cooldown;
     float _timeCreationTimer, _cooldownTimer;
 
+    [SerializeField] GameObject _corpsePrefab;
+
     WorldHistory _present;
 
     private void Start()
@@ -95,12 +97,21 @@ public class TravelManager : Singleton
 
     void ApplyTimeInfo(WorldHistory time)
     {
-        foreach (Traveller trav in CurrentTravs)
+        for (int i = CurrentTravs.Count - 1; i >= 0; i--)
         {
+            Traveller trav = CurrentTravs[i];
+            if (!time.TravPos.ContainsKey(trav.ID))
+            {
+                CurrentTravs.Remove(trav);
+                Destroy(trav.gameObject);
+                continue;
+            }
+
             trav.transform.position = time.TravPos[trav.ID];
+            trav.CheckDeath();
         }
 
-        Get<PlayerMovement>().transform.position = time.PlayerPos;
+        Instantiate(_corpsePrefab, time.PlayerPos, Quaternion.identity);
     }
 }
 
