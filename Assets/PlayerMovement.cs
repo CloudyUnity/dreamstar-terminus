@@ -30,6 +30,10 @@ public class PlayerMovement : Singleton
 
 	int _lastWallTouched;
 
+	public bool Grounded => _lastOnGroundTime > 0;
+	public bool Walled => _lastOnWallTime > 0;
+	public bool PressedJump => _lastPressedJumpTime > 0;
+
 	private void Awake()
 	{
 		_rb = GetComponent<Rigidbody2D>();
@@ -76,10 +80,9 @@ public class PlayerMovement : Singleton
         #region COLLISION CHECKS
         if (!_jumping)
 		{
-			if (Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer) && !_jumping) 
-			{
+			bool groundDetected = Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer);
+			if (groundDetected && !_jumping)
 				_lastOnGroundTime = Data.coyoteTime;
-			}
 
 			bool touchingRight = Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && _isFacingRight;
 			bool touchingLeft = Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && !_isFacingRight;
@@ -106,7 +109,7 @@ public class PlayerMovement : Singleton
 			_wallJumping = false;
 		}
 
-		if (_lastOnGroundTime > 0 && !_jumping && !_wallJumping)
+		if (Grounded && !_jumping && !_wallJumping)
 		{
 			_jumpCutting = false;
 
@@ -114,11 +117,11 @@ public class PlayerMovement : Singleton
 				_jumpFalling = false;
 		}
 
-		bool canJump = _lastOnGroundTime > 0 && !_jumping;
+		bool canJump = Grounded && !_jumping;
 
-		bool canWallJump = _lastOnWallTime > 0 && _lastOnGroundTime <= 0 && !_wallJumping;
+		bool canWallJump = Walled && !Grounded && !_wallJumping;
 
-		if (canJump && _lastPressedJumpTime > 0)
+		if (canJump && PressedJump)
 		{
 			_jumping = true;
 			_wallJumping = false;
@@ -126,7 +129,7 @@ public class PlayerMovement : Singleton
 			_jumpFalling = false;
 			Jump();
 		}
-		else if (canWallJump && _lastPressedJumpTime > 0)
+		else if (canWallJump && PressedJump)
 		{
 			_wallJumping = true;
 			_jumping = false;
@@ -140,6 +143,7 @@ public class PlayerMovement : Singleton
 
 		#region GRAVITY
 		float gravMult = Data.gravityScale;
+		bool anyJumping = _jumping || _wallJumping || _jumpFalling;
 
 		// Sliding
 		if (_sliding)
@@ -159,7 +163,7 @@ public class PlayerMovement : Singleton
 			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -Data.maxFallSpeed));
 		}
 		// Jumping
-		else if ((_jumping || _wallJumping || _jumpFalling) && Mathf.Abs(_rb.velocity.y) < Data.jumpHangTimeThreshold)
+		else if (anyJumping && Mathf.Abs(_rb.velocity.y) < Data.jumpHangTimeThreshold)
 		{
 			gravMult *= Data.jumpHangGravityMult;
 		}
@@ -176,7 +180,7 @@ public class PlayerMovement : Singleton
 
 	private void FixedUpdate()
 	{
-		_sliding = _lastOnWallTime > 0 && !_jumping && !_wallJumping && _lastOnGroundTime <= 0;
+		_sliding = Walled && !_jumping && !_wallJumping && !Grounded;
 		if (_sliding)
 		{
 			Debug.Log("Sliding");
@@ -197,14 +201,15 @@ public class PlayerMovement : Singleton
 		#region Calculate AccelRate
 		float accelRate;
 
-		if (_lastOnGroundTime > 0)
+		if (Grounded)
 			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Data.runAccelAmount : Data.runDeccelAmount;
 		else
 			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Data.runAccelAmount * Data.accelInAir : Data.runDeccelAmount * Data.deccelInAir;
 		#endregion
 
 		#region Add Bonus Jump Apex Acceleration
-		if ((_jumping || _wallJumping || _jumpFalling) && Mathf.Abs(_rb.velocity.y) < Data.jumpHangTimeThreshold)
+		bool anyJumping = _jumping || _wallJumping || _jumpFalling;
+		if (anyJumping && Mathf.Abs(_rb.velocity.y) < Data.jumpHangTimeThreshold)
 		{
 			accelRate *= Data.jumpHangAccelerationMult;
 			targetSpeed *= Data.jumpHangMaxSpeedMult;
