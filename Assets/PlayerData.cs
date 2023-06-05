@@ -6,27 +6,23 @@ using UnityEngine;
 public class PlayerData : ScriptableObject
 {
 	[Header("Gravity")]
-	[HideInInspector] public float gravityStrength; //Downwards force (gravity) needed for the desired jumpHeight and jumpTimeToApex.
-	[HideInInspector] public float gravityScale; //Strength of the player's gravity as a multiplier of gravity (set in ProjectSettings/Physics2D).
-												 //Also the value the player's rigidbody2D.gravityScale is set to.
+	public float fallGravityMult; 
+	public float maxFallSpeed;
 	[Space(5)]
-	public float fallGravityMult; //Multiplier to the player's gravityScale when falling.
-	public float maxFallSpeed; //Maximum fall speed (terminal velocity) of the player when falling.
-	[Space(5)]
-	public float fastFallGravityMult; //Larger multiplier to the player's gravityScale when they are falling and a downwards input is pressed.
-									  //Seen in games such as Celeste, lets the player fall extra fast if they wish.
-	public float maxFastFallSpeed; //Maximum fall speed(terminal velocity) of the player when performing a faster fall.
+	public float fastFallGravityMult; 
+	public float maxFastFallSpeed;
+	[HideInInspector] public float gravityScale;
 
 	[Space(20)]
 
 	[Header("Run")]
-	public float runMaxSpeed; //Target speed we want the player to reach.
-	public float runAcceleration; //The speed at which our player accelerates to max speed, can be set to runMaxSpeed for instant acceleration down to 0 for none at all
-	[HideInInspector] public float runAccelAmount; //The actual force (multiplied with speedDiff) applied to the player.
-	public float runDecceleration; //The speed at which our player decelerates from their current speed, can be set to runMaxSpeed for instant deceleration down to 0 for none at all
-	[HideInInspector] public float runDeccelAmount; //Actual force (multiplied with speedDiff) applied to the player .
+	public float runMaxSpeed;
+	public float runAcceleration;
+	[HideInInspector] public float runAccelAmount;
+	public float runDecceleration;
+	[HideInInspector] public float runDeccelAmount;
 	[Space(5)]
-	[Range(0f, 1)] public float accelInAir; //Multipliers applied to acceleration rate when airborne.
+	[Range(0f, 1)] public float accelInAir;
 	[Range(0f, 1)] public float deccelInAir;
 	[Space(5)]
 	public bool doConserveMomentum = true;
@@ -68,7 +64,7 @@ public class PlayerData : ScriptableObject
 	private void OnValidate()
 	{
 		//Calculate gravity strength using the formula (gravity = 2 * jumpHeight / timeToJumpApex^2) 
-		gravityStrength = -(2 * jumpHeight) / (jumpTimeToApex * jumpTimeToApex);
+		float gravityStrength = -(2 * jumpHeight) / (jumpTimeToApex * jumpTimeToApex);
 
 		//Calculate the rigidbody's gravity scale (ie: gravity strength relative to unity's gravity value, see project settings/Physics2D)
 		gravityScale = gravityStrength / Physics2D.gravity.y;
