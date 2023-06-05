@@ -8,7 +8,7 @@ public class Singleton : MonoBehaviour
 
     private void Awake()
     {
-        // GIT TEST 3
+        // GIT TEST 4
 
         if (Instances.ContainsValue(null))
             Instances.Clear();
