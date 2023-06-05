@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Traveller : MonoBehaviour
 {
+    [SerializeField] public int ID;
+
+    private void OnValidate()
+    {
+        ID = gameObject.GetInstanceID();
+    }
+
     private void Start()
     {
         Singleton.Get<TravelManager>().CurrentTravs.Add(this);
@@ -13,6 +20,6 @@ public class Traveller : MonoBehaviour
     {
         // TEMP CODE
         if (Singleton.Get<PlayerInput>().CheatTravel)
-            Singleton.Get<TravelManager>().RollBackTime(5);
+            Singleton.Get<TravelManager>().RollBackTime(3);
     }
 }

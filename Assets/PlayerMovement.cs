@@ -34,7 +34,7 @@ public class PlayerMovement : Singleton
 	public bool Walled => _lastOnWallTime > 0;
 	public bool PressedJump => _lastPressedJumpTime > 0;
 
-	public override void Awake()
+	protected override void Awake()
 	{
 		base.Awake();
 

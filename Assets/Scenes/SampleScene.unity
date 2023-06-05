@@ -156,6 +156,7 @@ MonoBehaviour:
   CurrentTravs: []
   _timeCreationSpeed: 1
   _historyMaxLength: 100
+  _cooldown: 3
 --- !u!114 &161318763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +172,7 @@ MonoBehaviour:
   ArrowKeys: {x: 0, y: 0}
   Jump: 0
   JumpUp: 0
+  CheatTravel: 0
 --- !u!4 &161318764
 Transform:
   m_ObjectHideFlags: 0
@@ -860,6 +862,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f17c923d27b524186e494b61592fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ID: -16036
 --- !u!212 &1787094646
 SpriteRenderer:
   m_ObjectHideFlags: 0

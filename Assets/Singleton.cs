@@ -9,7 +9,7 @@ public class Singleton : MonoBehaviour
 
     const bool DEBUG_MODE = false;
 
-    public virtual void Awake()
+    protected virtual void Awake()
     {
         if (Instances.ContainsValue(null))
             Instances.Clear();
