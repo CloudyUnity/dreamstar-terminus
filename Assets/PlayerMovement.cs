@@ -34,8 +34,10 @@ public class PlayerMovement : Singleton
 	public bool Walled => _lastOnWallTime > 0;
 	public bool PressedJump => _lastPressedJumpTime > 0;
 
-	private void Awake()
+	public override void Awake()
 	{
+		base.Awake();
+
 		_rb = GetComponent<Rigidbody2D>();
 		_rend = GetComponent<SpriteRenderer>();
 	}
@@ -183,7 +185,6 @@ public class PlayerMovement : Singleton
 		_sliding = Walled && !_jumping && !_wallJumping && !Grounded;
 		if (_sliding)
 		{
-			Debug.Log("Sliding");
 			Slide();
 			return;
 		}

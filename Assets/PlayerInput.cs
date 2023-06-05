@@ -8,6 +8,8 @@ public class PlayerInput : Singleton
     public bool Jump;
     public bool JumpUp;
 
+    public bool CheatTravel;
+
     int _lastPressed = 1;
 
     private void Update()
@@ -34,5 +36,8 @@ public class PlayerInput : Singleton
         KeyCode jumpCode = KeyCode.Mouse0;
         Jump = Input.GetKeyDown(jumpCode);
         JumpUp = Input.GetKeyUp(jumpCode);
+
+        KeyCode cheatTravel = KeyCode.P;
+        CheatTravel = Input.GetKeyDown(cheatTravel);
     }
 }

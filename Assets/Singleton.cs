@@ -2,25 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable CS0162 // Unreachable code detected
 public class Singleton : MonoBehaviour
 {
     public static Dictionary<System.Type, Singleton> Instances = new Dictionary<System.Type, Singleton>();
 
-    private void Awake()
+    const bool DEBUG_MODE = false;
+
+    public virtual void Awake()
     {
         if (Instances.ContainsValue(null))
             Instances.Clear();
 
-        //Debug.Log("Checking type: " + GetType());
+        if (DEBUG_MODE)
+            Debug.Log("Checking type: " + GetType());
 
         if (!Instances.ContainsKey(GetType()))
         {
-            Debug.Log("Instancing: " + GetType());
+            if (DEBUG_MODE)
+                Debug.Log("Instancing: " + GetType());
+
             Instances.Add(GetType(), this);
         }
         else
         {
-            Debug.Log("Already instanced as: " + Instances[GetType()]);
+            if (DEBUG_MODE)
+                Debug.Log("Already instanced as: " + Instances[GetType()]);
+
             Destroy(gameObject);
         }
     }
@@ -37,18 +45,19 @@ public class Singleton : MonoBehaviour
     public static T Get<T>()
         where T : Singleton
     {
-        //Debug.Log("A: " + typeof(T).Name);
+        if (DEBUG_MODE)
+            Debug.Log("Trying to get: " + typeof(T).Name);
 
         if (!Instances.ContainsKey(typeof(T)))
             return null;
 
-        //Debug.Log("B: " + Instances[typeof(T)]);
+        if (DEBUG_MODE)
+            Debug.Log("Value: " + Instances[typeof(T)]);
 
         if (Instances[typeof(T)] is T instance)
             return instance;
 
-        //Debug.Log("C: null");
-
-        return null;
+        throw new System.Exception("Instances contains mismatched key-value pair: " + typeof(T).Name + " " + Instances[typeof(T)].name);
     }
 }
+#pragma warning restore CS0162 // Unreachable code detected
