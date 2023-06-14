@@ -25,6 +25,7 @@ public class PlayerMovement : Singleton
 
 	bool _isFacingRight = true;
 	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling, _wasGrounded, _wasWalled;
+	bool _lastWallJumpWasOut;
 
 	float _lastOnGroundTime, _lastOnWallTime, _wallJumpStartTime, _lastPressedJumpTime;
 	float _lastArrowKeyX = 1;
@@ -163,42 +164,8 @@ public class PlayerMovement : Singleton
 		if (Input.GetKeyDown(KeyCode.L))
 			_rb.AddForce(10 * Vector2.up, ForceMode2D.Impulse);
 
-		Vector3 startRay = new Vector3(0.2212f, 0.3105f);
-		float rayDis = 0.15f;
-
 		if (_rb.velocity.y > 0 && !Walled)
-        {
-			RaycastHit2D hitLeft = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x, startRay.y), Vector2.up, rayDis, _groundLayer);
-
-			if (hitLeft.collider != null)
-            {
-				Debug.Log(_rb.velocity);
-				for (float i = 0; i <= 0.15f; i += 0.025f)
-                {
-					RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x + i, startRay.y), Vector2.up, rayDis, _groundLayer);
-					if (hit.collider == null)
-                    {
-						transform.position = new Vector3(transform.position.x + 0.01f + i, transform.position.y);
-						return;
-					}
-				}
-            }
-
-			RaycastHit2D hitRight = ManagerExtensions.Ray(transform.position + startRay, Vector2.up, rayDis, _groundLayer);
-
-			if (hitRight.collider != null)
-			{
-				for (float i = 0; i <= 0.15f; i += 0.025f)
-				{
-					RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(startRay.x - i, startRay.y), Vector2.up, rayDis, _groundLayer);
-					if (hit.collider == null)
-					{
-						transform.position = new Vector3(transform.position.x - 0.01f - i, transform.position.y);
-						return;
-					}
-				}
-			}
-		}
+			CornerCorrection();  
     }
 
     private void FixedUpdate()
@@ -230,6 +197,19 @@ public class PlayerMovement : Singleton
 
 			if (!_wallJumping)
 				_jumpFalling = true;
+		}
+
+		if (_wallJumping && Time.time - _wallJumpStartTime <= Data.wallJumpChangeTime && !_lastWallJumpWasOut && _input.ArrowKeys.x == -_lastWallTouched)
+        {
+			_lastWallJumpWasOut = true;
+
+			Vector2 force = new Vector2(4, 0);
+			force.x *= -_lastWallTouched;
+
+			if (Mathf.Sign(_rb.velocity.x) != Mathf.Sign(force.x))
+				force.x -= _rb.velocity.x;
+
+			_rb.AddForce(force, ForceMode2D.Impulse);
 		}
 
 		if (_wallJumping && Time.time - _wallJumpStartTime > Data.wallJumpTime)
@@ -350,7 +330,9 @@ public class PlayerMovement : Singleton
 		_lastPressedJumpTime = 0;
 		_lastOnGroundTime = 0;
 
-		Vector2 force = _input.ArrowKeys.x == -_lastWallTouched ? Data.wallJumpForceOut : Data.wallJumpForceUp;
+		_lastWallJumpWasOut = _input.ArrowKeys.x == -_lastWallTouched;
+
+		Vector2 force = _lastWallJumpWasOut ? Data.wallJumpForceOut : Data.wallJumpForceUp;
 		force.x *= dir;
 
 		if (Mathf.Sign(_rb.velocity.x) != Mathf.Sign(force.x))
@@ -374,7 +356,46 @@ public class PlayerMovement : Singleton
 	}
 	#endregion
 
-	void HitGround()
+	#region GAMEFEEL
+	void CornerCorrection()
+	{
+		Vector3 startRay = new Vector3(0.2212f, 0.3105f);
+		float rayDis = 0.15f;
+
+		RaycastHit2D hitLeft = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x, startRay.y), Vector2.up, rayDis, _groundLayer);
+
+		if (hitLeft.collider != null)
+		{
+			for (float i = 0; i <= 0.15f; i += 0.025f)
+			{
+				RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x + i, startRay.y), Vector2.up, rayDis, _groundLayer);
+
+				if (hit.collider != null)
+					continue;
+
+				transform.position = new Vector3(transform.position.x + 0.01f + i, transform.position.y);
+				return;
+			}
+		}
+
+		RaycastHit2D hitRight = ManagerExtensions.Ray(transform.position + startRay, Vector2.up, rayDis, _groundLayer);
+
+		if (hitRight.collider != null)
+		{
+			for (float i = 0; i <= 0.15f; i += 0.025f)
+			{
+				RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(startRay.x - i, startRay.y), Vector2.up, rayDis, _groundLayer);
+				if (hit.collider != null)
+					continue;
+
+				transform.position = new Vector3(transform.position.x - 0.01f - i, transform.position.y);
+				return;
+			}
+		}
+	}
+    #endregion
+
+    void HitGround()
     {
 		Get<ManagerCamera>().ScreenShake(0.01f, 0.2f);
 		_doubleJumpsDone = 0;
@@ -393,7 +414,7 @@ public class PlayerMovement : Singleton
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-		Debug.Log("Hit " + collision.gameObject.name);
+		//Debug.Log("Hit " + collision.gameObject.name);
     }
 
     public void DisableMovement() => _movementDisablers++;
