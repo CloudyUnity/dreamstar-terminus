@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0caee04dd9db67d4884a19872fbcca87, type: 3}
   m_Name: PData
   m_EditorClassIdentifier: 
-  fallGravityMult: 2.5
-  maxFallSpeed: 15
+  fallGravityMult: 2.2
+  maxFallSpeed: 13
   fastFallGravityMult: 3
   maxFastFallSpeed: 20
   gravityScale: 2.2298675
@@ -31,13 +31,17 @@ MonoBehaviour:
   jumpCutGravityMult: 2.5
   jumpHangGravityMult: 0.5
   jumpHangTimeThreshold: 0.1
-  jumpHangAccelerationMult: 1.2
-  jumpHangMaxSpeedMult: 1.3
-  wallJumpForce: {x: 4, y: 10}
-  wallJumpRunLerp: 0.2
+  jumpHangAccelerationMult: 1.5
+  jumpHangMaxSpeedMult: 1.2
+  wallJumpForceUp: {x: 4, y: 10}
+  wallJumpForceOut: {x: 6, y: 9}
+  wallJumpRunLerp: 0.3
   wallJumpTime: 0.2
-  slideInitialSpeed: 10
-  slideAccel: 0.2
-  slideFallMult: 1.3
+  wallMinimumCut: 0.2
+  slideInitialSpeed: 1
+  slideAccel: 1
+  slideFallMult: 1
+  slideForceDownSpeed: 1
+  slideUnstickForce: 1
   coyoteTime: 0.2
   jumpInputBufferTime: 0.1

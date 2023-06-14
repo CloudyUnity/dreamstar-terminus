@@ -134,4 +134,12 @@ public static class ManagerExtensions
         newColor.a = value;
         rend.color = newColor;
     }
+
+    public static RaycastHit2D Ray(Vector2 origin, Vector2 dir, float dis = 1, LayerMask layer = default(LayerMask))
+    {
+        if (Application.isEditor)
+            Debug.DrawRay(origin, dir * dis);
+
+        return Physics2D.Raycast(origin, dir, dis, layer);
+    }
 }

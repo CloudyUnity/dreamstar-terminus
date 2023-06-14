@@ -159,8 +159,46 @@ public class PlayerMovement : Singleton
 		_wasWalled = _lastOnWallTime > 0;
 		#endregion
 
+		// Cheat Boost 
 		if (Input.GetKeyDown(KeyCode.L))
 			_rb.AddForce(10 * Vector2.up, ForceMode2D.Impulse);
+
+		Vector3 startRay = new Vector3(0.2212f, 0.3105f);
+		float rayDis = 0.15f;
+
+		if (_rb.velocity.y > 0 && !Walled)
+        {
+			RaycastHit2D hitLeft = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x, startRay.y), Vector2.up, rayDis, _groundLayer);
+
+			if (hitLeft.collider != null)
+            {
+				Debug.Log(_rb.velocity);
+				for (float i = 0; i <= 0.15f; i += 0.025f)
+                {
+					RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x + i, startRay.y), Vector2.up, rayDis, _groundLayer);
+					if (hit.collider == null)
+                    {
+						transform.position = new Vector3(transform.position.x + 0.01f + i, transform.position.y);
+						return;
+					}
+				}
+            }
+
+			RaycastHit2D hitRight = ManagerExtensions.Ray(transform.position + startRay, Vector2.up, rayDis, _groundLayer);
+
+			if (hitRight.collider != null)
+			{
+				for (float i = 0; i <= 0.15f; i += 0.025f)
+				{
+					RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(startRay.x - i, startRay.y), Vector2.up, rayDis, _groundLayer);
+					if (hit.collider == null)
+					{
+						transform.position = new Vector3(transform.position.x - 0.01f - i, transform.position.y);
+						return;
+					}
+				}
+			}
+		}
     }
 
     private void FixedUpdate()
@@ -353,7 +391,12 @@ public class PlayerMovement : Singleton
 		_doubleJumpsDone = 0;
     }
 
-	public void DisableMovement() => _movementDisablers++;
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+		Debug.Log("Hit " + collision.gameObject.name);
+    }
+
+    public void DisableMovement() => _movementDisablers++;
 	public void ReEnableMovement() => _movementDisablers--;
 
 	#region EDITOR METHODS

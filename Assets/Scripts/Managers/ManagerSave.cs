@@ -12,7 +12,7 @@ public class ManagerSave : Singleton
 
     string _filePath;
 
-    const string VERSION = "v0.0.1";
+    const string VERSION = "v0.0.2";
 
     private void Start()
     {

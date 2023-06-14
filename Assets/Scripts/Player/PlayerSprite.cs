@@ -41,8 +41,8 @@ public class PlayerSprite : Singleton
         return Color.red;
     }
 
-    public void Squash() => StartCoroutine(C_SqaushStretch(0.4f, new Vector2(0.1f, -0.1f)));
-    public void Stretch() => StartCoroutine(C_SqaushStretch(0.4f, new Vector2(-0.1f, 0.1f)));
+    public void Squash() => StartCoroutine(C_SqaushStretch(0.2f, new Vector2(0.1f, -0.1f)));
+    public void Stretch() => StartCoroutine(C_SqaushStretch(0.2f, new Vector2(-0.1f, 0.1f)));
 
     IEnumerator C_SqaushStretch(float dur, Vector2 mag)
     {
