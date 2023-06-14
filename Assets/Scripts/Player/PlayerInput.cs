@@ -41,8 +41,8 @@ public class PlayerInput : Singleton
         _downCode = _keyBinds.GetKey("Down");
         _jumpCode = _keyBinds.GetKey("Jump");
         _quit = KeyCode.Escape;
-        _debugGainDoubleJump = KeyCode.Mouse0;
-        _debugLoseDoubleJump = KeyCode.Mouse1;
+        //_debugGainDoubleJump = KeyCode.Mouse0;
+        //_debugLoseDoubleJump = KeyCode.Mouse1;
     }
 
     private void Update()

@@ -9,18 +9,36 @@ public class PlayerSprite : Singleton
     Animator _anim;
 
     bool _squashing;
+    PlayerMovement _move;
 
     private void Start()
     {
         _rend = GetComponent<SpriteRenderer>();
         _input = Get<PlayerInput>();
         _anim = GetComponent<Animator>();
+        _move = Get<PlayerMovement>();
     }
 
     private void Update()
     {
         if (_input.ArrowKeys.x != 0)
             _rend.flipX = _input.ArrowKeys.x == -1;
+
+        _rend.color = Debug_Colors();
+    }
+
+    Color Debug_Colors()
+    {
+        if (_move.Grounded && _move.Walled)
+            return Color.magenta;
+
+        if (_move.Grounded)
+            return Color.green;
+
+        if (_move.Walled)
+            return Color.blue;
+
+        return Color.red;
     }
 
     public void Squash() => StartCoroutine(C_SqaushStretch(0.4f, new Vector2(0.1f, -0.1f)));

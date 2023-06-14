@@ -544,15 +544,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaults:
   - Name: Up
-    Code: R
+    Code: W
   - Name: Down
-    Code: F
+    Code: S
   - Name: Left
-    Code: D
+    Code: A
   - Name: Right
-    Code: G
+    Code: D
   - Name: Jump
-    Code: Space
+    Code: Mouse0
   Waiting: 0
   ResetTheKeys: 0
 --- !u!114 &161318769

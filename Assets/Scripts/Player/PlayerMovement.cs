@@ -40,7 +40,8 @@ public class PlayerMovement : Singleton
 	int _doubleJumpsDone;
 
 	// To-do:
-	// Squash, particles, change keybinds
+	// particles, change keybinds
+	// Double jump closer to HK?
 
 	protected override void Awake()
 	{
@@ -160,6 +161,7 @@ public class PlayerMovement : Singleton
 
     private void FixedUpdate()
 	{
+		bool wasSliding = _sliding;
 		_sliding = Walled && !_jumping && !_wallJumping && !Grounded;
 
 		if (_movementDisablers > 0)
@@ -167,6 +169,9 @@ public class PlayerMovement : Singleton
 
 		if (_sliding)
 		{
+			if (!wasSliding)
+				_rb.velocity = Vector2.zero;
+
 			Slide();
 			return;
 		}

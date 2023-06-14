@@ -54,6 +54,7 @@ public class PlayerData : ScriptableObject
 	public float slideInitialSpeed;
 	public float slideAccel;
 	public float slideFallMult;
+	public float slideForceDownSpeed;
 
 	[Header("Assists")]
 	[Range(0.01f, 0.5f)] public float coyoteTime; //Grace period after falling off a platform, where you can still jump
