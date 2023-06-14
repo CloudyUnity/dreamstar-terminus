@@ -24,7 +24,7 @@ public class PlayerMovement : Singleton
 	PlayerAbilities _abilities;
 
 	bool _isFacingRight = true;
-	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling;
+	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling, _wasGrounded;
 
 	float _lastOnGroundTime, _lastOnWallTime, _wallJumpStartTime, _lastPressedJumpTime;
 	float _lastArrowKeyX = 1;
@@ -87,7 +87,7 @@ public class PlayerMovement : Singleton
         if (!_jumping)
 		{
 			bool groundDetected = Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer);
-			if (groundDetected && !_jumping)
+			if (groundDetected)
 				_lastOnGroundTime = Data.coyoteTime;
 
 			bool touchingRight = Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && _isFacingRight;
@@ -98,7 +98,11 @@ public class PlayerMovement : Singleton
                 _lastOnWallTime = Data.coyoteTime;
 				_lastWallTouched = touchingRight ? 1 : -1;
             }
-        }
+
+			if (groundDetected && !_wasGrounded)
+				HitGround();
+			_wasGrounded = groundDetected;
+		}
 		#endregion
 
 		JumpChecks();
@@ -300,6 +304,11 @@ public class PlayerMovement : Singleton
 		_rb.AddForce(-movement * Vector2.up);
 	}
 	#endregion
+
+	void HitGround()
+    {
+		Get<ManagerCamera>().ScreenShake(0.01f, 0.2f);
+    }
 
 	public void DisableMovement() => _movementDisablers++;
 	public void ReEnableMovement() => _movementDisablers--;

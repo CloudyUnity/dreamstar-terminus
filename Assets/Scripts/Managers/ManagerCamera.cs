@@ -6,54 +6,27 @@ public class ManagerCamera : Singleton
 {
     PlayerMovement _player;
 
+    Camera _cam;
+    bool _shaking { get { return _curMag != 0; } }
+    float _curMag;
+    float _camSpeed;
+
+    [SerializeField] List<FocalPoint> _focalPoints = new List<FocalPoint>();
+
+    [SerializeField] Vector3 _offset;
+    [SerializeField] float _smallBiasRange = 3;
+    [SerializeField] float _bigBiasRange = 5;
+    [SerializeField] float _closeBonusRange = 2;
+    [SerializeField] float _focalPointMag = 0.3f;
+    [SerializeField] float _targetSpeed = 3.5f;
+    [SerializeField] float _targetSpeedFocal = 0.9f;
+
     private void Start()
     {
         _player = Get<PlayerMovement>();
         _cam = GetComponent<Camera>();
-    }
 
-    private void LateUpdate()
-    {
-        
-    }
-
-    Camera _cam;
-    bool _shaking { get { return _curMag != 0; } }
-    float _curMag;
-
-    bool _break;
-    bool _toad;
-
-    [SerializeField] List<V_FocalPoint> _focalPoints = new List<V_FocalPoint>();
-    private void OnEnable()
-    {
-        A_EventManager.OnCameraShake += ScreenShake;
-        A_EventManager.OnBossSpawn += ReassignBoss;
-        A_EventManager.OnAddFocalPoint += AddFocalPoint;
-    }
-    private void OnDisable()
-    {
-        A_EventManager.OnCameraShake -= ScreenShake;
-        A_EventManager.OnBossSpawn -= ReassignBoss;
-        A_EventManager.OnAddFocalPoint -= AddFocalPoint;
-    }
-
-    void ReassignBoss(EBoss boss)
-    {
-        _boss = boss;
-
-        if (boss.EnemyName == "Wallum Toad")
-            _toad = true;
-    }
-
-    private void Start()
-    {
-        SetAspect();
-
-        if (A_LevelManager.Instance == null)
-            return;
-
-        _break = A_LevelManager.Instance.CurrentLevel.IsEven() && A_LevelManager.Instance.CurrentLevel != 24;
+        SetAspect();        
     }
 
     private void Update()
@@ -63,24 +36,18 @@ public class ManagerCamera : Singleton
 
     private void LateUpdate()
     {
-        if (_shaking || Player.Instance == null || (V_HUDManager.Instance != null && V_HUDManager.Instance.IsPaused))
+        if (_shaking || _player == null)
             return;
 
         transform.position = GetPosition();
     }
-
-    float _camSpeed = 0;
+    
+    public void AddFocalPoint(FocalPoint fp) => _focalPoints.Add(fp);
 
     Vector3 GetPosition()
     {
-        if (!ReferenceEquals(_boss, null) && _boss != null && _boss.EnemyName == "Concheror")
-        {
-            Vector3 target = _boss.transform.position + new Vector3(7, 0);
-            target.z = -10;
-            return Vector3.Lerp(transform.position, target, Time.deltaTime * 10);
-        }
-
-        List<Vector3> points = new List<Vector3>();
+        #region FocalPoints
+        List<Vector3> validFocalPoints = new List<Vector3>();
         for (int i = _focalPoints.Count - 1; i >= 0; i--)
         {
             if (_focalPoints[i] == null)
@@ -89,69 +56,51 @@ public class ManagerCamera : Singleton
                 continue;
             }
 
-            if (!A_OptionsManager.Instance.Current.CamLock)
+            if (_focalPoints[i].Bias <= 1 && Vector3.Distance(_player.transform.position, _focalPoints[i].transform.position) > _smallBiasRange)
                 continue;
 
-            if (_focalPoints[i].Bias < 1)
+            if (_focalPoints[i].Bias >= 2 && Vector3.Distance(_player.transform.position, _focalPoints[i].transform.position) > _bigBiasRange)
                 continue;
 
-            if (_focalPoints[i].Bias.Is(1, 2) && Vector3.Distance(Player.Instance.transform.position, _focalPoints[i].transform.position) > 3)
-                continue;
-
-            if (_focalPoints[i].Bias.Is(3, 4) && Vector3.Distance(Player.Instance.transform.position, _focalPoints[i].transform.position) > 5)
-                continue;
-
-            if (Vector3.Distance(Player.Instance.transform.position, _focalPoints[i].transform.position) < 2)
-                points.Add(_focalPoints[i].transform.position);
+            if (Vector3.Distance(_player.transform.position, _focalPoints[i].transform.position) < _closeBonusRange)
+                validFocalPoints.Add(_focalPoints[i].transform.position);
 
             for (int j = 0; j < _focalPoints[i].Bias; j++)
-                points.Add(_focalPoints[i].transform.position);
+                validFocalPoints.Add(_focalPoints[i].transform.position);
         }
+        #endregion
 
-        Vector3 average = AverageOfPoints(points);
+        Vector3 averageFocalPoint = AverageOfPoints(validFocalPoints, out bool error);
         Vector3 dir = Vector3.zero;
 
-        if (average.z != 999)
+        if (!error)
         {
-            dir = average - Player.Instance.transform.position;
+            dir = averageFocalPoint - _player.transform.position;
         }
 
-        float angle = Vector3.Angle(dir.normalized, GetDir().normalized);
-        if (angle > 110)
-            dir = Vector3.zero;
-
-        Vector3 pos = Player.Instance.transform.position + dir * 0.3f;
+        Vector3 pos = _player.transform.position + (dir * _focalPointMag);
         pos.z = -10;
+        pos += _offset;
 
-        if (_break)
-        {
-            pos.x = Mathf.Clamp(pos.x, -1, 1);
-            pos.y = Mathf.Clamp(pos.y, -1.5f, 5);
-        }
-
-        if (_toad)
-        {
-            pos.x = Mathf.Clamp(pos.x, -4, 4);
-            pos.y = Mathf.Clamp(pos.y, -4, 4);
-        }
-
-        float targetSpeed = points.Count > 0 ? 0.9f : 3.5f;
+        float targetSpeed = error ? _targetSpeed : _targetSpeedFocal;
 
         if (targetSpeed < _camSpeed)
             _camSpeed = targetSpeed;
 
         _camSpeed = Mathf.Lerp(_camSpeed, targetSpeed, Time.deltaTime * 0.55f);
 
-        if (Player.Instance.Teleporting || !A_OptionsManager.Instance.Current.CamLock)
-            _camSpeed = 8;
-
         return Vector3.Lerp(transform.position, pos, Time.deltaTime * _camSpeed);
     }
 
-    Vector3 AverageOfPoints(List<Vector3> points)
-    {
+    Vector3 AverageOfPoints(List<Vector3> points, out bool error)
+    {        
         if (points.Count == 0)
-            return new Vector3(float.NaN, float.NaN, 999);
+        {
+            error = true;
+            return Vector3.zero;
+        }
+
+        error = false;
 
         Vector3 average = Vector3.zero;
         foreach (Vector3 point in points)
@@ -161,11 +110,9 @@ public class ManagerCamera : Singleton
         return average / points.Count;
     }
 
-    void AddFocalPoint(V_FocalPoint point) => _focalPoints.Add(point);
-
     public void ScreenShake(float mag, float dur)
     {
-        if (mag <= _curMag || !A_OptionsManager.Instance.Current.Screenshake)
+        if (mag <= _curMag)
             return;
 
         StopAllCoroutines();
@@ -182,16 +129,13 @@ public class ManagerCamera : Singleton
 
         while (elapsed < dur)
         {
-            while (V_HUDManager.Instance == null || V_HUDManager.Instance.IsPaused)
-                yield return null;
-
             Vector3 pos = GetPosition();
 
-            pos.x += Mathf.PerlinNoise(seed, elapsed * 4) * mag;
-            pos.y += Mathf.PerlinNoise(seed + 1, elapsed * 4 + 1) * mag;
+            pos.x += (Mathf.PerlinNoise(seed, elapsed * 4) - 0.5f) * mag;
+            pos.y += (Mathf.PerlinNoise(seed + 5, elapsed * 4 + 1) - 0.5f) * mag;
             pos.z = -10;
 
-            float rotation = Mathf.PerlinNoise(seed + 2, elapsed * 4 + 2) * mag;
+            float rotation = (Mathf.PerlinNoise(seed + 20, elapsed * 4 + 2) - 0.5f) * mag;
 
             transform.position = pos;
 
@@ -236,13 +180,5 @@ public class ManagerCamera : Singleton
 
             _cam.rect = rect;
         }
-    }
-
-    Vector2 GetDir()
-    {
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = Camera.main.nearClipPlane;
-        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(mousePos);
-        return (worldPosition - (Vector2)Player.Instance.transform.position).normalized;
     }
 }
