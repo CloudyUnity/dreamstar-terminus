@@ -8,6 +8,8 @@ public class ManagerKeyBinds : Singleton
     [SerializeField] List<KeyBind> _defaults = new List<KeyBind>();
     public bool Waiting;
 
+    [ButtonInvoke(nameof(ResetKeys))] public bool ResetTheKeys;
+
     [System.Serializable]
     public struct KeyBind
     {

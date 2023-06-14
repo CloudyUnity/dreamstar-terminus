@@ -29,14 +29,7 @@ public class Traveller : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_EDITOR
-        return;
-#endif
-        // TEMP CODE
-#pragma warning disable CS0162 // Unreachable code detected
-        if (Singleton.Get<PlayerInput>().CheatTravel)
-            Singleton.Get<ManagerTravel>().RollBackTime(3);
-#pragma warning restore CS0162 // Unreachable code detected
+
     }
 
     public void CheckDeath()

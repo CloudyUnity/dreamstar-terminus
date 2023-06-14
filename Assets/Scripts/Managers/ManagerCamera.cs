@@ -12,16 +12,20 @@ public class ManagerCamera : Singleton
     float _camSpeed;
 
     [SerializeField] List<FocalPoint> _focalPoints = new List<FocalPoint>();
-
+    [Space(5)]
     [SerializeField] Vector3 _offset;
+    [Space(5)]
     [SerializeField] float _smallBiasRange = 3;
     [SerializeField] float _bigBiasRange = 5;
     [SerializeField] float _closeBonusRange = 2;
     [SerializeField] float _focalPointMag = 0.3f;
     [SerializeField] float _targetSpeed = 3.5f;
     [SerializeField] float _targetSpeedFocal = 0.9f;
+    [Space(5)]
     [SerializeField] float _playerFarMult;
     [SerializeField] float _playerFarDistance;
+    [Space(5)]
+    [SerializeField] bool _disableScreenShake;
 
     private void Start()
     {
@@ -119,6 +123,9 @@ public class ManagerCamera : Singleton
     public void ScreenShake(float mag, float dur)
     {
         if (mag <= _curMag)
+            return;
+
+        if (Application.isEditor && _disableScreenShake)
             return;
 
         StopAllCoroutines();

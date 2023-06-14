@@ -18,4 +18,20 @@ public class PlayerAbilities : Singleton
      * Glide
      * 10 Second Time Machine
      */
+
+    PlayerInput _input;
+
+    private void Start()
+    {
+        _input = Get<PlayerInput>();
+    }
+
+    private void Update()
+    {
+        if (_input.GainDoubleJump)
+            DoubleJumps++;
+
+        if (_input.LoseDoubleJump)
+            DoubleJumps--;
+    }
 }

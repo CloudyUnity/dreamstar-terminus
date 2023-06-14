@@ -20,8 +20,8 @@ public class PlayerMovement : Singleton
 
 	Rigidbody2D _rb;
 	PlayerInput _input;
-	SpriteRenderer _rend;
 	PlayerAbilities _abilities;
+	PlayerSprite _sprite;
 
 	bool _isFacingRight = true;
 	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling, _wasGrounded, _wasWalled;
@@ -40,15 +40,15 @@ public class PlayerMovement : Singleton
 	int _doubleJumpsDone;
 
 	// To-do:
-	// Squash, particles, change keybinds, double jumps
+	// Squash, particles, change keybinds
 
 	protected override void Awake()
 	{
 		base.Awake();
 
 		_rb = GetComponent<Rigidbody2D>();
-		_rend = GetComponent<SpriteRenderer>();
 		_abilities = GetComponent<PlayerAbilities>();
+		_sprite = Get<PlayerSprite>();
 	}
 
 	private void Start()
@@ -71,7 +71,6 @@ public class PlayerMovement : Singleton
 			_lastArrowKeyX = _input.ArrowKeys.x;
 
 		_isFacingRight = _lastArrowKeyX == 1;
-		_rend.flipX = _lastArrowKeyX == -1;
 
 		if (_input.Jump)
         {
@@ -147,6 +146,9 @@ public class PlayerMovement : Singleton
         #region HIT GROUND/WALL
         if (_lastOnGroundTime > 0 && !_wasGrounded)
 			HitGround();
+
+		if (_lastOnGroundTime <= 0 && _wasGrounded)
+			LeaveGround();
 
 		if (_lastOnWallTime > 0 && !_wasWalled)
 			HitWall();
@@ -288,14 +290,12 @@ public class PlayerMovement : Singleton
 		_lastPressedJumpTime = 0;
 		_lastOnGroundTime = 0;
 
-		#region Perform Jump
 		float force = Data.jumpForce;
 		// In case of falling
 		if (_rb.velocity.y < 0)
 			force -= _rb.velocity.y;
 
 		_rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
-		#endregion
 	}
 
 	private void WallJump(int dir)
@@ -303,7 +303,6 @@ public class PlayerMovement : Singleton
 		_lastPressedJumpTime = 0;
 		_lastOnGroundTime = 0;
 
-		#region Perform Wall Jump
 		Vector2 force = new Vector2(Data.wallJumpForce.x, Data.wallJumpForce.y);
 		force.x *= dir;
 
@@ -314,7 +313,6 @@ public class PlayerMovement : Singleton
 			force.y -= _rb.velocity.y;
 
 		_rb.AddForce(force, ForceMode2D.Impulse);
-		#endregion
 	}
 	#endregion
 
@@ -336,6 +334,12 @@ public class PlayerMovement : Singleton
     {
 		Get<ManagerCamera>().ScreenShake(0.01f, 0.2f);
 		_doubleJumpsDone = 0;
+		_sprite.Squash();
+    }
+
+	void LeaveGround()
+    {
+		_sprite.Stretch();
     }
 
 	void HitWall()

@@ -7,13 +7,15 @@ public class PlayerInput : Singleton
     public Vector2 ArrowKeys;
     public bool Jump;
     public bool JumpUp;
+    public bool GainDoubleJump;
+    public bool LoseDoubleJump;
 
     public bool CheatTravel;
 
     int _lastPressed = 1;
 
     ManagerKeyBinds _keyBinds;
-    KeyCode _leftCode, _rightCode, _upCode, _downCode, _jumpCode;
+    KeyCode _leftCode, _rightCode, _upCode, _downCode, _jumpCode, _debugGainDoubleJump, _debugLoseDoubleJump, _quit;
 
     private void OnEnable()
     {
@@ -38,6 +40,9 @@ public class PlayerInput : Singleton
         _upCode = _keyBinds.GetKey("Up");
         _downCode = _keyBinds.GetKey("Down");
         _jumpCode = _keyBinds.GetKey("Jump");
+        _quit = KeyCode.Escape;
+        _debugGainDoubleJump = KeyCode.Mouse0;
+        _debugLoseDoubleJump = KeyCode.Mouse1;
     }
 
     private void Update()
@@ -59,8 +64,12 @@ public class PlayerInput : Singleton
         Jump = Input.GetKeyDown(_jumpCode);
         JumpUp = Input.GetKeyUp(_jumpCode);
 
+        GainDoubleJump = Input.GetKeyDown(_debugGainDoubleJump);
+        LoseDoubleJump = Input.GetKeyDown(_debugLoseDoubleJump);
+
+        if (Input.GetKeyDown(_quit))
+            Application.Quit();
+
         // TO-DO: Make ManagerCheat class to manage cheats, editor only (w/ secret option to enable?)
-        KeyCode cheatTravel = KeyCode.P;
-        CheatTravel = Input.GetKeyDown(cheatTravel);
     }
 }

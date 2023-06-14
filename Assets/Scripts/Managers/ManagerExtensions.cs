@@ -90,6 +90,7 @@ public static class ManagerExtensions
     public static float DecayCurve(float x, float p) => Mathf.Pow(1 - Mathf.Pow(x, p), 1 / p);
     public static float SlowingCurve(float x) => 1.3f - Mathf.Pow(0.16f / Mathf.Pow(x + 0.3f, 2), 0.5f);
     public static float HumpCurve(float t, float peak, float start) => (4 * start - 4 * peak) * Mathf.Pow(t - 0.5f, 2) + peak;
+    public static float HumpCurveV2(float t, float a) => -4 * a * Mathf.Pow(t - 0.5f, 2) + a;
     public static float OverShootCurve(float t)
     {
         return 1 - (float)(Mathf.Sin(t * Mathf.PI * 2) / (Mathf.Exp(1) * t * 2.3));
