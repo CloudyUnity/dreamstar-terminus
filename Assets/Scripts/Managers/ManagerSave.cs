@@ -5,12 +5,19 @@ using UnityEngine;
 
 public class ManagerSave : Singleton
 {
-    string _filePath = Application.persistentDataPath + "/saveData.json";
+    public struct SaveData
+    {
+        public string Version;
+    }
+
+    string _filePath;
 
     const string VERSION = "v0.0.1";
 
     private void Start()
     {
+        _filePath = Application.persistentDataPath + "/saveData.json";
+
         if (!File.Exists(_filePath))
             return;
 
@@ -65,9 +72,4 @@ public class ManagerSave : Singleton
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(_filePath, json);
     }
-}
-
-public struct SaveData
-{
-    public string Version;
 }

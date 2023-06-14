@@ -29,7 +29,8 @@ public class Singleton : MonoBehaviour
             if (DEBUG_MODE)
                 Debug.Log("Already instanced as: " + Instances[GetType()]);
 
-            Destroy(gameObject);
+            // Kills self
+            enabled = false;
         }
     }
 

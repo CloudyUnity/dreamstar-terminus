@@ -17,7 +17,6 @@ public class ManagerKeyBinds : Singleton
 
     protected override void Awake()
     {
-        Debug.Log(KeyCode.Mouse0.ToString());
         GetKeys();
         base.Awake();
     }
