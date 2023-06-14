@@ -160,10 +160,6 @@ public class PlayerMovement : Singleton
 		_wasWalled = _lastOnWallTime > 0;
 		#endregion
 
-		// Cheat Boost 
-		if (Input.GetKeyDown(KeyCode.L))
-			_rb.AddForce(10 * Vector2.up, ForceMode2D.Impulse);
-
 		if (_rb.velocity.y > 0 && !Walled)
 			CornerCorrection();  
     }

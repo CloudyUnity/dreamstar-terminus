@@ -92,7 +92,10 @@ public class ManagerCamera : Singleton
 
         float dis = Vector3.Distance(pos, transform.position);
         if (dis >= _playerFarDistance)
-            targetSpeed *= dis * _playerFarMult;
+            targetSpeed *= dis - 3;
+
+        if (!_player.Grounded && !_player.Walled)
+            targetSpeed *= _playerFarMult;
 
         if (targetSpeed < _camSpeed)
             _camSpeed = targetSpeed;

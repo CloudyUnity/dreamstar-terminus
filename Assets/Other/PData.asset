@@ -38,6 +38,7 @@ MonoBehaviour:
   wallJumpRunLerp: 0.3
   wallJumpTime: 0.2
   wallMinimumCut: 0.2
+  wallJumpChangeTime: 0.15
   slideInitialSpeed: 1
   slideAccel: 1
   slideFallMult: 1

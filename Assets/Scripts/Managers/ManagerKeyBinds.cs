@@ -145,7 +145,7 @@ public struct TextPair
     }
 
     public Transform transform => black.transform;
-    public GameObject gameObject => black.gameObject;
+    public GameObject gameObject => black.transform.gameObject;
     public GameObject parentGameObject => black.transform.parent.gameObject;
     public Transform parent => black.transform.parent;
 }
