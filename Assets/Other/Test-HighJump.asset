@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0caee04dd9db67d4884a19872fbcca87, type: 3}
-  m_Name: PData
+  m_Name: Test-HighJump
   m_EditorClassIdentifier: 
-  fallGravityMult: 2.5
-  maxFallSpeed: 15
+  fallGravityMult: 2
+  maxFallSpeed: 100
   fastFallGravityMult: 3
-  maxFastFallSpeed: 20
-  gravityScale: 2.2298675
+  maxFastFallSpeed: 120
+  gravityScale: 6.37105
   runMaxSpeed: 5
   runAcceleration: 2
   runAccelAmount: 20
@@ -24,12 +24,12 @@ MonoBehaviour:
   runDeccelAmount: 40
   accelInAir: 0.541
   deccelInAir: 0.158
-  doConserveMomentum: 1
-  jumpHeight: 1.75
+  doConserveMomentum: 0
+  jumpHeight: 5
   jumpTimeToApex: 0.4
-  jumpForce: 8.75
+  jumpForce: 25
   jumpCutGravityMult: 2.5
-  jumpHangGravityMult: 0.5
+  jumpHangGravityMult: 0.9
   jumpHangTimeThreshold: 0.1
   jumpHangAccelerationMult: 1.2
   jumpHangMaxSpeedMult: 1.3

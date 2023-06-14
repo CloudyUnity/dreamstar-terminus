@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAbilities : Singleton
 {
     public bool WallJumpOn;
+    public int DoubleJumps;
     /* Ability Ideas:
      * 
      * Time-Slow

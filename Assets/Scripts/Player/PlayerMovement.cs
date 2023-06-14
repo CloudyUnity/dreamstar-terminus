@@ -24,7 +24,7 @@ public class PlayerMovement : Singleton
 	PlayerAbilities _abilities;
 
 	bool _isFacingRight = true;
-	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling, _wasGrounded;
+	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling, _wasGrounded, _wasWalled;
 
 	float _lastOnGroundTime, _lastOnWallTime, _wallJumpStartTime, _lastPressedJumpTime;
 	float _lastArrowKeyX = 1;
@@ -36,6 +36,11 @@ public class PlayerMovement : Singleton
 	public bool PressedJump => _lastPressedJumpTime > 0;
 
 	int _movementDisablers;
+
+	int _doubleJumpsDone;
+
+	// To-do:
+	// Squash, particles, change keybinds, double jumps
 
 	protected override void Awake()
 	{
@@ -97,11 +102,7 @@ public class PlayerMovement : Singleton
             {
                 _lastOnWallTime = Data.coyoteTime;
 				_lastWallTouched = touchingRight ? 1 : -1;
-            }
-
-			if (groundDetected && !_wasGrounded)
-				HitGround();
-			_wasGrounded = groundDetected;
+            }		
 		}
 		#endregion
 
@@ -141,10 +142,21 @@ public class PlayerMovement : Singleton
 		}
 
 		_rb.gravityScale = gravMult;
-		#endregion
-	}
+        #endregion
 
-	private void FixedUpdate()
+        #region HIT GROUND/WALL
+        if (_lastOnGroundTime > 0 && !_wasGrounded)
+			HitGround();
+
+		if (_lastOnWallTime > 0 && !_wasWalled)
+			HitWall();
+
+		_wasGrounded = _lastOnGroundTime > 0;
+		_wasWalled = _lastOnWallTime > 0;
+        #endregion
+    }
+
+    private void FixedUpdate()
 	{
 		_sliding = Walled && !_jumping && !_wallJumping && !Grounded;
 
@@ -184,14 +196,16 @@ public class PlayerMovement : Singleton
 				_jumpFalling = false;
 		}
 
-		if (_movementDisablers > 0)
+		if (_movementDisablers > 0 || !PressedJump)
 			return;
 
 		bool canJump = Grounded && !_jumping;
 
 		bool canWallJump = Walled && !Grounded && !_wallJumping && _abilities.WallJumpOn;
 
-		if (canJump && PressedJump)
+		bool canDoubleJump = !_jumping && _doubleJumpsDone < _abilities.DoubleJumps;
+
+		if (canJump)
 		{
 			_jumping = true;
 			_wallJumping = false;
@@ -202,7 +216,7 @@ public class PlayerMovement : Singleton
 			return;
 		}
 
-		if (canWallJump && PressedJump)
+		if (canWallJump)
 		{
 			_wallJumping = true;
 			_jumping = false;
@@ -211,6 +225,19 @@ public class PlayerMovement : Singleton
 			_wallJumpStartTime = Time.time;
 
 			WallJump(-_lastWallTouched);
+			return;
+		}	
+
+		if (canDoubleJump)
+        {
+			_jumping = true;
+			_wallJumping = false;
+			_jumpCutting = false;
+			_jumpFalling = false;
+
+			_doubleJumpsDone++;
+
+			Jump();
 			return;
 		}
 	}
@@ -308,6 +335,12 @@ public class PlayerMovement : Singleton
 	void HitGround()
     {
 		Get<ManagerCamera>().ScreenShake(0.01f, 0.2f);
+		_doubleJumpsDone = 0;
+    }
+
+	void HitWall()
+    {
+		_doubleJumpsDone = 0;
     }
 
 	public void DisableMovement() => _movementDisablers++;

@@ -20,6 +20,8 @@ public class ManagerCamera : Singleton
     [SerializeField] float _focalPointMag = 0.3f;
     [SerializeField] float _targetSpeed = 3.5f;
     [SerializeField] float _targetSpeedFocal = 0.9f;
+    [SerializeField] float _playerFarMult;
+    [SerializeField] float _playerFarDistance;
 
     private void Start()
     {
@@ -83,6 +85,10 @@ public class ManagerCamera : Singleton
         pos += _offset;
 
         float targetSpeed = error ? _targetSpeed : _targetSpeedFocal;
+
+        float dis = Vector3.Distance(pos, transform.position);
+        if (dis >= _playerFarDistance)
+            targetSpeed *= dis * _playerFarMult;
 
         if (targetSpeed < _camSpeed)
             _camSpeed = targetSpeed;
