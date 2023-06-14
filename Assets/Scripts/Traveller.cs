@@ -24,14 +24,14 @@ public class Traveller : MonoBehaviour
     {
         ID = gameObject.GetInstanceID();
 
-        Singleton.Get<TravelManager>().CurrentTravs.Add(this);
+        Singleton.Get<ManagerTravel>().CurrentTravs.Add(this);
     }
 
     private void Update()
     {
         // TEMP CODE
         if (Singleton.Get<PlayerInput>().CheatTravel)
-            Singleton.Get<TravelManager>().RollBackTime(3);
+            Singleton.Get<ManagerTravel>().RollBackTime(3);
     }
 
     public void CheckDeath()

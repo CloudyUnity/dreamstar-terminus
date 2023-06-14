@@ -133,6 +133,11 @@ GameObject:
   m_Component:
   - component: {fileID: 161318764}
   - component: {fileID: 161318763}
+  - component: {fileID: 161318769}
+  - component: {fileID: 161318768}
+  - component: {fileID: 161318767}
+  - component: {fileID: 161318766}
+  - component: {fileID: 161318765}
   - component: {fileID: 161318762}
   m_Layer: 0
   m_Name: Managers
@@ -150,14 +155,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 161318761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd46aa08afd656843b591d19b42ba8a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 124b64f49268a2245a54f2d3235e112f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentTravs: []
-  _timeCreationSpeed: 1
-  _historyMaxLength: 100
-  _cooldown: 3
-  _corpsePrefab: {fileID: 4546068435638330836, guid: 5eaae26c9c76d8249904fb122bc8977c, type: 3}
+  _timeCreationSpeed: 0
+  _historyMaxLength: 0
+  _cooldown: 0
+  _corpsePrefab: {fileID: 0}
 --- !u!114 &161318763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,6 +193,78 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &161318765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161318761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c50e2d6e3e788c48951fa7e66b1dbe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &161318766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161318761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d30702e49b49be243ae6e006dae7a9e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &161318767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161318761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96d5193b9a8388e4b94b0139f66fa93e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &161318768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161318761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7bb431ba9be9214fbc7f6cd5fff375f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaults:
+  - Name: Up
+    Code: W
+  - Name: Down
+    Code: S
+  - Name: Left
+    Code: A
+  - Name: Right
+    Code: D
+  - Name: Jump
+    Code: Mouse0
+  Waiting: 0
+--- !u!114 &161318769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161318761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e08d4a6b8acf61245807240b82d61b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &180502407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,6 +1234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2139717592}
   - component: {fileID: 2139717593}
+  - component: {fileID: 2139717595}
   - component: {fileID: 2139717591}
   - component: {fileID: 2139717590}
   - component: {fileID: 2139717594}
@@ -1303,3 +1381,16 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &2139717595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139717589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092c1445350898e43bdb87ddb83dcde7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WallJumpOn: 0

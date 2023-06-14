@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TravelManager : Singleton
+public class ManagerTravel : Singleton
 {
     public List<WorldHistory> Timeline = new List<WorldHistory>();
     public List<Traveller> CurrentTravs = new List<Traveller>();
@@ -60,7 +60,7 @@ public class TravelManager : Singleton
 
         StoreTimeInfo();       
 
-        Debug.Log("New Time Created with playPos: " + _present.PlayerPos);
+        //Debug.Log("New Time Created with playPos: " + _present.PlayerPos);
     }
 
     void StoreTimeInfo()

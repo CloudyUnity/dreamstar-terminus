@@ -21,6 +21,7 @@ public class PlayerMovement : Singleton
 	Rigidbody2D _rb;
 	PlayerInput _input;
 	SpriteRenderer _rend;
+	PlayerAbilities _abilities;
 
 	bool _isFacingRight = true;
 	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling;
@@ -42,6 +43,7 @@ public class PlayerMovement : Singleton
 
 		_rb = GetComponent<Rigidbody2D>();
 		_rend = GetComponent<SpriteRenderer>();
+		_abilities = GetComponent<PlayerAbilities>();
 	}
 
 	private void Start()
@@ -183,7 +185,7 @@ public class PlayerMovement : Singleton
 
 		bool canJump = Grounded && !_jumping;
 
-		bool canWallJump = Walled && !Grounded && !_wallJumping;
+		bool canWallJump = Walled && !Grounded && !_wallJumping && _abilities.WallJumpOn;
 
 		if (canJump && PressedJump)
 		{
