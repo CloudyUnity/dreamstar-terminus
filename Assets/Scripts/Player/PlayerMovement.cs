@@ -42,6 +42,7 @@ public class PlayerMovement : Singleton
 	// To-do:
 	// particles, change keybinds
 	// Double jump closer to HK?
+	// That thing from Celeste where you can change Out/Up wall jumps last second
 
 	protected override void Awake()
 	{
@@ -81,7 +82,7 @@ public class PlayerMovement : Singleton
         if (_input.JumpUp)
         {
 			bool canJumpCut = _jumping && _rb.velocity.y > 0;
-			bool canWallJumpCut = _wallJumping && _rb.velocity.y > 0;
+			bool canWallJumpCut = _wallJumping && _rb.velocity.y > 0 && (Data.jumpInputBufferTime - _lastPressedJumpTime > Data.wallMinimumCut);
 
 			if (canJumpCut || canWallJumpCut)
 				_jumpCutting = true;
@@ -156,13 +157,16 @@ public class PlayerMovement : Singleton
 
 		_wasGrounded = _lastOnGroundTime > 0;
 		_wasWalled = _lastOnWallTime > 0;
-        #endregion
+		#endregion
+
+		if (Input.GetKeyDown(KeyCode.L))
+			_rb.AddForce(10 * Vector2.up, ForceMode2D.Impulse);
     }
 
     private void FixedUpdate()
 	{
 		bool wasSliding = _sliding;
-		_sliding = Walled && !_jumping && !_wallJumping && !Grounded;
+		_sliding = Walled && !_jumping && !_wallJumping && !Grounded && _input.ArrowKeys.x != -_lastWallTouched;
 
 		if (_movementDisablers > 0)
 			return;
@@ -170,7 +174,7 @@ public class PlayerMovement : Singleton
 		if (_sliding)
 		{
 			if (!wasSliding)
-				_rb.velocity = Vector2.zero;
+				_rb.velocity = new Vector2(_rb.velocity.x, -Data.slideInitialSpeed);
 
 			Slide();
 			return;
@@ -308,7 +312,7 @@ public class PlayerMovement : Singleton
 		_lastPressedJumpTime = 0;
 		_lastOnGroundTime = 0;
 
-		Vector2 force = new Vector2(Data.wallJumpForce.x, Data.wallJumpForce.y);
+		Vector2 force = _input.ArrowKeys.x == -_lastWallTouched ? Data.wallJumpForceOut : Data.wallJumpForceUp;
 		force.x *= dir;
 
 		if (Mathf.Sign(_rb.velocity.x) != Mathf.Sign(force.x))
@@ -328,10 +332,7 @@ public class PlayerMovement : Singleton
 		float movement = speedDif * Data.slideAccel;
 		movement = Mathf.Clamp(movement, -Mathf.Abs(speedDif) * (1 / Time.fixedDeltaTime), Mathf.Abs(speedDif) * (1 / Time.fixedDeltaTime));
 
-		if (_input.ArrowKeys.x == 0)
-			movement *= Data.slideFallMult;
-
-		_rb.AddForce(-movement * Vector2.up);
+        _rb.AddForce(-movement * Vector2.up);
 	}
 	#endregion
 

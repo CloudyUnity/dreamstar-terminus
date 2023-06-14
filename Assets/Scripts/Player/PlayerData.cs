@@ -43,10 +43,12 @@ public class PlayerData : ScriptableObject
 	public float jumpHangMaxSpeedMult;
 
 	[Header("Wall Jump")]
-	public Vector2 wallJumpForce; //The actual force (this time set by us) applied to the player when wall jumping.
+	public Vector2 wallJumpForceUp; 
+	public Vector2 wallJumpForceOut; 
 	[Space(5)]
 	[Range(0f, 1f)] public float wallJumpRunLerp; //Reduces the effect of player's movement while wall jumping.
 	[Range(0f, 1.5f)] public float wallJumpTime; //Time after wall jumping the player's movement is slowed for.
+	[SerializeField] public float wallMinimumCut;
 
 	[Space(20)]
 
@@ -55,6 +57,7 @@ public class PlayerData : ScriptableObject
 	public float slideAccel;
 	public float slideFallMult;
 	public float slideForceDownSpeed;
+	public float slideUnstickForce;
 
 	[Header("Assists")]
 	[Range(0.01f, 0.5f)] public float coyoteTime; //Grace period after falling off a platform, where you can still jump
