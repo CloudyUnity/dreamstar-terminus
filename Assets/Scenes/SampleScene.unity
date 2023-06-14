@@ -157,6 +157,7 @@ MonoBehaviour:
   _timeCreationSpeed: 1
   _historyMaxLength: 100
   _cooldown: 3
+  _corpsePrefab: {fileID: 4546068435638330836, guid: 5eaae26c9c76d8249904fb122bc8977c, type: 3}
 --- !u!114 &161318763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -862,7 +863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f17c923d27b524186e494b61592fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: -16036
+  Destroyed: 0
 --- !u!212 &1787094646
 SpriteRenderer:
   m_ObjectHideFlags: 0

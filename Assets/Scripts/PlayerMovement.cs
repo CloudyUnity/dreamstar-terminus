@@ -34,6 +34,8 @@ public class PlayerMovement : Singleton
 	public bool Walled => _lastOnWallTime > 0;
 	public bool PressedJump => _lastPressedJumpTime > 0;
 
+	int _movementDisablers;
+
 	protected override void Awake()
 	{
 		base.Awake();
@@ -97,51 +99,7 @@ public class PlayerMovement : Singleton
         }
 		#endregion
 
-		#region JUMP CHECKS
-		if (_jumping && _rb.velocity.y < 0)
-		{
-			_jumping = false;
-
-			if (!_wallJumping)
-				_jumpFalling = true;
-		}
-
-		if (_wallJumping && Time.time - _wallJumpStartTime > Data.wallJumpTime)
-		{
-			_wallJumping = false;
-		}
-
-		if (Grounded && !_jumping && !_wallJumping)
-		{
-			_jumpCutting = false;
-
-			if (!_jumping)
-				_jumpFalling = false;
-		}
-
-		bool canJump = Grounded && !_jumping;
-
-		bool canWallJump = Walled && !Grounded && !_wallJumping;
-
-		if (canJump && PressedJump)
-		{
-			_jumping = true;
-			_wallJumping = false;
-			_jumpCutting = false;
-			_jumpFalling = false;
-			Jump();
-		}
-		else if (canWallJump && PressedJump)
-		{
-			_wallJumping = true;
-			_jumping = false;
-			_jumpCutting = false;
-			_jumpFalling = false;
-			_wallJumpStartTime = Time.time;
-
-			WallJump(-_lastWallTouched);
-		}
-		#endregion
+		JumpChecks();
 
 		#region GRAVITY
 		float gravMult = Data.gravityScale;
@@ -183,6 +141,10 @@ public class PlayerMovement : Singleton
 	private void FixedUpdate()
 	{
 		_sliding = Walled && !_jumping && !_wallJumping && !Grounded;
+
+		if (_movementDisablers > 0)
+			return;
+
 		if (_sliding)
 		{
 			Slide();
@@ -192,6 +154,60 @@ public class PlayerMovement : Singleton
 		float runAmount = _wallJumping ? Data.wallJumpRunLerp : 1;
 		Run(runAmount);
     }
+
+	void JumpChecks()
+    {
+		if (_jumping && _rb.velocity.y < 0)
+		{
+			_jumping = false;
+
+			if (!_wallJumping)
+				_jumpFalling = true;
+		}
+
+		if (_wallJumping && Time.time - _wallJumpStartTime > Data.wallJumpTime)
+		{
+			_wallJumping = false;
+		}
+
+		if (Grounded && !_jumping && !_wallJumping)
+		{
+			_jumpCutting = false;
+
+			if (!_jumping)
+				_jumpFalling = false;
+		}
+
+		if (_movementDisablers > 0)
+			return;
+
+		bool canJump = Grounded && !_jumping;
+
+		bool canWallJump = Walled && !Grounded && !_wallJumping;
+
+		if (canJump && PressedJump)
+		{
+			_jumping = true;
+			_wallJumping = false;
+			_jumpCutting = false;
+			_jumpFalling = false;
+
+			Jump();
+			return;
+		}
+
+		if (canWallJump && PressedJump)
+		{
+			_wallJumping = true;
+			_jumping = false;
+			_jumpCutting = false;
+			_jumpFalling = false;
+			_wallJumpStartTime = Time.time;
+
+			WallJump(-_lastWallTouched);
+			return;
+		}
+	}
 
 	#region RUN METHODS
 	private void Run(float lerpAmount)
@@ -283,6 +299,8 @@ public class PlayerMovement : Singleton
 	}
 	#endregion
 
+	public void DisableMovement() => _movementDisablers++;
+	public void ReEnableMovement() => _movementDisablers--;
 
 	#region EDITOR METHODS
 	private void OnDrawGizmosSelected()
