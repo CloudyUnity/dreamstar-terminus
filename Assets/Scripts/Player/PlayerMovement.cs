@@ -45,17 +45,11 @@ public class PlayerMovement : Singleton
 	// Double jump closer to HK?
 	// That thing from Celeste where you can change Out/Up wall jumps last second
 
-	protected override void Awake()
+	private void Start()
 	{
-		base.Awake();
-
 		_rb = GetComponent<Rigidbody2D>();
 		_abilities = GetComponent<PlayerAbilities>();
 		_sprite = Get<PlayerSprite>();
-	}
-
-	private void Start()
-	{
 		_input = Get<PlayerInput>();
 
 		_rb.gravityScale = Data.gravityScale;
@@ -95,16 +89,19 @@ public class PlayerMovement : Singleton
 		{
 			bool groundDetected = Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer);
 			if (groundDetected)
-				_lastOnGroundTime = Data.coyoteTime;
+				_lastOnGroundTime = Data.coyoteTime;	
+		}
 
+		if (!_jumping)
+        {
 			bool touchingRight = Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && _isFacingRight;
 			bool touchingLeft = Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && !_isFacingRight;
 
 			if ((touchingLeft || touchingRight) && !_wallJumping)
-            {
-                _lastOnWallTime = Data.coyoteTime;
+			{
+				_lastOnWallTime = Data.coyoteTime;
 				_lastWallTouched = touchingRight ? 1 : -1;
-            }		
+			}
 		}
 		#endregion
 
@@ -262,6 +259,12 @@ public class PlayerMovement : Singleton
 
 			_doubleJumpsDone++;
 
+			_rb.velocity = new Vector2(_rb.velocity.x, 0);
+
+			RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(0, -0.3f), Vector2.up, Data.doubleJumpRefundRange, _groundLayer);
+			if (hit.collider != null)
+				_doubleJumpsDone--;
+
 			Jump();
 			return;
 		}
@@ -406,6 +409,7 @@ public class PlayerMovement : Singleton
 	void HitWall()
     {
 		_doubleJumpsDone = 0;
+		_jumping = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

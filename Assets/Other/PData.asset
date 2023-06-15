@@ -46,3 +46,4 @@ MonoBehaviour:
   slideUnstickForce: 1
   coyoteTime: 0.2
   jumpInputBufferTime: 0.1
+  doubleJumpRefundRange: 0.2

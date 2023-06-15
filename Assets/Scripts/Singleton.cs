@@ -60,5 +60,10 @@ public class Singleton : MonoBehaviour
 
         throw new System.Exception("Instances contains mismatched key-value pair: " + typeof(T).Name + " " + Instances[typeof(T)].name);
     }
+
+    public static void ClearMemory()
+    {
+        Instances.Clear();
+    }
 }
 #pragma warning restore CS0162 // Unreachable code detected

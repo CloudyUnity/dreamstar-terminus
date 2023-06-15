@@ -51,10 +51,12 @@ public class ManagerSave : Singleton
         string jsonString = File.ReadAllText(_filePath);
         SaveData data = JsonUtility.FromJson<SaveData>(jsonString);
 
-        if (data.Version != VERSION)
-            throw new System.Exception("Incompatible version save data");
-
         Debug.Log("Save Data Loaded");
+
+        //if (data.Version != VERSION)
+        //    throw new System.Exception("Incompatible version save data");
+
+        ApplyData(data);
     }
 
     void ApplyData(SaveData data)

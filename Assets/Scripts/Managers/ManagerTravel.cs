@@ -65,12 +65,16 @@ public class ManagerTravel : Singleton
 
     void StoreTimeInfo()
     {
+        PlayerMovement player = Get<PlayerMovement>();
+        if (player == null)
+            return;
+
         foreach (Traveller trav in CurrentTravs)
         {
             AddPosition(trav);
         }
 
-        _present.PlayerPos = Get<PlayerMovement>().transform.position;
+        _present.PlayerPos = player.transform.position;
     }
 
     public void RollBackTime(float seconds)
