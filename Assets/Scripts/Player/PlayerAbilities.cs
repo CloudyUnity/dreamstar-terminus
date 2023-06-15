@@ -6,6 +6,8 @@ public class PlayerAbilities : Singleton
 {
     public bool WallJumpOn;
     public int DoubleJumps;
+    public bool PogoOn;
+
     /* Ability Ideas:
      * 
      * Time-Slow

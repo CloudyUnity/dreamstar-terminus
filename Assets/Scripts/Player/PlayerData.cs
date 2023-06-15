@@ -32,7 +32,7 @@ public class PlayerData : ScriptableObject
 	[Header("Jump")]
 	public float jumpHeight; //Height of the player's jump
 	public float jumpTimeToApex; //Time between applying the jump force and reaching the desired jump height. These values also control the player's gravity and jump force.
-	[HideInInspector] public float jumpForce; //The actual force applied (upwards) to the player when they jump.
+	[HideInInspector] public float jumpForce; //The actual force applied (upwards) to the player when they jump.	
 
 	[Header("Both Jumps")]
 	public float jumpCutGravityMult; //Multiplier to increase gravity if the player releases thje jump button while still jumping
@@ -64,6 +64,11 @@ public class PlayerData : ScriptableObject
 	[Range(0.01f, 0.5f)] public float coyoteTime; //Grace period after falling off a platform, where you can still jump
 	[Range(0.01f, 0.5f)] public float jumpInputBufferTime; //Grace period after pressing jump where a jump will be automatically performed once the requirements (eg. being grounded) are met.
 	public float doubleJumpRefundRange;
+
+    [Space(20)]
+
+	public float pogoJumpMult;
+	public float pogoJumpRange;
 
 
 	//Unity Callback, called when the inspector updates

@@ -218,7 +218,24 @@ public class PlayerMovement : Singleton
 				_jumpFalling = false;
 		}
 
-		if (_movementDisablers > 0 || !PressedJump)
+		if (_movementDisablers > 0)
+			return;
+
+		bool withinPogoRange = ManagerExtensions.Ray(transform.position + new Vector3(0, -0.3105f), Vector2.down, Data.pogoJumpRange, ManagerLayerMasks.Ground).collider != null;
+		bool canPogoJump = _input.Attack && _input.ArrowKeys.y < 0 && withinPogoRange && !Grounded && _abilities.PogoOn;
+
+		if (canPogoJump)
+		{
+			_jumping = true;
+			_wallJumping = false;
+			_jumpCutting = false;
+			_jumpFalling = false;
+
+			PogoJump();
+			return;
+		}
+
+		if (!PressedJump)
 			return;
 
 		bool canJump = Grounded && !_jumping;
@@ -276,6 +293,7 @@ public class PlayerMovement : Singleton
 		float targetSpeed = _input.ArrowKeys.x * Data.runMaxSpeed;
 		if (_input.ArrowKeysUnRaw.x <= 0.5f && _input.ArrowKeysUnRaw.x >= -0.5f)
 			targetSpeed *= Mathf.Abs(_input.ArrowKeysUnRaw.x);
+
 		targetSpeed = Mathf.Lerp(_rb.velocity.x, targetSpeed, lerpAmount);
 
 		#region Calculate AccelRate
@@ -343,6 +361,19 @@ public class PlayerMovement : Singleton
 			force.y -= _rb.velocity.y;
 
 		_rb.AddForce(force, ForceMode2D.Impulse);
+	}
+
+	void PogoJump()
+    {
+		_lastPressedJumpTime = 0;
+		_lastOnGroundTime = 0;
+
+		float force = Data.jumpForce * Data.pogoJumpMult;
+		// In case of falling
+		if (_rb.velocity.y < 0)
+			force -= _rb.velocity.y;
+
+		_rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
 	}
 	#endregion
 

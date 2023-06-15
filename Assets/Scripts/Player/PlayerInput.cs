@@ -10,6 +10,7 @@ public class PlayerInput : Singleton
     public bool JumpUp;
     public bool GainDoubleJump;
     public bool LoseDoubleJump;
+    public bool Attack;
 
     public bool CheatTravel;
 
@@ -54,6 +55,8 @@ public class PlayerInput : Singleton
 
         Jump = _controls.Gameplay.Jump.triggered;
         JumpUp = _controls.Gameplay.Jump.WasReleasedThisFrame();
+
+        Attack = _controls.Gameplay.Attack.triggered;
 
         if (_controls.Gameplay.Pause.triggered)
             Application.Quit();

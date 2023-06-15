@@ -47,3 +47,5 @@ MonoBehaviour:
   coyoteTime: 0.2
   jumpInputBufferTime: 0.1
   doubleJumpRefundRange: 0.2
+  pogoJumpMult: 1.5
+  pogoJumpRange: 1
