@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable CS0162 // Unreachable code detected
 public class ManagerTags : Singleton
 {
-    const bool DEBUG_MODE = true;
+    const bool DEBUG_MODE = false;
 
     public static MultiValueDictionary<int, string> AllTags = new MultiValueDictionary<int, string>();
 
@@ -29,12 +30,8 @@ public class ManagerTags : Singleton
 
     public static bool CheckTag(GameObject gameObject, string tag)
     {
-        Debug.Log("A " + AllTags.ContainsKey(gameObject.GetInstanceID()));
-
         if (!AllTags.ContainsKey(gameObject.GetInstanceID()))
             return false;
-
-        Debug.Log("B " + AllTags.ContainsValue(gameObject.GetInstanceID(), tag));
 
         return AllTags.ContainsValue(gameObject.GetInstanceID(), tag);
     }
@@ -52,3 +49,4 @@ public class ManagerTags : Singleton
         AllTags.Clear();
     }
 }
+#pragma warning restore CS0162 // Unreachable code detected

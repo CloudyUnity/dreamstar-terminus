@@ -117,7 +117,7 @@ public class PlayerMovement : Singleton
 			gravMult *= 0;
 		}
 		// Fast Fall
-		else if (_rb.velocity.y < 0 && _input.ArrowKeys.y < 0)
+		else if (_rb.velocity.y < 0 && _input.ArrowKeys.y < 0 && _input.ArrowKeys.x == 0)
 		{
 			gravMult *= Data.fastFallGravityMult;
 			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -Data.maxFastFallSpeed));
@@ -184,7 +184,7 @@ public class PlayerMovement : Singleton
 
 	void JumpChecks()
     {
-		if (_jumping && _rb.velocity.y < 0)
+		if (_jumping && _rb.velocity.y <= 0)
 		{
 			_jumping = false;
 
@@ -274,6 +274,8 @@ public class PlayerMovement : Singleton
 	private void Run(float lerpAmount)
 	{
 		float targetSpeed = _input.ArrowKeys.x * Data.runMaxSpeed;
+		if (_input.ArrowKeysUnRaw.x <= 0.5f && _input.ArrowKeysUnRaw.x >= -0.5f)
+			targetSpeed *= Mathf.Abs(_input.ArrowKeysUnRaw.x);
 		targetSpeed = Mathf.Lerp(_rb.velocity.x, targetSpeed, lerpAmount);
 
 		#region Calculate AccelRate

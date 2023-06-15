@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerInput : Singleton
 {
     public Vector2 ArrowKeys;
+    public Vector2 ArrowKeysUnRaw;
     public bool Jump;
     public bool JumpUp;
     public bool GainDoubleJump;
@@ -47,6 +48,9 @@ public class PlayerInput : Singleton
             ArrowKeys.x = left ? -1 : 1;
 
         ArrowKeys.y = down ? -1 : (up ? 1 : 0);
+
+        ArrowKeysUnRaw.y = _controls.Gameplay.Up.ReadValue<float>() - _controls.Gameplay.Down.ReadValue<float>();
+        ArrowKeysUnRaw.x = _controls.Gameplay.Right.ReadValue<float>() - _controls.Gameplay.Left.ReadValue<float>();
 
         Jump = _controls.Gameplay.Jump.triggered;
         JumpUp = _controls.Gameplay.Jump.WasReleasedThisFrame();

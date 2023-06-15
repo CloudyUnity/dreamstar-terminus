@@ -29,10 +29,12 @@ public class PlayerSystems : Singleton
         _invTimer -= Time.deltaTime;
 
         RaycastHit2D hitL = ManagerExtensions.Ray(transform.position + new Vector3(-0.3f, -0.3f), Vector2.down, 0.1f, ManagerLayerMasks.Ground);
+        bool safeL = hitL.collider != null && !hitL.collider.gameObject.CheckTag("NotSafe");
         RaycastHit2D hitR = ManagerExtensions.Ray(transform.position + new Vector3(0.3f, -0.3f), Vector2.down, 0.1f, ManagerLayerMasks.Ground);
-        if (_move.Grounded && hitL.collider != null && hitR.collider != null)
+        bool safeR = hitR.collider != null && !hitR.collider.gameObject.CheckTag("NotSafe");
+
+        if (_move.Grounded && safeL && safeR)
         {
-            Debug.Log(transform.position);
             _lastSafePos = transform.position;
         }
     }
