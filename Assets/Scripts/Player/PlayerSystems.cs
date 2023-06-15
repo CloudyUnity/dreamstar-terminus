@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerSystems : Singleton
 {
-    [SerializeField] int _startingHP;
+    public int StartingHP;
     [SerializeField] float _invSeconds;
     float _invTimer;
     public int HP;
@@ -18,8 +18,11 @@ public class PlayerSystems : Singleton
 
     private void Start()
     {
+        if (StartingHP == 0)
+            throw new System.Exception("Starting HP not set");
+
         if (HP == 0)
-            HP = _startingHP;
+            HP = StartingHP;
 
         _move = GetComponent<PlayerMovement>();
     }

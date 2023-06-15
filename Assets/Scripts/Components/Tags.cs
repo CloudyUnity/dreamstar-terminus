@@ -11,7 +11,11 @@ public class Tags : MonoBehaviour
     private void Start()
     {
         if (_tags.Length == 0)
+        {
+            Debug.Log("No tags detected on gameobject: " + name);
+            enabled = false;
             return;
+        }
 
         _tagManager = Singleton.Get<ManagerTags>();
 
@@ -20,6 +24,9 @@ public class Tags : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (_tags.Length == 0)
+            return;
+
         _tagManager.RemoveTag(gameObject.GetInstanceID());
     }
 }

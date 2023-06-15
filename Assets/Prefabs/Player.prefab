@@ -55,7 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5401787cd5030b4bb6e6f7de3578765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startingHP: 5
+  StartingHP: 5
   _invSeconds: 0.5
   HP: 0
 --- !u!114 &6460561728445179279
@@ -91,6 +91,7 @@ MonoBehaviour:
   _lightAttackPos: {x: 0.65, y: 0}
   _lightAttackSize: {x: 0.8, y: 0.7}
   _data: {fileID: 11400000, guid: be77e73cb26224242a13107347416bc6, type: 2}
+  _knockback: {x: 2, y: 2}
 --- !u!114 &6460561728445179277
 MonoBehaviour:
   m_ObjectHideFlags: 0

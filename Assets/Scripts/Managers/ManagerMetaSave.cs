@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class ManagerMetaSave : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    /*Permanant upgrades:
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+Map 
+Ship log 
+Health upgrades
+Save points? (Saves you exactly at that point in time, including your remaining time. May need to redo to change plans)
+Stats
+Achievements
+     */
 }
