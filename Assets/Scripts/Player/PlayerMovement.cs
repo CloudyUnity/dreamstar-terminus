@@ -16,12 +16,11 @@ public class PlayerMovement : Singleton
 	[SerializeField] Vector2 _wallCheckSize = new Vector2(0.5f, 1f);
 	[Space(5)]
 
-	[SerializeField] LayerMask _groundLayer;
-
 	Rigidbody2D _rb;
 	PlayerInput _input;
 	PlayerAbilities _abilities;
 	PlayerSprite _sprite;
+	ManagerCamera _cam;
 
 	bool _isFacingRight = true;
 	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling, _wasGrounded, _wasWalled;
@@ -51,6 +50,7 @@ public class PlayerMovement : Singleton
 		_abilities = GetComponent<PlayerAbilities>();
 		_sprite = Get<PlayerSprite>();
 		_input = Get<PlayerInput>();
+		_cam = Get<ManagerCamera>();
 
 		_rb.gravityScale = Data.gravityScale;
 	}
@@ -87,15 +87,15 @@ public class PlayerMovement : Singleton
         #region COLLISION CHECKS
         if (!_jumping)
 		{
-			bool groundDetected = Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, _groundLayer);
+			bool groundDetected = Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, ManagerLayerMasks.Ground);
 			if (groundDetected)
 				_lastOnGroundTime = Data.coyoteTime;	
 		}
 
 		if (!_jumping)
         {
-			bool touchingRight = Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && _isFacingRight;
-			bool touchingLeft = Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, _groundLayer) && !_isFacingRight;
+			bool touchingRight = Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, ManagerLayerMasks.Ground) && _isFacingRight;
+			bool touchingLeft = Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, ManagerLayerMasks.Ground) && !_isFacingRight;
 
 			if ((touchingLeft || touchingRight) && !_wallJumping)
 			{
@@ -261,7 +261,7 @@ public class PlayerMovement : Singleton
 
 			_rb.velocity = new Vector2(_rb.velocity.x, 0);
 
-			RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(0, -0.3f), Vector2.up, Data.doubleJumpRefundRange, _groundLayer);
+			RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(0, -0.3f), Vector2.up, Data.doubleJumpRefundRange, ManagerLayerMasks.Ground);
 			if (hit.collider != null)
 				_doubleJumpsDone--;
 
@@ -361,13 +361,13 @@ public class PlayerMovement : Singleton
 		Vector3 startRay = new Vector3(0.2212f, 0.3105f);
 		float rayDis = 0.15f;
 
-		RaycastHit2D hitLeft = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x, startRay.y), Vector2.up, rayDis, _groundLayer);
+		RaycastHit2D hitLeft = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x, startRay.y), Vector2.up, rayDis, ManagerLayerMasks.Ground);
 
 		if (hitLeft.collider != null)
 		{
 			for (float i = 0; i <= 0.15f; i += 0.025f)
 			{
-				RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x + i, startRay.y), Vector2.up, rayDis, _groundLayer);
+				RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x + i, startRay.y), Vector2.up, rayDis, ManagerLayerMasks.Ground);
 
 				if (hit.collider != null)
 					continue;
@@ -377,13 +377,13 @@ public class PlayerMovement : Singleton
 			}
 		}
 
-		RaycastHit2D hitRight = ManagerExtensions.Ray(transform.position + startRay, Vector2.up, rayDis, _groundLayer);
+		RaycastHit2D hitRight = ManagerExtensions.Ray(transform.position + startRay, Vector2.up, rayDis, ManagerLayerMasks.Ground);
 
 		if (hitRight.collider != null)
 		{
 			for (float i = 0; i <= 0.15f; i += 0.025f)
 			{
-				RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(startRay.x - i, startRay.y), Vector2.up, rayDis, _groundLayer);
+				RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(startRay.x - i, startRay.y), Vector2.up, rayDis, ManagerLayerMasks.Ground);
 				if (hit.collider != null)
 					continue;
 
@@ -396,10 +396,14 @@ public class PlayerMovement : Singleton
 
     void HitGround()
     {
-		Get<ManagerCamera>().ScreenShake(0.01f, 0.2f);
 		_doubleJumpsDone = 0;
 		_sprite.Squash();
-    }
+
+		if (_cam == null)
+			return;
+
+		_cam.ScreenShake(0.01f, 0.2f);
+	}
 
 	void LeaveGround()
     {

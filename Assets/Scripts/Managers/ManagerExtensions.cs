@@ -142,4 +142,6 @@ public static class ManagerExtensions
 
         return Physics2D.Raycast(origin, dir, dis, layer);
     }
+
+    public static bool CheckTag(this GameObject obj, string tag) => ManagerTags.CheckTag(obj, tag);
 }

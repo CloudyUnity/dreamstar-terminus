@@ -7,6 +7,7 @@ public class PlayerSprite : Singleton
     SpriteRenderer _rend;
     PlayerInput _input;
     Animator _anim;
+    PlayerSystems _systems;
 
     bool _squashing;
     PlayerMovement _move;
@@ -17,6 +18,7 @@ public class PlayerSprite : Singleton
         _input = Get<PlayerInput>();
         _anim = GetComponent<Animator>();
         _move = Get<PlayerMovement>();
+        _systems = Get<PlayerSystems>();
     }
 
     private void Update()
@@ -29,6 +31,9 @@ public class PlayerSprite : Singleton
 
     Color Debug_Colors()
     {
+        if (_systems.Invincible)
+            return Color.white;
+
         if (_move.Grounded && _move.Walled)
             return Color.magenta;
 
