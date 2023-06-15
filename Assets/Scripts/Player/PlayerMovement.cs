@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : Singleton
 {
-	[SerializeField] PlayerData Data;
+	[SerializeField] PlayerData _data;
 	[Space(5)]
 
 	[SerializeField] Transform _groundCheckPoint;
@@ -52,7 +52,7 @@ public class PlayerMovement : Singleton
 		_input = Get<PlayerInput>();
 		_cam = Get<ManagerCamera>();
 
-		_rb.gravityScale = Data.gravityScale;
+		_rb.gravityScale = _data.gravityScale;
 	}
 
 	private void Update()
@@ -71,13 +71,13 @@ public class PlayerMovement : Singleton
 
 		if (_input.Jump)
         {
-			_lastPressedJumpTime = Data.jumpInputBufferTime;
+			_lastPressedJumpTime = _data.jumpInputBufferTime;
 		}
 
         if (_input.JumpUp)
         {
 			bool canJumpCut = _jumping && _rb.velocity.y > 0;
-			bool canWallJumpCut = _wallJumping && _rb.velocity.y > 0 && (Data.jumpInputBufferTime - _lastPressedJumpTime > Data.wallMinimumCut);
+			bool canWallJumpCut = _wallJumping && _rb.velocity.y > 0 && (_data.jumpInputBufferTime - _lastPressedJumpTime > _data.wallMinimumCut);
 
 			if (canJumpCut || canWallJumpCut)
 				_jumpCutting = true;
@@ -89,7 +89,7 @@ public class PlayerMovement : Singleton
 		{
 			bool groundDetected = Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, ManagerLayerMasks.Ground);
 			if (groundDetected)
-				_lastOnGroundTime = Data.coyoteTime;	
+				_lastOnGroundTime = _data.coyoteTime;	
 		}
 
 		if (!_jumping)
@@ -99,7 +99,7 @@ public class PlayerMovement : Singleton
 
 			if ((touchingLeft || touchingRight) && !_wallJumping)
 			{
-				_lastOnWallTime = Data.coyoteTime;
+				_lastOnWallTime = _data.coyoteTime;
 				_lastWallTouched = touchingRight ? 1 : -1;
 			}
 		}
@@ -108,7 +108,7 @@ public class PlayerMovement : Singleton
 		JumpChecks();
 
 		#region GRAVITY
-		float gravMult = Data.gravityScale;
+		float gravMult = _data.gravityScale;
 		bool anyJumping = _jumping || _wallJumping || _jumpFalling;
 
 		// Sliding
@@ -119,25 +119,25 @@ public class PlayerMovement : Singleton
 		// Fast Fall
 		else if (_rb.velocity.y < 0 && _input.ArrowKeys.y < 0 && _input.ArrowKeys.x == 0)
 		{
-			gravMult *= Data.fastFallGravityMult;
-			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -Data.maxFastFallSpeed));
+			gravMult *= _data.fastFallGravityMult;
+			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -_data.maxFastFallSpeed));
 		}
 		// Early Jump Cut
 		else if (_jumpCutting)
 		{
-			gravMult *= Data.jumpCutGravityMult;
-			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -Data.maxFallSpeed));
+			gravMult *= _data.jumpCutGravityMult;
+			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -_data.maxFallSpeed));
 		}
 		// Jumping
-		else if (anyJumping && Mathf.Abs(_rb.velocity.y) < Data.jumpHangTimeThreshold)
+		else if (anyJumping && Mathf.Abs(_rb.velocity.y) < _data.jumpHangTimeThreshold)
 		{
-			gravMult *= Data.jumpHangGravityMult;
+			gravMult *= _data.jumpHangGravityMult;
 		}
 		// Falling
 		else if (_rb.velocity.y < 0)
 		{
-			gravMult *= Data.fallGravityMult;
-			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -Data.maxFallSpeed));
+			gravMult *= _data.fallGravityMult;
+			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -_data.maxFallSpeed));
 		}
 
 		_rb.gravityScale = gravMult;
@@ -172,13 +172,13 @@ public class PlayerMovement : Singleton
 		if (_sliding)
 		{
 			if (!wasSliding)
-				_rb.velocity = new Vector2(_rb.velocity.x, -Data.slideInitialSpeed);
+				_rb.velocity = new Vector2(_rb.velocity.x, -_data.slideInitialSpeed);
 
 			Slide();
 			return;
 		}
 
-		float runAmount = _wallJumping ? Data.wallJumpRunLerp : 1;
+		float runAmount = _wallJumping ? _data.wallJumpRunLerp : 1;
 		Run(runAmount);
     }
 
@@ -192,7 +192,7 @@ public class PlayerMovement : Singleton
 				_jumpFalling = true;
 		}
 
-		if (_wallJumping && Time.time - _wallJumpStartTime <= Data.wallJumpChangeTime && !_lastWallJumpWasOut && _input.ArrowKeys.x == -_lastWallTouched)
+		if (_wallJumping && Time.time - _wallJumpStartTime <= _data.wallJumpChangeTime && !_lastWallJumpWasOut && _input.ArrowKeys.x == -_lastWallTouched)
         {
 			_lastWallJumpWasOut = true;
 
@@ -205,7 +205,7 @@ public class PlayerMovement : Singleton
 			_rb.AddForce(force, ForceMode2D.Impulse);
 		}
 
-		if (_wallJumping && Time.time - _wallJumpStartTime > Data.wallJumpTime)
+		if (_wallJumping && Time.time - _wallJumpStartTime > _data.wallJumpTime)
 		{
 			_wallJumping = false;
 		}
@@ -221,7 +221,7 @@ public class PlayerMovement : Singleton
 		if (_movementDisablers > 0)
 			return;
 
-		bool withinPogoRange = ManagerExtensions.Ray(transform.position + new Vector3(0, -0.3105f), Vector2.down, Data.pogoJumpRange, ManagerLayerMasks.Ground).collider != null;
+		bool withinPogoRange = ManagerExtensions.Ray(transform.position + new Vector3(0, -0.3105f), Vector2.down, _data.pogoJumpRange, ManagerLayerMasks.Ground).collider != null;
 		bool canPogoJump = _input.Attack && _input.ArrowKeys.y < 0 && withinPogoRange && !Grounded && _abilities.PogoOn;
 
 		if (canPogoJump)
@@ -278,7 +278,7 @@ public class PlayerMovement : Singleton
 
 			_rb.velocity = new Vector2(_rb.velocity.x, 0);
 
-			RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(0, -0.3f), Vector2.up, Data.doubleJumpRefundRange, ManagerLayerMasks.Ground);
+			RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(0, -0.3f), Vector2.up, _data.doubleJumpRefundRange, ManagerLayerMasks.Ground);
 			if (hit.collider != null)
 				_doubleJumpsDone--;
 
@@ -290,7 +290,7 @@ public class PlayerMovement : Singleton
 	#region RUN METHODS
 	private void Run(float lerpAmount)
 	{
-		float targetSpeed = _input.ArrowKeys.x * Data.runMaxSpeed;
+		float targetSpeed = _input.ArrowKeys.x * _data.runMaxSpeed;
 		if (_input.ArrowKeysUnRaw.x <= 0.5f && _input.ArrowKeysUnRaw.x >= -0.5f)
 			targetSpeed *= Mathf.Abs(_input.ArrowKeysUnRaw.x);
 
@@ -300,23 +300,23 @@ public class PlayerMovement : Singleton
 		float accelRate;
 
 		if (Grounded)
-			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Data.runAccelAmount : Data.runDeccelAmount;
+			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? _data.runAccelAmount : _data.runDeccelAmount;
 		else
-			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Data.runAccelAmount * Data.accelInAir : Data.runDeccelAmount * Data.deccelInAir;
+			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? _data.runAccelAmount * _data.accelInAir : _data.runDeccelAmount * _data.deccelInAir;
 		#endregion
 
 		#region Add Bonus Jump Apex Acceleration
 		bool anyJumping = _jumping || _wallJumping || _jumpFalling;
-		if (anyJumping && Mathf.Abs(_rb.velocity.y) < Data.jumpHangTimeThreshold)
+		if (anyJumping && Mathf.Abs(_rb.velocity.y) < _data.jumpHangTimeThreshold)
 		{
-			accelRate *= Data.jumpHangAccelerationMult;
-			targetSpeed *= Data.jumpHangMaxSpeedMult;
+			accelRate *= _data.jumpHangAccelerationMult;
+			targetSpeed *= _data.jumpHangMaxSpeedMult;
 		}
 		#endregion
 
 		#region Conserve Momentum
 		//We won't slow the player down if they are moving in their desired direction but at a greater speed than their maxSpeed
-		if (Data.doConserveMomentum && Mathf.Abs(_rb.velocity.x) > Mathf.Abs(targetSpeed) 
+		if (_data.doConserveMomentum && Mathf.Abs(_rb.velocity.x) > Mathf.Abs(targetSpeed) 
 			&& Mathf.Sign(_rb.velocity.x) == Mathf.Sign(targetSpeed) && Mathf.Abs(targetSpeed) > 0.01f && _lastOnGroundTime < 0)
 		{
 			accelRate = 0;
@@ -336,7 +336,7 @@ public class PlayerMovement : Singleton
 		_lastPressedJumpTime = 0;
 		_lastOnGroundTime = 0;
 
-		float force = Data.jumpForce;
+		float force = _data.jumpForce;
 		// In case of falling
 		if (_rb.velocity.y < 0)
 			force -= _rb.velocity.y;
@@ -351,7 +351,7 @@ public class PlayerMovement : Singleton
 
 		_lastWallJumpWasOut = _input.ArrowKeys.x == -_lastWallTouched;
 
-		Vector2 force = _lastWallJumpWasOut ? Data.wallJumpForceOut : Data.wallJumpForceUp;
+		Vector2 force = _lastWallJumpWasOut ? _data.wallJumpForceOut : _data.wallJumpForceUp;
 		force.x *= dir;
 
 		if (Mathf.Sign(_rb.velocity.x) != Mathf.Sign(force.x))
@@ -368,7 +368,7 @@ public class PlayerMovement : Singleton
 		_lastPressedJumpTime = 0;
 		_lastOnGroundTime = 0;
 
-		float force = Data.jumpForce * Data.pogoJumpMult;
+		float force = _data.jumpForce * _data.pogoJumpMult;
 		// In case of falling
 		if (_rb.velocity.y < 0)
 			force -= _rb.velocity.y;
@@ -380,8 +380,8 @@ public class PlayerMovement : Singleton
 	#region OTHER MOVEMENT METHODS
 	private void Slide()
 	{
-		float speedDif = Data.slideInitialSpeed - _rb.velocity.y;
-		float movement = speedDif * Data.slideAccel;
+		float speedDif = _data.slideInitialSpeed - _rb.velocity.y;
+		float movement = speedDif * _data.slideAccel;
 		movement = Mathf.Clamp(movement, -Mathf.Abs(speedDif) * (1 / Time.fixedDeltaTime), Mathf.Abs(speedDif) * (1 / Time.fixedDeltaTime));
 
         _rb.AddForce(-movement * Vector2.up);

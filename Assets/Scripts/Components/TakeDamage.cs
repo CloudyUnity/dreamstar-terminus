@@ -5,7 +5,7 @@ using UnityEngine;
 public class TakeDamage : MonoBehaviour
 {
     [SerializeField] int _startingHP;
-    [HideInInspector] public float HP;
+    public float HP;
 
     private void Start()
     {
@@ -15,6 +15,9 @@ public class TakeDamage : MonoBehaviour
 
     public void DealDamage(int damage)
     {
+        if (HP <= 0)
+            return;
+
         HP -= damage;
 
         if (HP <= 0)

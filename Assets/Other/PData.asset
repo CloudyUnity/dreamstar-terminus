@@ -49,3 +49,4 @@ MonoBehaviour:
   doubleJumpRefundRange: 0.2
   pogoJumpMult: 1.5
   pogoJumpRange: 1
+  lightAttackDamage: 1

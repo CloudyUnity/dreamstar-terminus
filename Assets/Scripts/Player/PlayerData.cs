@@ -70,6 +70,10 @@ public class PlayerData : ScriptableObject
 	public float pogoJumpMult;
 	public float pogoJumpRange;
 
+	[Space(20)]
+
+	public int lightAttackDamage;
+
 
 	//Unity Callback, called when the inspector updates
 	private void OnValidate()
