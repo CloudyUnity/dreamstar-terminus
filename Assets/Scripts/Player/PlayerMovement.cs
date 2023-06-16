@@ -41,8 +41,6 @@ public class PlayerMovement : Singleton
 
 	// To-do:
 	// particles, change keybinds
-	// Double jump closer to HK?
-	// That thing from Celeste where you can change Out/Up wall jumps last second
 
 	private void Start()
 	{
@@ -94,8 +92,11 @@ public class PlayerMovement : Singleton
 
 		if (!_jumping)
         {
-			bool touchingRight = Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, M_LayerMasks.Ground) && _isFacingRight;
-			bool touchingLeft = Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, M_LayerMasks.Ground) && !_isFacingRight;
+			Collider2D right = Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, M_LayerMasks.Ground);
+			bool touchingRight = right && !right.gameObject.CheckTag("Slippy") && _isFacingRight;
+
+			Collider2D left = Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, M_LayerMasks.Ground);
+			bool touchingLeft = left && !left.gameObject.CheckTag("Slippy") && !_isFacingRight;
 
 			if ((touchingLeft || touchingRight) && !_wallJumping)
 			{
