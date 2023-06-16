@@ -23,7 +23,7 @@ public class PlayerMovement : Singleton
 	ManagerCamera _cam;
 
 	bool _isFacingRight = true;
-	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling, _wasGrounded, _wasWalled;
+	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling, _wasGrounded, _wasWalled, _pogoJumping;
 	bool _lastWallJumpWasOut;
 
 	float _lastOnGroundTime, _lastOnWallTime, _wallJumpStartTime, _lastPressedJumpTime;
@@ -187,6 +187,7 @@ public class PlayerMovement : Singleton
 		if (_jumping && _rb.velocity.y <= 0)
 		{
 			_jumping = false;
+			_pogoJumping = false;
 
 			if (!_wallJumping)
 				_jumpFalling = true;
@@ -222,11 +223,13 @@ public class PlayerMovement : Singleton
 			return;
 
 		bool withinPogoRange = ManagerExtensions.Ray(transform.position + new Vector3(0, -0.3105f), Vector2.down, _data.pogoJumpRange, ManagerLayerMasks.Ground).collider != null;
-		bool canPogoJump = _input.Attack && _input.ArrowKeys.y < 0 && withinPogoRange && !Grounded && _abilities.PogoOn;
+		bool canPogoJump = _input.Attack && _input.ArrowKeys.y < 0 && withinPogoRange && !Grounded && _abilities.PogoOn && !_jumping;
 
 		if (canPogoJump)
 		{
 			_jumping = true;
+			_pogoJumping = true;
+
 			_wallJumping = false;
 			_jumpCutting = false;
 			_jumpFalling = false;
@@ -291,7 +294,8 @@ public class PlayerMovement : Singleton
 	private void Run(float lerpAmount)
 	{
 		float targetSpeed = _input.ArrowKeys.x * _data.runMaxSpeed;
-		if (_input.ArrowKeysUnRaw.x <= 0.5f && _input.ArrowKeysUnRaw.x >= -0.5f)
+
+		if (_input.ArrowKeysUnRaw.x <= 1 && _input.ArrowKeysUnRaw.x >= -1)
 			targetSpeed *= Mathf.Abs(_input.ArrowKeysUnRaw.x);
 
 		targetSpeed = Mathf.Lerp(_rb.velocity.x, targetSpeed, lerpAmount);
@@ -368,12 +372,14 @@ public class PlayerMovement : Singleton
 		_lastPressedJumpTime = 0;
 		_lastOnGroundTime = 0;
 
-		float force = _data.jumpForce * _data.pogoJumpMult;
+		Vector2 force = new Vector2(_data.pogoJumpForceX * _lastArrowKeyX, _data.jumpForce * _data.pogoJumpForceYMult);
 		// In case of falling
 		if (_rb.velocity.y < 0)
-			force -= _rb.velocity.y;
+			force.y -= _rb.velocity.y;
 
-		_rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+		force.x -= _rb.velocity.x * 0.5f;
+
+		_rb.AddForce(force, ForceMode2D.Impulse);
 	}
 	#endregion
 

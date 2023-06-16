@@ -35,22 +35,17 @@ public class UIHealthBar : Singleton
             return;
         }
 
-        // NOT WORKING :(
-        int dif = _hpCountOn - _systems.HP;
-        if (dif > 0)
+        if (_systems.HP == _hpCountOn)
+            return;
+
+        for (int i = 0; i < _systems.HP; i++)
         {
-            for (int i = 0; i < dif; i++)
-            {
-                _hpList[_hpList.Count - 1 - i].SetActive(false);
-            }
+            _hpList[i].SetActive(true);
         }
 
-        if (dif < 0)
+        for (int i = _systems.HP; i < _hpCountOn; i++)
         {
-            for (int i = 0; i < _systems.HP; i++)
-            {
-                _hpList[i].SetActive(true);
-            }            
+            _hpList[i].SetActive(false);
         }
 
         _hpCountOn = _systems.HP;

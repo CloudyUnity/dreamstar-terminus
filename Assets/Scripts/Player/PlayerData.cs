@@ -67,8 +67,9 @@ public class PlayerData : ScriptableObject
 
     [Space(20)]
 
-	public float pogoJumpMult;
+	public float pogoJumpForceX;
 	public float pogoJumpRange;
+	public float pogoJumpForceYMult;
 
 	[Space(20)]
 
