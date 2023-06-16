@@ -8,7 +8,7 @@ public class Debug_Curver : MonoBehaviour
     {
         Vector2 pos = transform.position;
         pos.x += Time.deltaTime;
-        pos.y = ManagerExtensions.HumpCurveV2(pos.x, 1);
+        pos.y = M_Extensions.HumpCurveV2(pos.x, 1);
         transform.position = pos;
     }
 }

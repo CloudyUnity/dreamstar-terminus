@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManagerTime : Singleton
+public class M_Time : Singleton
 {
     public float TimePassed;
     public float TimeLeft = 60;
@@ -10,7 +10,6 @@ public class ManagerTime : Singleton
     private void Update()
     {
         TimePassed += Time.deltaTime;
-        Debug.Log(TimePassed);
 
         if (TimePassed > TimeLeft)
         {
@@ -18,9 +17,11 @@ public class ManagerTime : Singleton
         }
     }
 
-    void TimeTravelled(float reduction)
+    public void TimeTravelled(float reduction)
     {
         TimePassed -= reduction;
+
+        M_Events.IvkCheckTimePoints();
     }
 
     public void AddTime(float time) => TimeLeft += time;

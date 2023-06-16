@@ -6,7 +6,7 @@ public class Tags : MonoBehaviour
 {
     [SerializeField] string[] _tags;
 
-    ManagerTags _tagManager;
+    M_Tags _tagManager;
 
     private void Start()
     {
@@ -17,7 +17,7 @@ public class Tags : MonoBehaviour
             return;
         }
 
-        _tagManager = Singleton.Get<ManagerTags>();
+        _tagManager = Singleton.Get<M_Tags>();
 
         _tagManager.AddTag(gameObject.GetInstanceID(), _tags);
     }

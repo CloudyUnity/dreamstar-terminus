@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManagerMetaSave : MonoBehaviour
+public class M_MetaSave : MonoBehaviour
 {
     /*Permanant upgrades:
 

@@ -31,9 +31,9 @@ public class PlayerSystems : Singleton
     {
         _invTimer -= Time.deltaTime;
 
-        RaycastHit2D hitL = ManagerExtensions.Ray(transform.position + new Vector3(-0.3f, -0.3f), Vector2.down, 0.1f, ManagerLayerMasks.Ground);
+        RaycastHit2D hitL = M_Extensions.Ray(transform.position + new Vector3(-0.3f, -0.3f), Vector2.down, 0.1f, M_LayerMasks.Ground);
         bool safeL = hitL.collider != null && !hitL.collider.gameObject.CheckTag("NotSafe");
-        RaycastHit2D hitR = ManagerExtensions.Ray(transform.position + new Vector3(0.3f, -0.3f), Vector2.down, 0.1f, ManagerLayerMasks.Ground);
+        RaycastHit2D hitR = M_Extensions.Ray(transform.position + new Vector3(0.3f, -0.3f), Vector2.down, 0.1f, M_LayerMasks.Ground);
         bool safeR = hitR.collider != null && !hitR.collider.gameObject.CheckTag("NotSafe");
 
         if (_move.Grounded && safeL && safeR)
@@ -61,7 +61,7 @@ public class PlayerSystems : Singleton
 
         // SFX, Effects
 
-        Get<ManagerWorld>().LoadScene("SampleScene");
+        Get<M_World>().LoadScene("SampleScene");
     }
 
     void SendToLastSafePos()

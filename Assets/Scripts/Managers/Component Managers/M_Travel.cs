@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManagerTravel : Singleton
+public class M_Travel : Singleton
 {
     public List<WorldHistory> Timeline = new List<WorldHistory>();
     public List<Traveller> CurrentTravs = new List<Traveller>();
@@ -14,11 +14,16 @@ public class ManagerTravel : Singleton
 
     [SerializeField] GameObject _corpsePrefab;
 
+    public bool OnCooldown => _cooldownTimer < _cooldown;
+
     WorldHistory _present;
+    M_Time _time;
 
     private void Start()
     {
-        CreateNewTime();        
+        CreateNewTime();   
+
+        _time = Get<M_Time>();
     }
 
     private void Update()
@@ -80,7 +85,7 @@ public class ManagerTravel : Singleton
     public void RollBackTime(float seconds)
     {
         #region COOLDOWN
-        if (_cooldownTimer < _cooldown)
+        if (OnCooldown)
         {
             Debug.Log("TIME TRAVEL NOT READY");
             return;
@@ -93,6 +98,7 @@ public class ManagerTravel : Singleton
         WorldHistory time = Timeline[(Timeline.Count - 1) - index];
 
         ApplyTimeInfo(time);
+        _time.TimeTravelled(seconds);
 
         // Delete original timeline
         for (int i = 0; i < index; i++)
@@ -115,7 +121,7 @@ public class ManagerTravel : Singleton
             trav.CheckDeath();
         }
 
-        Instantiate(_corpsePrefab, time.PlayerPos, Quaternion.identity);
+        Instantiate(_corpsePrefab, time.PlayerPos, Quaternion.identity);        
     }
 }
 

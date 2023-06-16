@@ -24,7 +24,7 @@ public class Traveller : MonoBehaviour
     {
         ID = gameObject.GetInstanceID();
 
-        Singleton.Get<ManagerTravel>().CurrentTravs.Add(this);
+        Singleton.Get<M_Travel>().CurrentTravs.Add(this);
     }
 
     private void Update()

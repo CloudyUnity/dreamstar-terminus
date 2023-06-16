@@ -60,7 +60,7 @@ public class PlayerSprite : Singleton
 
         while (elapsed < dur)
         {
-            float humped = ManagerExtensions.HumpCurveV2(elapsed / dur, 1);
+            float humped = M_Extensions.HumpCurveV2(elapsed / dur, 1);
 
             transform.localScale = start + humped * mag;
 

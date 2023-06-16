@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ManagerKeyBinds : Singleton
+public class M_Keybinds : Singleton
 {
     [SerializeField] List<KeyBind> _defaults = new List<KeyBind>();
     public bool Waiting;
@@ -56,7 +56,7 @@ public class ManagerKeyBinds : Singleton
 
         Waiting = false;
         PlayerPrefs.SetString(_defaults[n].Name, newKey.ToString());
-        ManagerEvents.IvkReassignKeyCodes();
+        M_Events.IvkReassignKeyCodes();
     }
 
     public void ResetKeys()

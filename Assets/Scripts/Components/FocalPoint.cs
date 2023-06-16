@@ -7,6 +7,6 @@ public class FocalPoint : MonoBehaviour
     public int Bias;
     private void Start()
     {
-        Singleton.Get<ManagerCamera>().AddFocalPoint(this);
+        Singleton.Get<M_Camera>().AddFocalPoint(this);
     }
 }

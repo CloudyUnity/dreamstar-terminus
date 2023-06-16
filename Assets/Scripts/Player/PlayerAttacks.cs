@@ -25,7 +25,7 @@ public class PlayerAttacks : Singleton
 
     void Attack()
     {
-        var hits = Physics2D.BoxCastAll(transform.position + new Vector3(_lightAttackPos.x * _input.ArrowKeys.x, _lightAttackPos.y), _lightAttackSize, 0, Vector3.back, 1, ManagerLayerMasks.Entity);
+        var hits = Physics2D.BoxCastAll(transform.position + new Vector3(_lightAttackPos.x * _input.ArrowKeys.x, _lightAttackPos.y), _lightAttackSize, 0, Vector3.back, 1, M_LayerMasks.Entity);
 
         foreach (var hit in hits)
         {

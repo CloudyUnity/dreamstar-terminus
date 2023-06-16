@@ -20,10 +20,10 @@ public class PlayerMovement : Singleton
 	PlayerInput _input;
 	PlayerAbilities _abilities;
 	PlayerSprite _sprite;
-	ManagerCamera _cam;
+	M_Camera _cam;
 
 	bool _isFacingRight = true;
-	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling, _wasGrounded, _wasWalled, _pogoJumping;
+	bool _jumping, _wallJumping, _sliding, _jumpCutting, _jumpFalling, _wasGrounded, _wasWalled;
 	bool _lastWallJumpWasOut;
 
 	float _lastOnGroundTime, _lastOnWallTime, _wallJumpStartTime, _lastPressedJumpTime;
@@ -50,7 +50,7 @@ public class PlayerMovement : Singleton
 		_abilities = GetComponent<PlayerAbilities>();
 		_sprite = Get<PlayerSprite>();
 		_input = Get<PlayerInput>();
-		_cam = Get<ManagerCamera>();
+		_cam = Get<M_Camera>();
 
 		_rb.gravityScale = _data.gravityScale;
 	}
@@ -87,15 +87,15 @@ public class PlayerMovement : Singleton
         #region COLLISION CHECKS
         if (!_jumping)
 		{
-			bool groundDetected = Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, ManagerLayerMasks.Ground);
+			bool groundDetected = Physics2D.OverlapBox(_groundCheckPoint.position, _groundCheckSize, 0, M_LayerMasks.Ground);
 			if (groundDetected)
 				_lastOnGroundTime = _data.coyoteTime;	
 		}
 
 		if (!_jumping)
         {
-			bool touchingRight = Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, ManagerLayerMasks.Ground) && _isFacingRight;
-			bool touchingLeft = Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, ManagerLayerMasks.Ground) && !_isFacingRight;
+			bool touchingRight = Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, M_LayerMasks.Ground) && _isFacingRight;
+			bool touchingLeft = Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, M_LayerMasks.Ground) && !_isFacingRight;
 
 			if ((touchingLeft || touchingRight) && !_wallJumping)
 			{
@@ -187,7 +187,6 @@ public class PlayerMovement : Singleton
 		if (_jumping && _rb.velocity.y <= 0)
 		{
 			_jumping = false;
-			_pogoJumping = false;
 
 			if (!_wallJumping)
 				_jumpFalling = true;
@@ -222,13 +221,12 @@ public class PlayerMovement : Singleton
 		if (_movementDisablers > 0)
 			return;
 
-		bool withinPogoRange = ManagerExtensions.Ray(transform.position + new Vector3(0, -0.3105f), Vector2.down, _data.pogoJumpRange, ManagerLayerMasks.Ground).collider != null;
+		bool withinPogoRange = M_Extensions.Ray(transform.position + new Vector3(0, -0.3105f), Vector2.down, _data.pogoJumpRange, M_LayerMasks.Ground).collider != null;
 		bool canPogoJump = _input.Attack && _input.ArrowKeys.y < 0 && withinPogoRange && !Grounded && _abilities.PogoOn && !_jumping;
 
 		if (canPogoJump)
 		{
 			_jumping = true;
-			_pogoJumping = true;
 
 			_wallJumping = false;
 			_jumpCutting = false;
@@ -281,7 +279,7 @@ public class PlayerMovement : Singleton
 
 			_rb.velocity = new Vector2(_rb.velocity.x, 0);
 
-			RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(0, -0.3f), Vector2.up, _data.doubleJumpRefundRange, ManagerLayerMasks.Ground);
+			RaycastHit2D hit = M_Extensions.Ray(transform.position + new Vector3(0, -0.3f), Vector2.up, _data.doubleJumpRefundRange, M_LayerMasks.Ground);
 			if (hit.collider != null)
 				_doubleJumpsDone--;
 
@@ -400,13 +398,13 @@ public class PlayerMovement : Singleton
 		Vector3 startRay = new Vector3(0.2212f, 0.3105f);
 		float rayDis = 0.15f;
 
-		RaycastHit2D hitLeft = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x, startRay.y), Vector2.up, rayDis, ManagerLayerMasks.Ground);
+		RaycastHit2D hitLeft = M_Extensions.Ray(transform.position + new Vector3(-startRay.x, startRay.y), Vector2.up, rayDis, M_LayerMasks.Ground);
 
 		if (hitLeft.collider != null)
 		{
 			for (float i = 0; i <= 0.15f; i += 0.025f)
 			{
-				RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(-startRay.x + i, startRay.y), Vector2.up, rayDis, ManagerLayerMasks.Ground);
+				RaycastHit2D hit = M_Extensions.Ray(transform.position + new Vector3(-startRay.x + i, startRay.y), Vector2.up, rayDis, M_LayerMasks.Ground);
 
 				if (hit.collider != null)
 					continue;
@@ -416,13 +414,13 @@ public class PlayerMovement : Singleton
 			}
 		}
 
-		RaycastHit2D hitRight = ManagerExtensions.Ray(transform.position + startRay, Vector2.up, rayDis, ManagerLayerMasks.Ground);
+		RaycastHit2D hitRight = M_Extensions.Ray(transform.position + startRay, Vector2.up, rayDis, M_LayerMasks.Ground);
 
 		if (hitRight.collider != null)
 		{
 			for (float i = 0; i <= 0.15f; i += 0.025f)
 			{
-				RaycastHit2D hit = ManagerExtensions.Ray(transform.position + new Vector3(startRay.x - i, startRay.y), Vector2.up, rayDis, ManagerLayerMasks.Ground);
+				RaycastHit2D hit = M_Extensions.Ray(transform.position + new Vector3(startRay.x - i, startRay.y), Vector2.up, rayDis, M_LayerMasks.Ground);
 				if (hit.collider != null)
 					continue;
 

@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class DynamicTime : MonoBehaviour
 {
-    ManagerTime _time;
+    M_Time _time;
 
     [Serializable]
     public struct TimePoint
@@ -19,9 +19,19 @@ public class DynamicTime : MonoBehaviour
 
     [SerializeField] TimePoint[] TimePoints;
 
+    private void OnEnable()
+    {
+        M_Events.CheckTimePoints += CheckTimePoints;
+    }
+
+    private void OnDisable()
+    {
+        M_Events.CheckTimePoints -= CheckTimePoints;
+    }
+
     private void Start()
     {
-        _time = Singleton.Get<ManagerTime>();
+        _time = Singleton.Get<M_Time>();
     }
 
     private void Update()

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManagerSound : Singleton
+public class M_Sound : Singleton
 {
     [System.Serializable]
     public struct SFX : System.IComparable<SFX>
@@ -46,12 +46,12 @@ public class ManagerSound : Singleton
 
     private void OnEnable()
     {
-        ManagerEvents.ReassignSettings += AssignSettings;
+        M_Events.ReassignSettings += AssignSettings;
     }
 
     private void OnDisable()
     {
-        ManagerEvents.ReassignSettings -= AssignSettings;
+        M_Events.ReassignSettings -= AssignSettings;
     }
 
     private void Start()

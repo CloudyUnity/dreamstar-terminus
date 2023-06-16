@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ManagerWorld : Singleton
+public class M_World : Singleton
 {
     public void LoadScene(string name)
     {
-        Get<ManagerSave>().SaveTheData();
+        Get<M_Save>().SaveTheData();
 
         // Transiion
 

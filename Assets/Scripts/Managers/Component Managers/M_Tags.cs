@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 #pragma warning disable CS0162 // Unreachable code detected
-public class ManagerTags : Singleton
+public class M_Tags : Singleton
 {
     const bool DEBUG_MODE = false;
 

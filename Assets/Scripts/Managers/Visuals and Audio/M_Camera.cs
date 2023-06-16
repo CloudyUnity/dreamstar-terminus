@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManagerCamera : Singleton
+public class M_Camera : Singleton
 {
     PlayerMovement _player;
 

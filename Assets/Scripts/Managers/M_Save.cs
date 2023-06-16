@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class ManagerSave : Singleton
+public class M_Save : Singleton
 {
     public struct SaveData
     {

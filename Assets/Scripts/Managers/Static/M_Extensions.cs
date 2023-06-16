@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ManagerExtensions
+public static class M_Extensions
 {
     #region MATH
     public static float Pow(this float a, float pow) => Mathf.Pow(a, pow);
@@ -143,5 +143,5 @@ public static class ManagerExtensions
         return Physics2D.Raycast(origin, dir, dis, layer);
     }
 
-    public static bool CheckTag(this GameObject obj, string tag) => ManagerTags.CheckTag(obj, tag);
+    public static bool CheckTag(this GameObject obj, string tag) => M_Tags.CheckTag(obj, tag);
 }
