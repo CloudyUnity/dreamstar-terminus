@@ -61,6 +61,9 @@ public class PlayerInput : Singleton
         if (_controls.Gameplay.Pause.triggered)
             Application.Quit();
 
+        if (_controls.Gameplay.QuickRestart.triggered)
+            Get<M_World>().LoadScene("SampleScene");
+
         // TO-DO: Make ManagerCheat class to manage cheats, editor only (w/ secret option to enable?)
     }
 }

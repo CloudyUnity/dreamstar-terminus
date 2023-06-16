@@ -9,27 +9,29 @@ public class M_Travel : Singleton
 
     [SerializeField] float _timeCreationSpeed;
     [SerializeField] int _historyMaxLength;
-    [SerializeField] float _cooldown;
-    float _timeCreationTimer, _cooldownTimer;
+    float _timeCreationTimer;
 
     [SerializeField] GameObject _corpsePrefab;
 
-    public bool OnCooldown => _cooldownTimer < _cooldown;
+    public bool OnCooldown => _cooldown > 0;
+    float _cooldown;
 
     WorldHistory _present;
     M_Time _time;
+    PlayerMovement _move;
 
     private void Start()
     {
-        CreateNewTime();   
-
         _time = Get<M_Time>();
+        _move = Get<PlayerMovement>();
+
+        CreateNewTime();   
     }
 
     private void Update()
     {
         _timeCreationTimer += Time.deltaTime;
-        _cooldownTimer += Time.deltaTime;
+        _cooldown -= Time.deltaTime;
         
         if (_timeCreationTimer >= _timeCreationSpeed)
         {
@@ -40,25 +42,17 @@ public class M_Travel : Singleton
 
     void AddPosition(Traveller trav)
     {
-        if (_present.TravPos.ContainsKey(trav.ID))
+        if (_present.TravPos.ContainsKey(trav.gameObject.GetInstanceID()))
             return;
 
-        _present.TravPos.Add(trav.ID, trav.transform.position);
-    }
-
-    void ClearAll()
-    {
-        Timeline.Clear();
-        CurrentTravs.Clear();
+        _present.TravPos.Add(trav.gameObject.GetInstanceID(), trav.transform.position);
     }
 
     void CreateNewTime()
     {
-        #region CREATE PRESENT
         _present = new WorldHistory();
         _present.TravPos = new Dictionary<int, Vector2>();
         Timeline.Add(_present);
-        #endregion
 
         if (Timeline.Count > _historyMaxLength)
             Timeline.RemoveAt(0);
@@ -70,39 +64,35 @@ public class M_Travel : Singleton
 
     void StoreTimeInfo()
     {
-        PlayerMovement player = Get<PlayerMovement>();
-        if (player == null)
-            return;
-
         foreach (Traveller trav in CurrentTravs)
         {
             AddPosition(trav);
         }
 
-        _present.PlayerPos = player.transform.position;
+        _present.PlayerPos = _move.transform.position;
     }
 
     public void RollBackTime(float seconds)
     {
-        #region COOLDOWN
         if (OnCooldown)
         {
             Debug.Log("TIME TRAVEL NOT READY");
             return;
         }
-        _cooldownTimer = 0;
-        #endregion
 
-        int index = Mathf.Clamp(Mathf.RoundToInt(seconds / _timeCreationSpeed), 0, _historyMaxLength - 1);
+        _timeCreationTimer = 0;
 
-        WorldHistory time = Timeline[(Timeline.Count - 1) - index];
+        int index = Mathf.Clamp(Mathf.RoundToInt(seconds / _timeCreationSpeed), 0, Timeline.Count - 1);
+
+        WorldHistory time = Timeline[Timeline.Count - 1 - index];
 
         ApplyTimeInfo(time);
         _time.TimeTravelled(seconds);
 
-        // Delete original timeline
-        for (int i = 0; i < index; i++)
-            Timeline.RemoveAt(Timeline.Count - 1);      
+        // Delete original timeline      
+        Timeline.RemoveRange(Timeline.Count - 1 - index, index);        
+
+        _cooldown = seconds;
     }
 
     void ApplyTimeInfo(WorldHistory time)
@@ -110,14 +100,14 @@ public class M_Travel : Singleton
         for (int i = CurrentTravs.Count - 1; i >= 0; i--)
         {
             Traveller trav = CurrentTravs[i];
-            if (!time.TravPos.ContainsKey(trav.ID))
+            if (!time.TravPos.ContainsKey(trav.gameObject.GetInstanceID()))
             {
                 CurrentTravs.Remove(trav);
                 Destroy(trav.gameObject);
                 continue;
             }
 
-            trav.transform.position = time.TravPos[trav.ID];
+            trav.transform.position = time.TravPos[trav.gameObject.GetInstanceID()];
             trav.CheckDeath();
         }
 

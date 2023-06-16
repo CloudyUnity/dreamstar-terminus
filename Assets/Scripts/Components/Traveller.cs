@@ -4,16 +4,9 @@ using UnityEngine;
 
 public class Traveller : MonoBehaviour
 {
-    [SerializeField] public int ID { get; private set; }
-
     SpriteRenderer _rend;
 
     public bool Destroyed;
-
-    private void OnValidate()
-    {
-        ID = gameObject.GetInstanceID();
-    }
 
     private void Awake()
     {
@@ -22,8 +15,6 @@ public class Traveller : MonoBehaviour
 
     private void Start()
     {
-        ID = gameObject.GetInstanceID();
-
         Singleton.Get<M_Travel>().CurrentTravs.Add(this);
     }
 
