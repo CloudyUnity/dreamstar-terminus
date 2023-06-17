@@ -98,6 +98,15 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""72304ee2-1ff9-42b0-9864-9d4a00c51e6d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -364,6 +373,28 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                     ""action"": ""QuickRestart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c14c72c-9b05-4107-88ef-3192caf650b9"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""da3b9e93-9113-4eaa-a3b8-3fb565a4431d"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -380,6 +411,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
         m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
         m_Gameplay_QuickRestart = m_Gameplay.FindAction("QuickRestart", throwIfNotFound: true);
+        m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -447,6 +479,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Pause;
     private readonly InputAction m_Gameplay_Attack;
     private readonly InputAction m_Gameplay_QuickRestart;
+    private readonly InputAction m_Gameplay_Interact;
     public struct GameplayActions
     {
         private @InputControls m_Wrapper;
@@ -459,6 +492,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
         public InputAction @QuickRestart => m_Wrapper.m_Gameplay_QuickRestart;
+        public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -492,6 +526,9 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                 @QuickRestart.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnQuickRestart;
                 @QuickRestart.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnQuickRestart;
                 @QuickRestart.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnQuickRestart;
+                @Interact.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -520,6 +557,9 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                 @QuickRestart.started += instance.OnQuickRestart;
                 @QuickRestart.performed += instance.OnQuickRestart;
                 @QuickRestart.canceled += instance.OnQuickRestart;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
         }
     }
@@ -534,5 +574,6 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnQuickRestart(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

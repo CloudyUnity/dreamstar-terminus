@@ -11,6 +11,7 @@ public class PlayerInput : Singleton
     public bool GainDoubleJump;
     public bool LoseDoubleJump;
     public bool Attack;
+    public bool Interact;
 
     public bool CheatTravel;
 
@@ -57,6 +58,7 @@ public class PlayerInput : Singleton
         JumpUp = _controls.Gameplay.Jump.WasReleasedThisFrame();
 
         Attack = _controls.Gameplay.Attack.triggered;
+        Interact = _controls.Gameplay.Interact.triggered;
 
         if (_controls.Gameplay.Pause.triggered)
             Application.Quit();

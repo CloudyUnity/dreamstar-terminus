@@ -42,8 +42,9 @@ public class PlayerSystems : Singleton
         }
     }
 
-    void TakeDamage(int amount)
+    public void TakeDamage(int amount)
     {
+        Debug.Log("Took " + amount + " damage");
         if (Dead || Invincible)
             return;
 
