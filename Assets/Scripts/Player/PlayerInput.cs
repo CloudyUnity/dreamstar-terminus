@@ -65,5 +65,6 @@ public class PlayerInput : Singleton
             Get<M_World>().LoadScene("SampleScene");
 
         // TO-DO: Make ManagerCheat class to manage cheats, editor only (w/ secret option to enable?)
+        // Make a enable/disable counter for pausing the game
     }
 }

@@ -21,19 +21,17 @@ public class M_Sound : Singleton
 
     [SerializeField] AudioSource _sourceMain;
     [SerializeField] AudioSource _sourceAlt;
+
     [SerializeField] AudioSource _musicPlayer;
-    [SerializeField] AudioSource _musicPaused;
     [SerializeField] AudioSource _ambience;
 
     AudioSource _currentSource;
 
-    bool _canChangeMusic;
     bool _pausedLastFrame;
 
     string _lastPlayed;
     float _timeSincePlay;
 
-    bool _startedSong;
     bool _changingSpeed;
 
     float _musicVolume;
@@ -58,6 +56,8 @@ public class M_Sound : Singleton
     {
         _currentSource = _musicPlayer;
         AssignSettings();
+
+        StartCoroutine(C_RaiseMusic());
     }
 
     void AssignSettings()
@@ -68,23 +68,7 @@ public class M_Sound : Singleton
 
     private void Update()
     {
-        //StartCoroutine(C_RaiseMusic());
-
         _timeSincePlay += Time.deltaTime;
-
-        //if (V_HUDManager.Instance.IsPaused && !_pausedLastFrame)
-        //{
-        //    _currentSource.Pause();
-        //    _musicPaused.Play();
-        //}
-        //else if (!V_HUDManager.Instance.IsPaused && _pausedLastFrame)
-        //{
-        //    if (!_outroDone)
-        //        _currentSource.Play();
-        //    _musicPaused.Pause();
-        //}
-
-        //_pausedLastFrame = V_HUDManager.Instance.IsPaused
     }
 
     public void PlaySFX(string name)
@@ -135,7 +119,6 @@ public class M_Sound : Singleton
         float dur = 2f;
 
         _musicPlayer.Play();
-        _startedSong = true;
 
         while (elapsed < dur)
         {
@@ -143,15 +126,12 @@ public class M_Sound : Singleton
             elapsed += Time.deltaTime;
             yield return null;
         }
-        _canChangeMusic = true;
     }
 
     void LowerMusicVolume() => StartCoroutine(C_LowerMusic());
 
     IEnumerator C_LowerMusic()
     {
-        _canChangeMusic = false;
-
         float elapsed = 0;
         float dur = 0.5f;
 

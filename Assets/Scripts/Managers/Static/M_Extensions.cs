@@ -144,4 +144,21 @@ public static class M_Extensions
     }
 
     public static bool CheckTag(this GameObject obj, string tag) => M_Tags.CheckTag(obj, tag);
+
+    public static IEnumerable<string> SplitToLines(this string input)
+    {
+        if (input == null)
+        {
+            yield break;
+        }
+
+        using (System.IO.StringReader reader = new System.IO.StringReader(input))
+        {
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                yield return line;
+            }
+        }
+    }
 }

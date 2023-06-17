@@ -334,6 +334,17 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""4ae602cc-467e-458a-94ca-9b49dbad9fd6"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""a1039d32-8c0b-4139-8651-69cf5a6e17e4"",
                     ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
