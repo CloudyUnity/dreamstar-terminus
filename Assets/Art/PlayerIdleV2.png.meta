@@ -1,34 +1,34 @@
 fileFormatVersion: 2
-guid: 2d5f832451e32f24596eab84cc3dbcc4
+guid: fe8920b9286f9ea4aac93ff271c2c997
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5484814535775750463
-    second: Ground Tiles_0
+      213: 8513551775661881856
+    second: PlayerIdleV2_0
   - first:
-      213: 880937586795215994
-    second: Ground Tiles_1
+      213: 2987200695160913036
+    second: PlayerIdleV2_1
   - first:
-      213: 8221904254788300887
-    second: Ground Tiles_2
+      213: -672224476624226961
+    second: PlayerIdleV2_2
   - first:
-      213: -3581307003287623767
-    second: Ground Tiles_3
+      213: 4115095847649159316
+    second: PlayerIdleV2_3
   - first:
-      213: 6108025782624026970
-    second: Ground Tiles_4
+      213: -7645760201806088299
+    second: PlayerIdleV2_4
   - first:
-      213: -5501816455363431490
-    second: Ground Tiles_5
+      213: -5909138144460879225
+    second: PlayerIdleV2_5
   - first:
-      213: -8799623013525120286
-    second: Ground Tiles_6
+      213: 2958554662525637446
+    second: PlayerIdleV2_6
   - first:
-      213: 6559112425605254043
-    second: Ground Tiles_7
+      213: -8016980535823961097
+    second: PlayerIdleV2_7
   - first:
-      213: 2310168559438510973
-    second: Ground Tiles_8
+      213: 2611321405702716155
+    second: PlayerIdleV2_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -130,13 +130,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Ground Tiles_0
+      name: PlayerIdleV2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 16
+        width: 48
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,62 +144,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f3900dfa2c9fd1c40800000000000000
-      internalID: 5484814535775750463
+      spriteID: 00af835bb36362670800000000000000
+      internalID: 8513551775661881856
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ground Tiles_1
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a7cf73a5118b93c00800000000000000
-      internalID: 880937586795215994
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ground Tiles_2
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 750fde3bb521a1270800000000000000
-      internalID: 8221904254788300887
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ground Tiles_3
+      name: PlayerIdleV2_1
       rect:
         serializedVersion: 2
         x: 48
         y: 0
-        width: 16
-        height: 16
+        width: 48
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -207,62 +165,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9a72c6d4144ac4ec0800000000000000
-      internalID: -3581307003287623767
+      spriteID: c8cbdd3943ba47920800000000000000
+      internalID: 2987200695160913036
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ground Tiles_4
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a518b3c661114c450800000000000000
-      internalID: 6108025782624026970
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ground Tiles_5
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: eb3f9ae651f95a3b0800000000000000
-      internalID: -5501816455363431490
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ground Tiles_6
+      name: PlayerIdleV2_2
       rect:
         serializedVersion: 2
         x: 96
         y: 0
-        width: 16
-        height: 16
+        width: 48
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -270,20 +186,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2ea9b79dd7571e580800000000000000
-      internalID: -8799623013525120286
+      spriteID: f657d7d6667cba6f0800000000000000
+      internalID: -672224476624226961
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ground Tiles_7
+      name: PlayerIdleV2_3
       rect:
         serializedVersion: 2
-        x: 112
+        x: 144
         y: 0
-        width: 16
-        height: 16
+        width: 48
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -291,20 +207,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b9b4d0adff5a60b50800000000000000
-      internalID: 6559112425605254043
+      spriteID: 49820d7eed1cb1930800000000000000
+      internalID: 4115095847649159316
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ground Tiles_8
+      name: PlayerIdleV2_4
       rect:
         serializedVersion: 2
-        x: 128
+        x: 192
         y: 0
-        width: 16
-        height: 16
+        width: 48
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -312,8 +228,92 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d7bbb94a01e5f0020800000000000000
-      internalID: 2310168559438510973
+      spriteID: 597778dfa9dc4e590800000000000000
+      internalID: -7645760201806088299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerIdleV2_5
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 0
+        width: 48
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78ac2b26a268efda0800000000000000
+      internalID: -5909138144460879225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerIdleV2_6
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 48
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6439a6c5ac5ee0920800000000000000
+      internalID: 2958554662525637446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerIdleV2_7
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 0
+        width: 48
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f3fdfeada6fdb090800000000000000
+      internalID: -8016980535823961097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerIdleV2_8
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 48
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfab84dabf64d3420800000000000000
+      internalID: 2611321405702716155
       vertices: []
       indices: 
       edges: []

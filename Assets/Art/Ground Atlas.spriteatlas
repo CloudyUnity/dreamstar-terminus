@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ground Atlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 58decf4a076110a40b0faeb1015fc850, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 6e40dff31013bdc4880f1b927c8ee47e, type: 3}
+  - {fileID: 21300000, guid: 742fb6249e572ba449641d32a90d6bd8, type: 3}
+  - {fileID: 21300000, guid: 334afde835ee10646a5424a37c8a5a80, type: 3}
+  - {fileID: 2611321405702716155, guid: fe8920b9286f9ea4aac93ff271c2c997, type: 3}
+  - {fileID: -8016980535823961097, guid: fe8920b9286f9ea4aac93ff271c2c997, type: 3}
+  - {fileID: 2958554662525637446, guid: fe8920b9286f9ea4aac93ff271c2c997, type: 3}
+  - {fileID: -5909138144460879225, guid: fe8920b9286f9ea4aac93ff271c2c997, type: 3}
+  - {fileID: -7645760201806088299, guid: fe8920b9286f9ea4aac93ff271c2c997, type: 3}
+  - {fileID: 4115095847649159316, guid: fe8920b9286f9ea4aac93ff271c2c997, type: 3}
+  - {fileID: -672224476624226961, guid: fe8920b9286f9ea4aac93ff271c2c997, type: 3}
+  - {fileID: 2987200695160913036, guid: fe8920b9286f9ea4aac93ff271c2c997, type: 3}
+  - {fileID: 8513551775661881856, guid: fe8920b9286f9ea4aac93ff271c2c997, type: 3}
+  - {fileID: 21300000, guid: 0e6d543ab969233428fdfeced35b3ff7, type: 3}
+  - {fileID: -5273938500236642568, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 7832488359370896826, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 4002828944974897614, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 7854508778060836487, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 8714533932716286762, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 6273093009885343025, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 9108133310929147792, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 841411332268571006, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 2194039395371917183, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 842907587456344725, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 7807972767512362349, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: -4386614329769870379, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: -4297359086085868446, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: -4215485766968176610, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 8199856208892706191, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 925492510853648188, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: -7264642194389320319, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: -292756285752824338, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: 1514861574689521168, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: -1580831221776943795, guid: ff33156a050b4ad48977cfe857c08151, type: 3}
+  - {fileID: -467307283419413426, guid: 513350bacb16c2441acba8186bd79f75, type: 3}
+  - {fileID: -5258030014049578038, guid: 513350bacb16c2441acba8186bd79f75, type: 3}
+  - {fileID: 6236088313408774587, guid: 513350bacb16c2441acba8186bd79f75, type: 3}
+  - {fileID: -1461283530703516926, guid: 513350bacb16c2441acba8186bd79f75, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Star Background
+  - Window 1
+  - Ground Upside down
+  - PlayerIdleV2_8
+  - PlayerIdleV2_7
+  - PlayerIdleV2_6
+  - PlayerIdleV2_5
+  - PlayerIdleV2_4
+  - PlayerIdleV2_3
+  - PlayerIdleV2_2
+  - PlayerIdleV2_1
+  - PlayerIdleV2_0
+  - Star
+  - Groundtiles_17
+  - Groundtiles_16
+  - Groundtiles_15
+  - Groundtiles_14
+  - Groundtiles_13
+  - Groundtiles_12
+  - Groundtiles_11
+  - Groundtiles_10
+  - Groundtiles_19
+  - Groundtiles_18
+  - Groundtiles_8
+  - Groundtiles_9
+  - Groundtiles_4
+  - Groundtiles_5
+  - Groundtiles_6
+  - Groundtiles_7
+  - Groundtiles_0
+  - Groundtiles_1
+  - Groundtiles_2
+  - Groundtiles_3
+  - Player_Idle_0
+  - Player_Idle_1
+  - Player_Idle_2
+  - Player_Idle_3
+  m_RenderDataMap: {}
+  m_Tag: Ground Atlas
+  m_IsVariant: 0
