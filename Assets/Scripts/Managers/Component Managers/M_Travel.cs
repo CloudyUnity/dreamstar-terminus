@@ -12,6 +12,7 @@ public class M_Travel : Singleton
     float _timeCreationTimer;
 
     [SerializeField] GameObject _corpsePrefab;
+    [SerializeField] bool _paradoxesOn;
 
     public bool OnCooldown => _cooldown > 0;
     float _cooldown;
@@ -111,7 +112,8 @@ public class M_Travel : Singleton
             trav.CheckDeath();
         }
 
-        Instantiate(_corpsePrefab, time.PlayerPos, Quaternion.identity);        
+        if (_paradoxesOn)
+            Instantiate(_corpsePrefab, time.PlayerPos, Quaternion.identity);        
     }
 }
 
