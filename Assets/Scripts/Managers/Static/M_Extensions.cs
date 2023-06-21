@@ -60,6 +60,26 @@ public static class M_Extensions
         float y = Mathf.Lerp(a.y, b.y, t.y);
         return new Vector2(x, y);
     }
+    public static Vector2 AveragePoint(params Vector2[] arr)
+    {
+        Vector2 result = Vector2.zero;
+
+        foreach (Vector2 vec in arr)
+        {
+            result += vec;
+        }
+        return new Vector2(result.x / arr.Length, result.y / arr.Length);
+    }
+    public static Vector2 AveragePoint(params GameObject[] arr)
+    {
+        Vector2 result = Vector2.zero;
+
+        foreach (GameObject go in arr)
+        {
+            result += (Vector2)go.transform.position;
+        }
+        return new Vector2(result.x / arr.Length, result.y / arr.Length);
+    }
     #endregion
 
     #region LISTS

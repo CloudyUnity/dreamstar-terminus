@@ -12,7 +12,7 @@ Branching dialogue
 */
 public class Dialogue : MonoBehaviour
 {
-    [SerializeField] TMP_Text _text;
+    NPCTextbox _textBox;
 
     [System.Serializable]
     public struct Message
@@ -35,9 +35,14 @@ public class Dialogue : MonoBehaviour
     const float DEFAULT_PUNC_MULT = 10;
     const string DEFAULT_AUDIO = "";
 
-    public bool ReadDefault;
+    [HideInInspector] public bool ReadDefault;
 
     Coroutine _currentTyping;
+
+    private void Start()
+    {
+        _textBox = GetComponentInChildren<NPCTextbox>();
+    }
 
     Message FindMessage(string name)
     {
@@ -64,7 +69,7 @@ public class Dialogue : MonoBehaviour
 
         // Pop up dialogue box
 
-        _text.text = message.Text;
+        _textBox.SetText("");
 
         if (_currentTyping != null)
             StopCoroutine(_currentTyping);
@@ -77,7 +82,6 @@ public class Dialogue : MonoBehaviour
         PlayDialogue("default");
     }
 
-    bool _typing;
     IEnumerator C_TypeSentence(Message message)
     {
         float elapsed = 0;
@@ -89,7 +93,8 @@ public class Dialogue : MonoBehaviour
             if (i >= 1 && message.Text[i - 1].Is('.', '?', '!', ','))
                 dur *= message.PunctuationMult;
 
-            _text.maxVisibleCharacters = i;
+            // First i characters of the string
+            _textBox.SetText(message.Text.Substring(0, i));
 
             if (elapsed >= dur)
             {                
@@ -98,11 +103,14 @@ public class Dialogue : MonoBehaviour
                 elapsed = 0;
             }
 
+            while (i >= 1 && _textBox.transform.localScale.x < 1)
+                yield return null;
+
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        _text.maxVisibleCharacters = _text.text.Length;
+        _textBox.SetText(message.Text);
         
         // If player steps away, close dialogue box
     }

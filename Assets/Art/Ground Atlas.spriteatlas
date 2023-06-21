@@ -49,6 +49,32 @@ SpriteAtlas:
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 904636675761448042, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: -7972259999253833018, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: -6656834737248956984, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: -5625168551772653557, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: -8376917354631496389, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: 910876452163844446, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: -7885467917876151547, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: 1217950955772457077, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: -6123491719334128594, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: -3871862134770657732, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: 1192797924117851111, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: -2579804537783056187, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: 1357662166958763960, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: -4170383454699834122, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
+  - {fileID: 4178504607015670001, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
+  - {fileID: -3850926580252332327, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
+  - {fileID: -9175004182194574084, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
+  - {fileID: 5523750627098658750, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
+  - {fileID: 2320680073841132913, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
+  - {fileID: 1203353833773462900, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
+  - {fileID: -1126350261849412590, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
+  - {fileID: -7715631893922279129, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
+  - {fileID: 876442984086187069, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
+  - {fileID: 4238097698996942104, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
+  - {fileID: -5270832278477164469, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
+  - {fileID: -8115212778200258539, guid: a192ae336846a894c8719771c5a9ff2c, type: 3}
   - {fileID: 21300000, guid: 6e40dff31013bdc4880f1b927c8ee47e, type: 3}
   - {fileID: 21300000, guid: 742fb6249e572ba449641d32a90d6bd8, type: 3}
   - {fileID: 21300000, guid: 334afde835ee10646a5424a37c8a5a80, type: 3}
@@ -86,7 +112,38 @@ SpriteAtlas:
   - {fileID: -5258030014049578038, guid: 513350bacb16c2441acba8186bd79f75, type: 3}
   - {fileID: 6236088313408774587, guid: 513350bacb16c2441acba8186bd79f75, type: 3}
   - {fileID: -1461283530703516926, guid: 513350bacb16c2441acba8186bd79f75, type: 3}
+  - {fileID: -5155470640856005881, guid: 0aab21cd35ba1984ea5d4c06cefc9e21, type: 3}
+  - {fileID: 3800782402952206127, guid: 0aab21cd35ba1984ea5d4c06cefc9e21, type: 3}
+  - {fileID: -7117176613107577440, guid: 0aab21cd35ba1984ea5d4c06cefc9e21, type: 3}
+  - {fileID: -214718753063088332, guid: 0aab21cd35ba1984ea5d4c06cefc9e21, type: 3}
+  - {fileID: 9156156023691482455, guid: 0aab21cd35ba1984ea5d4c06cefc9e21, type: 3}
   m_PackedSpriteNamesToIndex:
+  - NPCs_11
+  - NPCs_10
+  - NPCs_13
+  - NPCs_12
+  - NPCs_2
+  - NPCs_3
+  - NPCs_0
+  - NPCs_1
+  - NPCs_6
+  - NPCs_7
+  - NPCs_4
+  - NPCs_5
+  - NPCs_8
+  - NPCs_9
+  - NewPlayerCeltic_9
+  - NewPlayerCeltic_8
+  - NewPlayerCeltic_5
+  - NewPlayerCeltic_4
+  - NewPlayerCeltic_7
+  - NewPlayerCeltic_6
+  - NewPlayerCeltic_1
+  - NewPlayerCeltic_0
+  - NewPlayerCeltic_3
+  - NewPlayerCeltic_2
+  - NewPlayerCeltic_10
+  - NewPlayerCeltic_11
   - Star Background
   - Window 1
   - Ground Upside down
@@ -124,6 +181,11 @@ SpriteAtlas:
   - Player_Idle_1
   - Player_Idle_2
   - Player_Idle_3
+  - TextBox_4
+  - TextBox_0
+  - TextBox_1
+  - TextBox_2
+  - TextBox_3
   m_RenderDataMap: {}
   m_Tag: Ground Atlas
   m_IsVariant: 0

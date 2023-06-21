@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerSprite : Singleton
 {
     [SerializeField] bool _debugColors;
+    [SerializeField] bool _idle, _run, _jump, _fall;
     SpriteRenderer _rend;
     PlayerInput _input;
     Animator _anim;
@@ -30,9 +31,16 @@ public class PlayerSprite : Singleton
         if (_debugColors)
             _rend.color = Debug_Colors();
 
-        _anim.SetBool("Jumping", _move.Jumping);        
-        _anim.SetBool("Falling", _move.JumpFalling);
-        _anim.SetBool("Running", _input.ArrowKeys.x != 0 && _move.Grounded);
+        if (_run)
+        {
+            _anim.SetBool("Running", _input.ArrowKeys.x != 0 && _move.Grounded);
+        }
+
+        if (_jump)
+            _anim.SetBool("Jumping", _move.Jumping || _move.WallJumping);        
+        if (_fall)
+            _anim.SetBool("Falling", _move.JumpFalling);
+
         // Sliding
         // Taking Damage
         // Invincibility

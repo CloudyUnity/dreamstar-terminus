@@ -17,14 +17,15 @@ public class PlayerMovement : Singleton
 	[Space(5)]
 
 	Rigidbody2D _rb;
+	BoxCollider2D _col;
 	PlayerInput _input;
 	PlayerAbilities _abilities;
 	PlayerSprite _sprite;
 	M_Camera _cam;
 
 	bool _isFacingRight = true;
-	bool _wallJumping, _sliding, _jumpCutting, _wasGrounded, _wasWalled;
-	[HideInInspector] public bool Jumping, JumpFalling;
+	bool _sliding, _jumpCutting, _wasGrounded, _wasWalled;
+	[HideInInspector] public bool Jumping, JumpFalling, WallJumping;
 	bool _lastWallJumpWasOut;
 
 	float _lastOnGroundTime, _lastOnWallTime, _wallJumpStartTime, _lastPressedJumpTime;
@@ -46,6 +47,7 @@ public class PlayerMovement : Singleton
 	private void Start()
 	{
 		_rb = GetComponent<Rigidbody2D>();
+		_col = GetComponent<BoxCollider2D>();
 		_abilities = GetComponent<PlayerAbilities>();
 		_sprite = Get<PlayerSprite>();
 		_input = Get<PlayerInput>();
@@ -76,7 +78,7 @@ public class PlayerMovement : Singleton
         if (_input.JumpUp)
         {
 			bool canJumpCut = Jumping && _rb.velocity.y > 0;
-			bool canWallJumpCut = _wallJumping && _rb.velocity.y > 0 && (_data.jumpInputBufferTime - _lastPressedJumpTime > _data.wallMinimumCut);
+			bool canWallJumpCut = WallJumping && _rb.velocity.y > 0 && (_data.jumpInputBufferTime - _lastPressedJumpTime > _data.wallMinimumCut);
 
 			if (canJumpCut || canWallJumpCut)
 				_jumpCutting = true;
@@ -99,7 +101,7 @@ public class PlayerMovement : Singleton
 			Collider2D left = Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, M_LayerMasks.Ground);
 			bool touchingLeft = left && !left.gameObject.CheckTag("Slippy") && !_isFacingRight;
 
-			if ((touchingLeft || touchingRight) && !_wallJumping)
+			if ((touchingLeft || touchingRight) && !WallJumping)
 			{
 				_lastOnWallTime = _data.coyoteTime;
 				_lastWallTouched = touchingRight ? 1 : -1;
@@ -111,7 +113,7 @@ public class PlayerMovement : Singleton
 
 		#region GRAVITY
 		float gravMult = _data.gravityScale;
-		bool anyJumping = Jumping || _wallJumping || JumpFalling;
+		bool anyJumping = Jumping || WallJumping || JumpFalling;
 
 		// Sliding
 		if (_sliding)
@@ -166,7 +168,7 @@ public class PlayerMovement : Singleton
     private void FixedUpdate()
 	{
 		bool wasSliding = _sliding;
-		_sliding = Walled && !Jumping && !_wallJumping && !Grounded && _input.ArrowKeys.x != -_lastWallTouched;
+		_sliding = Walled && !Jumping && !WallJumping && !Grounded && _input.ArrowKeys.x != -_lastWallTouched;
 
 		if (_movementDisablers > 0)
 			return;
@@ -180,7 +182,7 @@ public class PlayerMovement : Singleton
 			return;
 		}
 
-		float runAmount = _wallJumping ? _data.wallJumpRunLerp : 1;
+		float runAmount = WallJumping ? _data.wallJumpRunLerp : 1;
 		Run(runAmount);
     }
 
@@ -190,11 +192,11 @@ public class PlayerMovement : Singleton
 		{
 			Jumping = false;
 
-			if (!_wallJumping)
+			if (!WallJumping)
 				JumpFalling = true;
 		}
 
-		if (_wallJumping && Time.time - _wallJumpStartTime <= _data.wallJumpChangeTime && !_lastWallJumpWasOut && _input.ArrowKeys.x == -_lastWallTouched)
+		if (WallJumping && Time.time - _wallJumpStartTime <= _data.wallJumpChangeTime && !_lastWallJumpWasOut && _input.ArrowKeys.x == -_lastWallTouched)
         {
 			_lastWallJumpWasOut = true;
 
@@ -207,12 +209,12 @@ public class PlayerMovement : Singleton
 			_rb.AddForce(force, ForceMode2D.Impulse);
 		}
 
-		if (_wallJumping && Time.time - _wallJumpStartTime > _data.wallJumpTime)
+		if (WallJumping && Time.time - _wallJumpStartTime > _data.wallJumpTime)
 		{
-			_wallJumping = false;
+			WallJumping = false;
 		}
 
-		if (Grounded && !Jumping && !_wallJumping)
+		if (Grounded && !Jumping && !WallJumping)
 		{
 			_jumpCutting = false;
 
@@ -223,34 +225,36 @@ public class PlayerMovement : Singleton
 		if (_movementDisablers > 0)
 			return;
 
-		bool withinPogoRange = M_Extensions.Ray(transform.position + new Vector3(0, -0.3105f), Vector2.down, _data.pogoJumpRange, M_LayerMasks.Ground).collider != null;
-		bool canPogoJump = _input.Attack && _input.ArrowKeys.y < 0 && withinPogoRange && !Grounded && _abilities.PogoOn && !Jumping;
+        #region POGOJUMP - REMOVED
+        //bool withinPogoRange = M_Extensions.Ray(transform.position + new Vector3(0, -0.3105f), Vector2.down, _data.pogoJumpRange, M_LayerMasks.Ground).collider != null;
+        //bool canPogoJump = _input.Attack && _input.ArrowKeys.y < 0 && withinPogoRange && !Grounded && _abilities.PogoOn && !Jumping;
 
-		if (canPogoJump)
-		{
-			Jumping = true;
+        //if (canPogoJump)
+        //{
+        //	Jumping = true;
 
-			_wallJumping = false;
-			_jumpCutting = false;
-			JumpFalling = false;
+        //	WallJumping = false;
+        //	_jumpCutting = false;
+        //	JumpFalling = false;
 
-			PogoJump();
-			return;
-		}
+        //	PogoJump();
+        //	return;
+        //}
+        #endregion
 
-		if (!PressedJump)
+        if (!PressedJump)
 			return;
 
 		bool canJump = Grounded && !Jumping;
 
-		bool canWallJump = Walled && !Grounded && !_wallJumping && _abilities.WallJumpOn;
+		bool canWallJump = Walled && !Grounded && !WallJumping && _abilities.WallJumpOn;
 
 		bool canDoubleJump = !Jumping && _doubleJumpsDone < _abilities.DoubleJumps;
 
 		if (canJump)
 		{
 			Jumping = true;
-			_wallJumping = false;
+			WallJumping = false;
 			_jumpCutting = false;
 			JumpFalling = false;
 
@@ -260,7 +264,7 @@ public class PlayerMovement : Singleton
 
 		if (canWallJump)
 		{
-			_wallJumping = true;
+			WallJumping = true;
 			Jumping = false;
 			_jumpCutting = false;
 			JumpFalling = false;
@@ -273,7 +277,7 @@ public class PlayerMovement : Singleton
 		if (canDoubleJump)
         {
 			Jumping = true;
-			_wallJumping = false;
+			WallJumping = false;
 			_jumpCutting = false;
 			JumpFalling = false;
 
@@ -281,7 +285,7 @@ public class PlayerMovement : Singleton
 
 			_rb.velocity = new Vector2(_rb.velocity.x, 0);
 
-			RaycastHit2D hit = M_Extensions.Ray(transform.position + new Vector3(0, -0.3f), Vector2.up, _data.doubleJumpRefundRange, M_LayerMasks.Ground);
+			RaycastHit2D hit = M_Extensions.Ray(new Vector2(_col.bounds.center.x, _col.bounds.min.y), Vector2.up, _data.doubleJumpRefundRange, M_LayerMasks.Ground);
 			if (hit.collider != null)
 				_doubleJumpsDone--;
 
@@ -310,7 +314,7 @@ public class PlayerMovement : Singleton
 		#endregion
 
 		#region Add Bonus Jump Apex Acceleration
-		bool anyJumping = Jumping || _wallJumping || JumpFalling;
+		bool anyJumping = Jumping || WallJumping || JumpFalling;
 		if (anyJumping && Mathf.Abs(_rb.velocity.y) < _data.jumpHangTimeThreshold)
 		{
 			accelRate *= _data.jumpHangAccelerationMult;
@@ -397,16 +401,15 @@ public class PlayerMovement : Singleton
 	#region GAMEFEEL
 	void CornerCorrection()
 	{
-		Vector3 startRay = new Vector3(0.2212f, 0.3105f);
 		float rayDis = 0.15f;
 
-		RaycastHit2D hitLeft = M_Extensions.Ray(transform.position + new Vector3(-startRay.x, startRay.y), Vector2.up, rayDis, M_LayerMasks.Ground);
+		RaycastHit2D hitLeft = M_Extensions.Ray(new Vector2(_col.bounds.min.x, _col.bounds.max.y), Vector2.up, rayDis, M_LayerMasks.Ground);
 
 		if (hitLeft.collider != null)
 		{
 			for (float i = 0; i <= 0.15f; i += 0.025f)
 			{
-				RaycastHit2D hit = M_Extensions.Ray(transform.position + new Vector3(-startRay.x + i, startRay.y), Vector2.up, rayDis, M_LayerMasks.Ground);
+				RaycastHit2D hit = M_Extensions.Ray(new Vector2(_col.bounds.min.x + i, _col.bounds.max.y), Vector2.up, rayDis, M_LayerMasks.Ground);
 
 				if (hit.collider != null)
 					continue;
@@ -416,13 +419,13 @@ public class PlayerMovement : Singleton
 			}
 		}
 
-		RaycastHit2D hitRight = M_Extensions.Ray(transform.position + startRay, Vector2.up, rayDis, M_LayerMasks.Ground);
+		RaycastHit2D hitRight = M_Extensions.Ray(_col.bounds.max, Vector2.up, rayDis, M_LayerMasks.Ground);
 
 		if (hitRight.collider != null)
 		{
 			for (float i = 0; i <= 0.15f; i += 0.025f)
 			{
-				RaycastHit2D hit = M_Extensions.Ray(transform.position + new Vector3(startRay.x - i, startRay.y), Vector2.up, rayDis, M_LayerMasks.Ground);
+				RaycastHit2D hit = M_Extensions.Ray(new Vector2(_col.bounds.max.x - i, _col.bounds.max.y), Vector2.up, rayDis, M_LayerMasks.Ground);
 				if (hit.collider != null)
 					continue;
 
