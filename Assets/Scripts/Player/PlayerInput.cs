@@ -64,7 +64,7 @@ public class PlayerInput : Singleton
             Application.Quit();
 
         if (_controls.Gameplay.QuickRestart.triggered)
-            Get<M_World>().LoadScene("SampleScene");
+            Get<M_World>().LoadScene("Block-Out-Test");
 
         // TO-DO: Make ManagerCheat class to manage cheats, editor only (w/ secret option to enable?)
         // Make a enable/disable counter for pausing the game

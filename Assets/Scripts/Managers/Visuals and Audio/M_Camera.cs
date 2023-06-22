@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class M_Camera : Singleton
 {
@@ -27,12 +28,18 @@ public class M_Camera : Singleton
     [Space(5)]
     [SerializeField] bool _disableScreenShake;
 
-    private void Start()
+    SpriteRenderer _transition;
+
+    private async void Start()
     {
         _player = Get<PlayerMovement>();
         _cam = GetComponent<Camera>();
 
-        SetAspect();        
+        _transition = transform.GetChild(0).GetComponent<SpriteRenderer>();
+
+        SetAspect();
+
+        await C_Transition(inwards: false);
     }
 
     private void Update()
@@ -161,6 +168,25 @@ public class M_Camera : Singleton
             yield return null;
         }
         _curMag = 0;
+    }
+
+    public async Task C_Transition(bool inwards)
+    {
+        float elapsed = 0;
+        float dur = 1.5f;
+
+        while (elapsed < dur)
+        {
+            float curved = M_Extensions.CosCurve(elapsed / dur);
+
+            if (!inwards)
+                curved = 1 - curved;
+
+            _transition.SetAlpha(curved);
+
+            elapsed += Time.deltaTime;
+            await Task.Yield();
+        }
     }
 
     void SetAspect()

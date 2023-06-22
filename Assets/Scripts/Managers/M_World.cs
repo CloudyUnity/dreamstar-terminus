@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class M_World : Singleton
 {
-    public void LoadScene(string name)
+    public async void LoadScene(string name)
     {
+        Get<PlayerMovement>().DisableMovement();
+
         Get<M_Save>().SaveTheData();
 
-        // Transiion
+        await Get<M_Camera>().C_Transition(inwards: true);
 
         ClearMemory();
 

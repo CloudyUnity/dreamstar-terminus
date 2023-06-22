@@ -67,9 +67,7 @@ public class Dialogue : MonoBehaviour
 
         Message message = FindMessage(name);
 
-        // Pop up dialogue box
-
-        _textBox.SetText("");
+        _textBox.StartDialogue();
 
         if (_currentTyping != null)
             StopCoroutine(_currentTyping);
@@ -87,6 +85,9 @@ public class Dialogue : MonoBehaviour
         float elapsed = 0;
         int i = 0;
 
+        while (_textBox.transform.localScale.x < 1)
+            yield return null;
+
         while (i < message.Text.Length)
         {
             float dur = message.GetSpeed;
@@ -102,9 +103,6 @@ public class Dialogue : MonoBehaviour
                 // Play SFX
                 elapsed = 0;
             }
-
-            while (i >= 1 && _textBox.transform.localScale.x < 1)
-                yield return null;
 
             elapsed += Time.deltaTime;
             yield return null;

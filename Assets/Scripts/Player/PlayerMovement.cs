@@ -214,6 +214,9 @@ public class PlayerMovement : Singleton
 			WallJumping = false;
 		}
 
+		if (WallJumping && Grounded)
+			WallJumping = false;
+
 		if (Grounded && !Jumping && !WallJumping)
 		{
 			_jumpCutting = false;
