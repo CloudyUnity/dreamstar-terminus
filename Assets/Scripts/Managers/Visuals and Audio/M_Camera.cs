@@ -28,6 +28,8 @@ public class M_Camera : Singleton
     [Space(5)]
     [SerializeField] bool _disableScreenShake;
 
+    bool _transitioning;
+
     SpriteRenderer _transition;
 
     private async void Start()
@@ -49,7 +51,7 @@ public class M_Camera : Singleton
 
     private void LateUpdate()
     {
-        if (_shaking || _player == null)
+        if (_shaking || _player == null || _transitioning)
             return;
 
         transform.position = GetPosition();
@@ -172,22 +174,64 @@ public class M_Camera : Singleton
 
     public async Task C_Transition(bool inwards)
     {
+        _transitioning = true;
+
         float elapsed = 0;
         float dur = 1.5f;
 
+        float boxScale = 0.2f;
+        List<SpriteRenderer> boxes = new List<SpriteRenderer>();
+
+        for (float i = -7; i < 7; i += boxScale)
+            for (float j = -4; j < 4; j += boxScale)
+            {
+                SpriteRenderer rend = Instantiate(_transition, transform);
+                rend.transform.localScale = Vector3.one * boxScale;
+                rend.transform.localPosition = new Vector3(i, j, 10);
+                boxes.Add(rend);
+            }
+
         while (elapsed < dur)
         {
-            float curved = M_Extensions.CosCurve(elapsed / dur);
+            for (int i = 0; i < boxes.Count; i++)
+            {
+                if (boxes[i] == null)
+                    return;
 
-            if (!inwards)
-                curved = 1 - curved;
+                float seed = (Mathf.PerlinNoise(boxes[i].transform.position.x * boxes[i].transform.position.y, i) - 0.5f) * 2;
+                float curved = M_Extensions.ParametricVaryCurve(elapsed / dur, seed);
 
-            _transition.SetAlpha(curved);
+                if (!inwards)
+                    curved = 1 - curved;
+
+                boxes[i].SetAlpha(curved);
+            }
 
             elapsed += Time.deltaTime;
             await Task.Yield();
         }
+
+        _transitioning = false;
     }
+
+    //public async Task C_Transition(bool inwards)
+    //{
+    //    float elapsed = 0;
+    //    float dur = 1.5f;
+
+    //    while (elapsed < dur)
+    //    {
+    //        float curved = M_Extensions.CosCurve(elapsed / dur);
+
+    //        if (!inwards)
+    //            curved = 1 - curved;
+
+    //        _transition.SetAlpha(curved);
+
+    //        elapsed += Time.deltaTime;
+    //        await Task.Yield();
+    //    }
+    //}
 
     void SetAspect()
     {

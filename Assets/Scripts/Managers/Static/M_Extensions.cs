@@ -123,6 +123,8 @@ public static class M_Extensions
         System.Func<float, float> f = k => 0.5f / (1 + Mathf.Exp(-c * (x - k)));
         return f(a) + f(1 - a);
     }
+    // Seed should be in range [-1, 1]
+    public static float ParametricVaryCurve(float x, float seed) => (1 - seed) * x + seed * x.Pow(2);
     #endregion
 
     public static void DestroyChildren(this Transform t)
