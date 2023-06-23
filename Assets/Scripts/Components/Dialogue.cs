@@ -36,36 +36,50 @@ public class Dialogue : MonoBehaviour
     const string DEFAULT_AUDIO = "";
 
     [HideInInspector] public bool ReadDefault;
+    Message _speakMessage;
+
+    string _lastMessage;
 
     Coroutine _currentTyping;
 
     private void Start()
     {
         _textBox = GetComponentInChildren<NPCTextbox>();
+
+        TryFindMessage("default", out _speakMessage);
     }
 
-    Message FindMessage(string name)
+    bool TryFindMessage(string name, out Message message)
     {
         foreach (Message m in Messages)
         {
             if (m.Name == name)
-                return m;
+            {
+                message = m;
+                return true;
+            }
         }
 
-        throw new System.Exception("Message not found: " + name);
+        message = new Message();
+        return false;
     }
 
     public void PlayDialogue(string name)
     {
-        if (name == "default")
-        {
-            if (ReadDefault)
-                return;
+        if (!TryFindMessage(name, out Message message))
+            return;
 
+        PlayMessage(message);
+    }
+
+    public void PlayMessage(Message message)
+    {
+        if (message.Name == _lastMessage)
+            return;
+        _lastMessage = message.Name;
+
+        if (message.Name == "default")
             ReadDefault = true;
-        }
-
-        Message message = FindMessage(name);
 
         _textBox.StartDialogue();
 
@@ -77,8 +91,10 @@ public class Dialogue : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayDialogue("default");
+        PlayMessage(_speakMessage);
     }
+
+    public void ChangeSpokenMessage(string name) => TryFindMessage(name, out _speakMessage);
 
     IEnumerator C_TypeSentence(Message message)
     {
