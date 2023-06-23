@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 #pragma warning disable CS0162 // Unreachable code detected
@@ -9,10 +10,24 @@ public class Singleton : MonoBehaviour
 
     const bool DEBUG_MODE = false;
 
+    public static bool RemovedNulls = false;
+
+    public static void RemoveNulls()
+    {
+        foreach (System.Type key in Instances.Keys.Reverse())
+        {
+            if (Instances[key] == null)
+                Instances.Remove(key);
+        }
+    }
+
     protected virtual void Awake()
     {
-        if (Instances.ContainsValue(null))
-            Instances.Clear();
+        if (!RemovedNulls)
+        {
+            RemoveNulls();
+            RemovedNulls = true;
+        }
 
         if (DEBUG_MODE)
             Debug.Log("Checking type: " + GetType());
@@ -32,7 +47,7 @@ public class Singleton : MonoBehaviour
             // Kills self
             enabled = false;
         }
-    }
+    }    
 
     public static void ShowInside()
     {

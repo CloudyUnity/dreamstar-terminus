@@ -30,10 +30,6 @@ public class PlayerAbilities : Singleton
 
     private void Update()
     {
-        if (_input.GainDoubleJump)
-            DoubleJumps++;
 
-        if (_input.LoseDoubleJump)
-            DoubleJumps--;
     }
 }

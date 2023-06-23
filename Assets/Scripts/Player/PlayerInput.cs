@@ -6,18 +6,12 @@ public class PlayerInput : Singleton
 {
     public Vector2 ArrowKeys;
     public Vector2 ArrowKeysUnRaw;
-    public bool Jump;
-    public bool JumpUp;
-    public bool GainDoubleJump;
-    public bool LoseDoubleJump;
-    public bool Attack;
-    public bool Interact;
-
-    public bool CheatTravel;
+    public bool Jump, JumpUp, Attack, Interact, CheatTravel;
 
     int _lastPressed = 1;
 
     InputControls _controls;
+    PlayerMovement _move;
 
     private void OnEnable()
     {
@@ -30,8 +24,25 @@ public class PlayerInput : Singleton
         _controls.Gameplay.Disable();
     }
 
+    private void Start()
+    {
+        _move = Get<PlayerMovement>();
+    }
+
     private void Update()
     {
+        if (_move.MovementDisabled)
+        {
+            ArrowKeys = Vector2.zero;
+            ArrowKeysUnRaw = Vector2.zero;
+            Jump = false;
+            JumpUp = false;
+            Attack = false;
+            Interact = false;
+            CheatTravel = false;
+            return;
+        }
+
         if (_controls.Gameplay.Left.triggered)
             _lastPressed = -1;
         else if (_controls.Gameplay.Right.triggered)
@@ -67,6 +78,5 @@ public class PlayerInput : Singleton
             Get<M_World>().LoadScene("Block-Out-Test");
 
         // TO-DO: Make ManagerCheat class to manage cheats, editor only (w/ secret option to enable?)
-        // Make a enable/disable counter for pausing the game
     }
 }

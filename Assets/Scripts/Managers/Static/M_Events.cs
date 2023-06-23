@@ -17,4 +17,12 @@ public class M_Events
     public static event Action CheckTimePoints;
     public static void IvkCheckTimePoints() => CheckTimePoints?.Invoke();
     #endregion
+
+    #region SEQUENCING
+    public static event Action SingletonRecieve;
+    public static void IvkRecieveSingleton() => SingletonRecieve?.Invoke();
+
+    public static event Action SingletonAssign;
+    public static void IvkAssignSingletons() => SingletonAssign?.Invoke();
+    #endregion
 }

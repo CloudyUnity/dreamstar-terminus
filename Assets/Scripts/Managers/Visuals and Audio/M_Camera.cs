@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Threading.Tasks;
 
 public class M_Camera : Singleton
 {
     PlayerMovement _player;
+    M_Transition _transition;
 
     Camera _cam;
     bool _shaking { get { return _curMag != 0; } }
@@ -28,20 +28,13 @@ public class M_Camera : Singleton
     [Space(5)]
     [SerializeField] bool _disableScreenShake;
 
-    bool _transitioning;
-
-    SpriteRenderer _transition;
-
-    private async void Start()
+    private void Start()
     {
         _player = Get<PlayerMovement>();
-        _cam = GetComponent<Camera>();
+        _transition = Get<M_Transition>();
+        _cam = GetComponent<Camera>();        
 
-        _transition = transform.GetChild(0).GetComponent<SpriteRenderer>();
-
-        SetAspect();
-
-        await C_Transition(inwards: false);
+        SetAspect();        
     }
 
     private void Update()
@@ -51,7 +44,7 @@ public class M_Camera : Singleton
 
     private void LateUpdate()
     {
-        if (_shaking || _player == null || _transitioning)
+        if (_shaking || _player == null || _transition.Transitioning)
             return;
 
         transform.position = GetPosition();
@@ -170,48 +163,6 @@ public class M_Camera : Singleton
             yield return null;
         }
         _curMag = 0;
-    }
-
-    public async Task C_Transition(bool inwards)
-    {
-        _transitioning = true;
-
-        float elapsed = 0;
-        float dur = 1.5f;
-
-        float boxScale = 0.2f;
-        List<SpriteRenderer> boxes = new List<SpriteRenderer>();
-
-        for (float i = -7; i < 7; i += boxScale)
-            for (float j = -4; j < 4; j += boxScale)
-            {
-                SpriteRenderer rend = Instantiate(_transition, transform);
-                rend.transform.localScale = Vector3.one * boxScale;
-                rend.transform.localPosition = new Vector3(i, j, 10);
-                boxes.Add(rend);
-            }
-
-        while (elapsed < dur)
-        {
-            for (int i = 0; i < boxes.Count; i++)
-            {
-                if (boxes[i] == null)
-                    return;
-
-                float seed = (Mathf.PerlinNoise(boxes[i].transform.position.x * boxes[i].transform.position.y, i) - 0.5f) * 2;
-                float curved = M_Extensions.ParametricVaryCurve(elapsed / dur, seed);
-
-                if (!inwards)
-                    curved = 1 - curved;
-
-                boxes[i].SetAlpha(curved);
-            }
-
-            elapsed += Time.deltaTime;
-            await Task.Yield();
-        }
-
-        _transitioning = false;
     }
 
     //public async Task C_Transition(bool inwards)

@@ -38,6 +38,7 @@ public class PlayerMovement : Singleton
 	public bool PressedJump => _lastPressedJumpTime > 0;
 
 	int _movementDisablers;
+	public bool MovementDisabled => _movementDisablers > 0;
 
 	int _doubleJumpsDone;
 
@@ -170,7 +171,7 @@ public class PlayerMovement : Singleton
 		bool wasSliding = _sliding;
 		_sliding = Walled && !Jumping && !WallJumping && !Grounded && _input.ArrowKeys.x != -_lastWallTouched;
 
-		if (_movementDisablers > 0)
+		if (MovementDisabled)
 			return;
 
 		if (_sliding)
@@ -225,7 +226,7 @@ public class PlayerMovement : Singleton
 				JumpFalling = false;
 		}
 
-		if (_movementDisablers > 0)
+		if (MovementDisabled)
 			return;
 
         #region POGOJUMP - REMOVED
