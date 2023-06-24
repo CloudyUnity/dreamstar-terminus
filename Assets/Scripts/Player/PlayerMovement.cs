@@ -462,6 +462,8 @@ public class PlayerMovement : Singleton
 		Jumping = false;
     }
 
+	public void Fling(Vector2 force, ForceMode2D mode = ForceMode2D.Force) => _rb.AddForce(force, mode);
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
 		//Debug.Log("Hit " + collision.gameObject.name);

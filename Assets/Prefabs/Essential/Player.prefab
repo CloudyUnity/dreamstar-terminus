@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6460561728445179278}
   - component: {fileID: 6460561728445179265}
   - component: {fileID: 6460561728445179279}
-  - component: {fileID: 6460561728445179274}
+  - component: {fileID: 4023050454399353697}
   - component: {fileID: 6460561728445179277}
   - component: {fileID: 3451496816262092702}
   - component: {fileID: 6460561728445179264}
@@ -80,7 +80,7 @@ MonoBehaviour:
   Jumping: 0
   JumpFalling: 0
   WallJumping: 0
---- !u!114 &6460561728445179274
+--- !u!114 &4023050454399353697
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,13 +89,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6460561728445179267}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a99f35483017fa44fad7087b8e927239, type: 3}
+  m_Script: {fileID: 11500000, guid: c6502ebc8fc83344f93505bb0ad12bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lightAttackPos: {x: 0.65, y: 0}
-  _lightAttackSize: {x: 0.8, y: 0.7}
-  _data: {fileID: 11400000, guid: be77e73cb26224242a13107347416bc6, type: 2}
-  _knockback: {x: 2, y: 2}
+  _attack01: {fileID: 3899078558553129250, guid: 01ee6b656f4240a44936df5cadedeeda, type: 3}
+  _attack01Damage: 1
+  _knockback: {x: 0, y: 0}
+  _dis: {x: 0.8, y: 0, z: 0}
+  _size: {x: 1.2, y: 0.8, z: 0}
+  _playerKnockback: {x: 5, y: 0}
 --- !u!114 &6460561728445179277
 MonoBehaviour:
   m_ObjectHideFlags: 0

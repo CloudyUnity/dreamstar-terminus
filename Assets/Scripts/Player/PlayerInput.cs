@@ -8,7 +8,7 @@ public class PlayerInput : Singleton
     public Vector2 ArrowKeysUnRaw;
     public bool Jump, JumpUp, Attack, Interact, CheatTravel;
 
-    int _lastPressed = 1;
+    public int LastPressed = 1;
 
     InputControls _controls;
     PlayerMovement _move;
@@ -44,9 +44,9 @@ public class PlayerInput : Singleton
         }
 
         if (_controls.Gameplay.Left.triggered)
-            _lastPressed = -1;
+            LastPressed = -1;
         else if (_controls.Gameplay.Right.triggered)
-            _lastPressed = 1;
+            LastPressed = 1;
 
         bool left = _controls.Gameplay.Left.ReadValue<float>() > 0;
         bool right = _controls.Gameplay.Right.ReadValue<float>() > 0;
@@ -54,7 +54,7 @@ public class PlayerInput : Singleton
         bool down = _controls.Gameplay.Down.ReadValue<float>() > 0;
 
         if (left && right)
-            ArrowKeys.x = _lastPressed;
+            ArrowKeys.x = LastPressed;
         else if (!left && !right)
             ArrowKeys.x = 0;
         else

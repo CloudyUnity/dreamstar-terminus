@@ -112,6 +112,15 @@ SpriteAtlas:
   - {fileID: -5258030014049578038, guid: 513350bacb16c2441acba8186bd79f75, type: 3}
   - {fileID: 6236088313408774587, guid: 513350bacb16c2441acba8186bd79f75, type: 3}
   - {fileID: -1461283530703516926, guid: 513350bacb16c2441acba8186bd79f75, type: 3}
+  - {fileID: 6309750729047134961, guid: 444857dc6a38a814d94906bf2bb9c292, type: 3}
+  - {fileID: -278578376895915548, guid: 444857dc6a38a814d94906bf2bb9c292, type: 3}
+  - {fileID: -2848895322140203588, guid: 444857dc6a38a814d94906bf2bb9c292, type: 3}
+  - {fileID: 780930162215353551, guid: 444857dc6a38a814d94906bf2bb9c292, type: 3}
+  - {fileID: -7493628916448304525, guid: 444857dc6a38a814d94906bf2bb9c292, type: 3}
+  - {fileID: 1440912823371129920, guid: 444857dc6a38a814d94906bf2bb9c292, type: 3}
+  - {fileID: -3245008583783614831, guid: 444857dc6a38a814d94906bf2bb9c292, type: 3}
+  - {fileID: 9016611930069572919, guid: 444857dc6a38a814d94906bf2bb9c292, type: 3}
+  - {fileID: -6850960491618608323, guid: 444857dc6a38a814d94906bf2bb9c292, type: 3}
   - {fileID: -5155470640856005881, guid: 0aab21cd35ba1984ea5d4c06cefc9e21, type: 3}
   - {fileID: 3800782402952206127, guid: 0aab21cd35ba1984ea5d4c06cefc9e21, type: 3}
   - {fileID: -7117176613107577440, guid: 0aab21cd35ba1984ea5d4c06cefc9e21, type: 3}
@@ -181,6 +190,15 @@ SpriteAtlas:
   - Player_Idle_1
   - Player_Idle_2
   - Player_Idle_3
+  - Attack-01_4
+  - Attack-01_5
+  - Attack-01_6
+  - Attack-01_7
+  - Attack-01_0
+  - Attack-01_1
+  - Attack-01_2
+  - Attack-01_3
+  - Attack-01_8
   - TextBox_4
   - TextBox_0
   - TextBox_1
