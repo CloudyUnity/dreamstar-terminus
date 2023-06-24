@@ -10,18 +10,19 @@ public class PlayerInput : Singleton
 
     public int LastPressed = 1;
 
-    InputControls _controls;
+    public InputControls Controls;
+
     PlayerMovement _move;
 
     private void OnEnable()
     {
-        _controls = new InputControls();
-        _controls.Gameplay.Enable();
+        Controls = new InputControls();
+        Controls.Gameplay.Enable();
     }
 
     private void OnDisable()
     {
-        _controls.Gameplay.Disable();
+        Controls.Gameplay.Disable();
     }
 
     private void Start()
@@ -31,10 +32,10 @@ public class PlayerInput : Singleton
 
     private void Update()
     {
-        if (_controls.Gameplay.Pause.triggered)
+        if (Controls.Gameplay.Pause.triggered)
             Get<UIPauseMenu>().CloseChainMenu();
 
-        if (_controls.Gameplay.QuickRestart.triggered)
+        if (Controls.Gameplay.QuickRestart.triggered)
             Get<M_World>().QuickRestart();
 
         if (_move.MovementDisabled)
@@ -50,32 +51,32 @@ public class PlayerInput : Singleton
         }
 
         #region ARROWKEYS
-        if (_controls.Gameplay.Left.triggered)
+        if (Controls.Gameplay.Left.triggered)
             LastPressed = -1;
-        else if (_controls.Gameplay.Right.triggered)
+        else if (Controls.Gameplay.Right.triggered)
             LastPressed = 1;
 
         ArrowKeys = MovementArrowKeys();
 
-        ArrowKeysUnRaw.y = _controls.Gameplay.Up.ReadValue<float>() - _controls.Gameplay.Down.ReadValue<float>();
-        ArrowKeysUnRaw.x = _controls.Gameplay.Right.ReadValue<float>() - _controls.Gameplay.Left.ReadValue<float>();
+        ArrowKeysUnRaw.y = Controls.Gameplay.Up.ReadValue<float>() - Controls.Gameplay.Down.ReadValue<float>();
+        ArrowKeysUnRaw.x = Controls.Gameplay.Right.ReadValue<float>() - Controls.Gameplay.Left.ReadValue<float>();
         #endregion
 
-        Jump = _controls.Gameplay.Jump.triggered;
-        JumpUp = _controls.Gameplay.Jump.WasReleasedThisFrame();
+        Jump = Controls.Gameplay.Jump.triggered;
+        JumpUp = Controls.Gameplay.Jump.WasReleasedThisFrame();
 
-        Attack = _controls.Gameplay.Attack.triggered;
-        Interact = _controls.Gameplay.Interact.triggered;
+        Attack = Controls.Gameplay.Attack.triggered;
+        Interact = Controls.Gameplay.Interact.triggered;
 
         // TO-DO: Make ManagerCheat class to manage cheats, editor only (w/ secret option to enable?)
     }
 
     Vector2 MovementArrowKeys()
     {
-        bool left = _controls.Gameplay.Left.ReadValue<float>() > 0;
-        bool right = _controls.Gameplay.Right.ReadValue<float>() > 0;
-        bool up = _controls.Gameplay.Up.ReadValue<float>() > 0;
-        bool down = _controls.Gameplay.Down.ReadValue<float>() > 0;
+        bool left = Controls.Gameplay.Left.ReadValue<float>() > 0;
+        bool right = Controls.Gameplay.Right.ReadValue<float>() > 0;
+        bool up = Controls.Gameplay.Up.ReadValue<float>() > 0;
+        bool down = Controls.Gameplay.Down.ReadValue<float>() > 0;
 
         Vector2 result = Vector2.zero;
 

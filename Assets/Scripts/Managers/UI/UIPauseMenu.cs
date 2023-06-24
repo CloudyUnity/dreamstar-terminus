@@ -9,7 +9,7 @@ public class UIPauseMenu : Singleton, ICloseMenu
     GameObject _menu;
     UIOptionsMenu _options;
 
-    public bool Paused => _menu.activeSelf;
+    public bool Paused => ChainOfMenus.Count > 0;
 
     private void Start()
     {
@@ -23,22 +23,20 @@ public class UIPauseMenu : Singleton, ICloseMenu
 
     public void OpenPause()
     {
-        if (Paused)
+        if (ChainOfMenus.Count == 0)
         {
-            CloseMenu();
-            return;
+            Get<PlayerMovement>().DisableMovement();
+            ChainOfMenus.Add(this);
         }
 
-        _menu.SetActive(true);
-        Get<PlayerMovement>().DisableMovement();
-        ChainOfMenus.Add(this);
+        _menu.SetActive(true);                
     }
 
     public void CloseMenu()
     {
         _menu.SetActive(false);
         Get<PlayerMovement>().ReEnableMovement();
-        ChainOfMenus.RemoveAt(ChainOfMenus.Count - 1);
+        ChainOfMenus.Clear();
     }
 
     public void Options()
@@ -54,6 +52,11 @@ public class UIPauseMenu : Singleton, ICloseMenu
     }
 
     public void Help()
+    {
+        // TODO
+    }
+
+    public void Log()
     {
         // TODO
     }

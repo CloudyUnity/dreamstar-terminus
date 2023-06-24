@@ -9,8 +9,7 @@ public class UIOptionsMenu : Singleton, ICloseMenu
 
     UIPauseMenu _pause;
     M_Options _optionsManager;
-
-    public bool OptionsOpen => _menu.activeSelf;
+    UIKeybindsMenu _keybinds;
 
     [SerializeField] Toggle _screenshake, _pp, _hud, _prompts;
     [SerializeField] Slider _sfx, _music;
@@ -19,6 +18,7 @@ public class UIOptionsMenu : Singleton, ICloseMenu
     {
         _pause = Get<UIPauseMenu>();
         _optionsManager = Get<M_Options>();
+        _keybinds = Get<UIKeybindsMenu>();
 
         _menu = transform.GetChild(0).gameObject;
         _menu.SetActive(false);
@@ -39,13 +39,12 @@ public class UIOptionsMenu : Singleton, ICloseMenu
 
     public void OpenOptions()
     {
-        if (OptionsOpen)
+        if (UIPauseMenu.ChainOfMenus.Count == 1)
         {
-            return;
+            UIPauseMenu.ChainOfMenus.Add(this);
         }
 
-        _menu.SetActive(true);
-        UIPauseMenu.ChainOfMenus.Add(this);
+        _menu.SetActive(true);        
     }
 
     public void CloseMenu()
@@ -55,51 +54,69 @@ public class UIOptionsMenu : Singleton, ICloseMenu
         UIPauseMenu.ChainOfMenus.RemoveAt(UIPauseMenu.ChainOfMenus.Count - 1);
     }
 
+    public void KeyBinds()
+    {
+        _keybinds.OpenKeyBinds();
+        _menu.SetActive(false);
+    }
+
     public void ToggleScreenshake(bool toggle)
     {
+        if (Time.timeSinceLevelLoad < 0.5f)
+            return;
+
         M_Options.OptionData data = _optionsManager.CurrentOptionData;
         data.ScreenshakeOn = toggle;
         _optionsManager.ChangeOptions(data);
-        //SetMenuToOptions();
     }
 
     public void TogglePP(bool toggle)
     {
+        if (Time.timeSinceLevelLoad < 0.5f)
+            return;
+
         M_Options.OptionData data = _optionsManager.CurrentOptionData;
         data.PPOn = toggle;
         _optionsManager.ChangeOptions(data);
-        SetMenuToOptions();
     }
 
     public void ToggleHUD(bool toggle)
     {
+        if (Time.timeSinceLevelLoad < 0.5f)
+            return;
+
         M_Options.OptionData data = _optionsManager.CurrentOptionData;
         data.HUDOn = toggle;
         _optionsManager.ChangeOptions(data);
-        SetMenuToOptions();
     }
 
     public void TogglePrompts(bool toggle)
     {
+        if (Time.timeSinceLevelLoad < 0.5f)
+            return;
+
         M_Options.OptionData data = _optionsManager.CurrentOptionData;
         data.PromptsOn = toggle;
         _optionsManager.ChangeOptions(data);
-        SetMenuToOptions();
     }
 
     public void SliderSFX(float value)
     {
+        if (Time.timeSinceLevelLoad < 0.5f)
+            return;
+
         M_Options.OptionData data = _optionsManager.CurrentOptionData;
         data.SFXVolume = value;
         _optionsManager.ChangeOptions(data);
-        SetMenuToOptions();
     }
 
     public void SliderMusic(float value)
     {
+        if (Time.timeSinceLevelLoad < 0.5f)
+            return;
+
         M_Options.OptionData data = _optionsManager.CurrentOptionData;
         data.MusicVolume = value;
         _optionsManager.ChangeOptions(data);
-        SetMenuToOptions();
     }
 }

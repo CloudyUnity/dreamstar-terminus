@@ -70,6 +70,9 @@ public class M_Options : Singleton
 
     public void ChangeOptions(OptionData data)
     {
+        if (Time.timeSinceLevelLoad < 0.5f)
+            return;
+
         CurrentOptionData = data;
         SaveTheData();
     }
