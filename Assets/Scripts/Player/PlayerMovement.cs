@@ -289,7 +289,7 @@ public class PlayerMovement : Singleton
 
 			_rb.velocity = new Vector2(_rb.velocity.x, 0);
 
-			RaycastHit2D hit = M_Extensions.Ray(new Vector2(_col.bounds.center.x, _col.bounds.min.y), Vector2.up, _data.doubleJumpRefundRange, M_LayerMasks.Ground);
+			RaycastHit2D hit = M_Extensions.Ray(new Vector2(_col.bounds.center.x, _col.bounds.min.y), Vector2.up, M_LayerMasks.Ground, _data.doubleJumpRefundRange);
 			if (hit.collider != null)
 				_doubleJumpsDone--;
 
@@ -407,13 +407,13 @@ public class PlayerMovement : Singleton
 	{
 		float rayDis = 0.15f;
 
-		RaycastHit2D hitLeft = M_Extensions.Ray(new Vector2(_col.bounds.min.x, _col.bounds.max.y), Vector2.up, rayDis, M_LayerMasks.Ground);
+		RaycastHit2D hitLeft = M_Extensions.Ray(new Vector2(_col.bounds.min.x, _col.bounds.max.y), Vector2.up, M_LayerMasks.Ground, rayDis);
 
 		if (hitLeft.collider != null)
 		{
 			for (float i = 0; i <= 0.15f; i += 0.025f)
 			{
-				RaycastHit2D hit = M_Extensions.Ray(new Vector2(_col.bounds.min.x + i, _col.bounds.max.y), Vector2.up, rayDis, M_LayerMasks.Ground);
+				RaycastHit2D hit = M_Extensions.Ray(new Vector2(_col.bounds.min.x + i, _col.bounds.max.y), Vector2.up, M_LayerMasks.Ground, rayDis);
 
 				if (hit.collider != null)
 					continue;
@@ -423,13 +423,13 @@ public class PlayerMovement : Singleton
 			}
 		}
 
-		RaycastHit2D hitRight = M_Extensions.Ray(_col.bounds.max, Vector2.up, rayDis, M_LayerMasks.Ground);
+		RaycastHit2D hitRight = M_Extensions.Ray(_col.bounds.max, Vector2.up, M_LayerMasks.Ground, rayDis);
 
 		if (hitRight.collider != null)
 		{
 			for (float i = 0; i <= 0.15f; i += 0.025f)
 			{
-				RaycastHit2D hit = M_Extensions.Ray(new Vector2(_col.bounds.max.x - i, _col.bounds.max.y), Vector2.up, rayDis, M_LayerMasks.Ground);
+				RaycastHit2D hit = M_Extensions.Ray(new Vector2(_col.bounds.max.x - i, _col.bounds.max.y), Vector2.up, M_LayerMasks.Ground, rayDis);
 				if (hit.collider != null)
 					continue;
 

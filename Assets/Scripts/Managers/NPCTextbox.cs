@@ -3,20 +3,28 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+#pragma warning disable CS0162 // Unreachable code detected
 public class NPCTextbox : MonoBehaviour
 {
     [SerializeField] TMP_Text _text;
     [SerializeField] GameObject _crnr1, _crnr2, _crnr3, _crnr4, _top, _left, _bottom, _right, _bg;
 
+    const bool DEBUG_MODE = false;
+
     private void Start()
     {
         transform.localScale = Vector3.zero;
+
+        if (DEBUG_MODE)
+            StartDialogue();
     }
 
     private void Update()
     {
-        //SetText(_text.text);
+        if (DEBUG_MODE)
+            SetText(_text.text);
     }
+#pragma warning restore CS0162 // Unreachable code detected
 
     public void SetText(string str)
     {
@@ -27,7 +35,9 @@ public class NPCTextbox : MonoBehaviour
 
         int size = str.Length;
 
-        int newLineBonus = Mathf.Clamp(Mathf.FloorToInt(_text.renderedHeight / 0.15f), 0, 99);
+        //Debug.Log(_text.renderedHeight + " " + _text.renderedHeight / 0.15f + " " + Mathf.RoundToInt(_text.renderedHeight / 0.15f));
+
+        int newLineBonus = Mathf.Clamp(Mathf.RoundToInt(_text.renderedHeight / 0.15f), 0, 99) - 1;
 
         int clamped = newLineBonus > 0 ? 20 : size;
 

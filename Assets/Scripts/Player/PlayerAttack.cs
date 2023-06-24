@@ -22,6 +22,8 @@ public class PlayerAttack : Singleton
     [SerializeField] Vector3 _dis;
     [SerializeField] Vector3 _size;
     [SerializeField] Vector2 _playerKnockback;
+    [SerializeField] float _cooldown;
+    float _cooldownTimer;
 
     private void Start()
     {
@@ -31,7 +33,9 @@ public class PlayerAttack : Singleton
 
     private void Update()
     {
-        if (_input.Attack)
+        _cooldownTimer -= Time.deltaTime;
+
+        if (_input.Attack && _cooldownTimer < 0)
             Attack01();
     }
 
@@ -41,7 +45,7 @@ public class PlayerAttack : Singleton
 
         GameObject go = Instantiate(_attack01, pos, Quaternion.Euler(0, 0, _input.LastPressed == -1 ? 180 : 0));
 
-        var hits = Physics2D.BoxCastAll(pos, _size, 0, Vector3.back, 1, M_LayerMasks.Entity);
+        var hits = Physics2D.BoxCastAll(pos, _size, 0, Vector3.back, 1);
 
         foreach (var hit in hits)
         {
@@ -56,6 +60,8 @@ public class PlayerAttack : Singleton
         }
 
         _move.Fling(_playerKnockback * -_input.LastPressed, ForceMode2D.Impulse);
+
+        _cooldownTimer = _cooldown;
 
         StartCoroutine(C_DelayDestroy(go, 3));
     }

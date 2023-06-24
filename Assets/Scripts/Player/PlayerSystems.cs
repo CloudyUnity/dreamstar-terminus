@@ -31,9 +31,9 @@ public class PlayerSystems : Singleton
     {
         _invTimer -= Time.deltaTime;
 
-        RaycastHit2D hitL = M_Extensions.Ray(transform.position + new Vector3(-0.3f, -0.3f), Vector2.down, 0.1f, M_LayerMasks.Ground);
+        RaycastHit2D hitL = M_Extensions.Ray(transform.position + new Vector3(-0.3f, -0.3f), Vector2.down, M_LayerMasks.Ground, 0.1f);
         bool safeL = hitL.collider != null && !hitL.collider.gameObject.CheckTag("NotSafe");
-        RaycastHit2D hitR = M_Extensions.Ray(transform.position + new Vector3(0.3f, -0.3f), Vector2.down, 0.1f, M_LayerMasks.Ground);
+        RaycastHit2D hitR = M_Extensions.Ray(transform.position + new Vector3(0.3f, -0.3f), Vector2.down, M_LayerMasks.Ground, 0.1f);
         bool safeR = hitR.collider != null && !hitR.collider.gameObject.CheckTag("NotSafe");
 
         if (_move.Grounded && safeL && safeR)

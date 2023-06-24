@@ -157,13 +157,15 @@ public static class M_Extensions
         rend.color = newColor;
     }
 
-    public static RaycastHit2D Ray(Vector2 origin, Vector2 dir, float dis = 1, LayerMask layer = default(LayerMask))
+    public static RaycastHit2D Ray(Vector2 origin, Vector2 dir, LayerMask layer, float dis = 1)
     {
         if (Application.isEditor)
             Debug.DrawRay(origin, dir * dis);
 
         return Physics2D.Raycast(origin, dir, dis, layer);
     }
+
+    public static RaycastHit2D Ray(Vector2 origin, Vector2 dir, float dis = 1) => Ray(origin, dir, ~0, dis);
 
     public static bool CheckTag(this GameObject obj, string tag) => M_Tags.CheckTag(obj, tag);
 

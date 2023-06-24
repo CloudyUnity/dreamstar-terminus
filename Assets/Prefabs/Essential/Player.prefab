@@ -94,10 +94,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attack01: {fileID: 3899078558553129250, guid: 01ee6b656f4240a44936df5cadedeeda, type: 3}
   _attack01Damage: 1
-  _knockback: {x: 0, y: 0}
+  _knockback: {x: 3, y: 0}
   _dis: {x: 0.8, y: 0, z: 0}
   _size: {x: 1.2, y: 0.8, z: 0}
   _playerKnockback: {x: 5, y: 0}
+  _cooldown: 1
 --- !u!114 &6460561728445179277
 MonoBehaviour:
   m_ObjectHideFlags: 0
