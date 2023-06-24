@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 2108051730139612102}
   - component: {fileID: 2108051730139612122}
   - component: {fileID: 2108051730139612097}
+  - component: {fileID: 7003431189273851697}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -57,11 +58,10 @@ MonoBehaviour:
   ArrowKeysUnRaw: {x: 0, y: 0}
   Jump: 0
   JumpUp: 0
-  GainDoubleJump: 0
-  LoseDoubleJump: 0
   Attack: 0
   Interact: 0
   CheatTravel: 0
+  LastPressed: 1
 --- !u!114 &2108051730139612101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,6 +102,7 @@ MonoBehaviour:
   _timeCreationSpeed: 1
   _historyMaxLength: 50
   _corpsePrefab: {fileID: 4546068435638330836, guid: 5eaae26c9c76d8249904fb122bc8977c, type: 3}
+  _paradoxesOn: 0
 --- !u!114 &2108051730139612121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,3 +198,30 @@ MonoBehaviour:
   SpriteLit: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   SpriteUnLit: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   Outline: {fileID: 2100000, guid: c5d0e06237c1f5c4190e14705d99aabb, type: 2}
+--- !u!114 &7003431189273851697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108051730139612125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07fd38a2af11a0649800a10deabb1a9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultOptionData:
+    ScreenshakeOn: 1
+    PPOn: 1
+    HUDOn: 1
+    PromptsOn: 1
+    SFXVolume: 1
+    MusicVolume: 1
+  SetToDefault: 0
+  CurrentOptionData:
+    ScreenshakeOn: 0
+    PPOn: 0
+    HUDOn: 0
+    PromptsOn: 0
+    SFXVolume: 0
+    MusicVolume: 0

@@ -32,7 +32,7 @@ public class PlayerInput : Singleton
     private void Update()
     {
         if (_controls.Gameplay.Pause.triggered)
-            Get<UIPauseMenu>().OpenPause();
+            Get<UIPauseMenu>().CloseChainMenu();
 
         if (_controls.Gameplay.QuickRestart.triggered)
             Get<M_World>().QuickRestart();
