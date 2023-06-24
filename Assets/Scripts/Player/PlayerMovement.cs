@@ -303,7 +303,7 @@ public class PlayerMovement : Singleton
 	{
 		float targetSpeed = _input.ArrowKeys.x * _data.runMaxSpeed;
 
-		if (_input.ArrowKeysUnRaw.x <= 1 && _input.ArrowKeysUnRaw.x >= -1)
+		if (_input.ArrowKeysUnRaw.x <= 1 && _input.ArrowKeysUnRaw.x >= -1 && _input.ArrowKeysUnRaw.x != 0)
 			targetSpeed *= Mathf.Abs(_input.ArrowKeysUnRaw.x);
 
 		targetSpeed = Mathf.Lerp(_rb.velocity.x, targetSpeed, lerpAmount);

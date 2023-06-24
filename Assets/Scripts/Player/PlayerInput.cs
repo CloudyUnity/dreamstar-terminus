@@ -49,27 +49,17 @@ public class PlayerInput : Singleton
             return;
         }
 
+        #region ARROWKEYS
         if (_controls.Gameplay.Left.triggered)
             LastPressed = -1;
         else if (_controls.Gameplay.Right.triggered)
             LastPressed = 1;
 
-        bool left = _controls.Gameplay.Left.ReadValue<float>() > 0;
-        bool right = _controls.Gameplay.Right.ReadValue<float>() > 0;
-        bool up = _controls.Gameplay.Up.ReadValue<float>() > 0;
-        bool down = _controls.Gameplay.Down.ReadValue<float>() > 0;
-
-        if (left && right)
-            ArrowKeys.x = LastPressed;
-        else if (!left && !right)
-            ArrowKeys.x = 0;
-        else
-            ArrowKeys.x = left ? -1 : 1;
-
-        ArrowKeys.y = down ? -1 : (up ? 1 : 0);
+        ArrowKeys = MovementArrowKeys();
 
         ArrowKeysUnRaw.y = _controls.Gameplay.Up.ReadValue<float>() - _controls.Gameplay.Down.ReadValue<float>();
         ArrowKeysUnRaw.x = _controls.Gameplay.Right.ReadValue<float>() - _controls.Gameplay.Left.ReadValue<float>();
+        #endregion
 
         Jump = _controls.Gameplay.Jump.triggered;
         JumpUp = _controls.Gameplay.Jump.WasReleasedThisFrame();
@@ -78,5 +68,26 @@ public class PlayerInput : Singleton
         Interact = _controls.Gameplay.Interact.triggered;
 
         // TO-DO: Make ManagerCheat class to manage cheats, editor only (w/ secret option to enable?)
+    }
+
+    Vector2 MovementArrowKeys()
+    {
+        bool left = _controls.Gameplay.Left.ReadValue<float>() > 0;
+        bool right = _controls.Gameplay.Right.ReadValue<float>() > 0;
+        bool up = _controls.Gameplay.Up.ReadValue<float>() > 0;
+        bool down = _controls.Gameplay.Down.ReadValue<float>() > 0;
+
+        Vector2 result = Vector2.zero;
+
+        if (left && right)
+            result.x = LastPressed;
+        else if (!left && !right)
+            result.x = 0;
+        else
+            result.x = left ? -1 : 1;
+
+        result.y = down ? -1 : (up ? 1 : 0);
+
+        return result;
     }
 }
