@@ -117,11 +117,22 @@ public class M_Rebinding : Singleton
 
     string KeybindToText(InputAction action)
     {
-        int bindingIndex = action.GetBindingIndexForControl(action.controls[0]);
+        string result = "";
+        for (int i = 0; i < action.bindings.Count; i++)
+        {
+            string path = action.bindings[i].effectivePath;
+            string bind = InputControlPath.ToHumanReadableString(path, InputControlPath.HumanReadableStringOptions.UseShortNames);
 
-        string path = action.bindings[bindingIndex].effectivePath;
+            if (result.Contains(bind))
+                continue;
 
-        return InputControlPath.ToHumanReadableString(path, InputControlPath.HumanReadableStringOptions.UseShortNames);
+            if (result != "")
+                result += ", ";
+
+            result += bind;
+        }
+
+        return result;
     }
 
     TextIARPair FindPair(InputActionReference iar)
