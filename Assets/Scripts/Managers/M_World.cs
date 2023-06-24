@@ -26,4 +26,9 @@ public class M_World : Singleton
 
         SceneManager.LoadScene(name);
     }
+
+    public void QuickRestart()
+    {
+        LoadScene("Block-Out-Test");
+    }
 }

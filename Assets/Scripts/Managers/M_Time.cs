@@ -7,8 +7,21 @@ public class M_Time : Singleton
     public float TimePassed;
     public float TimeLeft = 60;
 
+    UIPauseMenu _pause;
+
+    private void Start()
+    {
+        _pause = Get<UIPauseMenu>();
+    }
+
     private void Update()
     {
+        if (_pause.Paused)
+        {
+            // TODO: Change color or somethin
+            return;
+        }
+
         TimePassed += Time.deltaTime;
 
         if (TimePassed > TimeLeft)

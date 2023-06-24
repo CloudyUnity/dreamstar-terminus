@@ -31,6 +31,12 @@ public class PlayerInput : Singleton
 
     private void Update()
     {
+        if (_controls.Gameplay.Pause.triggered)
+            Get<UIPauseMenu>().OpenPause();
+
+        if (_controls.Gameplay.QuickRestart.triggered)
+            Get<M_World>().QuickRestart();
+
         if (_move.MovementDisabled)
         {
             ArrowKeys = Vector2.zero;
@@ -70,12 +76,6 @@ public class PlayerInput : Singleton
 
         Attack = _controls.Gameplay.Attack.triggered;
         Interact = _controls.Gameplay.Interact.triggered;
-
-        if (_controls.Gameplay.Pause.triggered)
-            Application.Quit();
-
-        if (_controls.Gameplay.QuickRestart.triggered)
-            Get<M_World>().LoadScene("Block-Out-Test");
 
         // TO-DO: Make ManagerCheat class to manage cheats, editor only (w/ secret option to enable?)
     }
