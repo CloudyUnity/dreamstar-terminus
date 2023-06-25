@@ -9,6 +9,8 @@ public class M_Save : Singleton
     {
         public string Version;
         public List<string> Items;
+        public float TimePassed;
+        public int HP;
     }
 
     string _filePath;
@@ -24,7 +26,8 @@ public class M_Save : Singleton
             MakeEmptySave();
         }
 
-        LoadData();
+        SaveData data = LoadData();
+        ApplyData(data);
     }
 
     SaveData GetData()
@@ -32,7 +35,10 @@ public class M_Save : Singleton
         SaveData data = new SaveData();
 
         data.Version = VERSION;
+
         data.Items = new List<string>(Get<PlayerItems>().Items);
+        data.TimePassed = Get<M_Time>().TimePassed;
+        data.HP = Get<PlayerSystems>().HP;
 
         return data;
     }
@@ -54,12 +60,12 @@ public class M_Save : Singleton
         Debug.Log("Data Deleted");
     }
 
-    public void LoadData()
+    public SaveData LoadData()
     {
-        string jsonString = File.ReadAllText(_filePath);
-        SaveData data = JsonUtility.FromJson<SaveData>(jsonString);
-
         Debug.Log("Save Data Loaded");
+
+        string jsonString = File.ReadAllText(_filePath);
+        SaveData data = JsonUtility.FromJson<SaveData>(jsonString);        
 
         if (data.Version != VERSION)
         {
@@ -68,12 +74,14 @@ public class M_Save : Singleton
             //throw new System.Exception("Incompatible version save data");
         }
 
-        ApplyData(data);
+        return data;
     }
 
     void ApplyData(SaveData data)
     {
         Get<PlayerItems>().Items = new List<string>(data.Items);
+        Get<PlayerSystems>().HP = data.HP;
+        Get<M_Time>().TimePassed = data.TimePassed;
 
         Debug.Log("Data Applied");
     }

@@ -15,7 +15,7 @@ public class M_Events
 
     #region GAMEPLAY
     public static event Action CheckTimePoints;
-    public static void IvkCheckTimePoints() => CheckTimePoints?.Invoke();
+    public static void IvkCheckDynamicTimePointChanges() => CheckTimePoints?.Invoke();
     #endregion
 
     #region SEQUENCING
@@ -24,5 +24,8 @@ public class M_Events
 
     public static event Action SingletonAssign;
     public static void IvkAssignSingletons() => SingletonAssign?.Invoke();
+
+    public static event Action SceneReloaded;
+    public static void IvkSceneReloaded() => SceneReloaded?.Invoke();
     #endregion
 }

@@ -18,11 +18,6 @@ public class Traveller : MonoBehaviour
         Singleton.Get<M_Travel>().CurrentTravs.Add(this);
     }
 
-    private void Update()
-    {
-
-    }
-
     public void CheckDeath()
     {
         _rend.enabled = !Destroyed;

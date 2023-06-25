@@ -59,13 +59,11 @@ public class PlayerSystems : Singleton
             Die();
     }
 
-    void Die()
+    async void Die()
     {
-        Get<PlayerMovement>().DisableMovement();
-
         // SFX, Effects
 
-        Get<M_World>().LoadScene("Block-Out-Test");
+        await Get<M_World>().LoadScene("Block-Out-Test");
     }
 
     async void SendToLastSafePos()

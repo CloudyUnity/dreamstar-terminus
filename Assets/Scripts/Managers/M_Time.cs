@@ -30,11 +30,11 @@ public class M_Time : Singleton
         }
     }
 
-    public void TimeTravelled(float reduction)
+    public void ReduceTime(float reduction)
     {
         TimePassed -= reduction;
 
-        M_Events.IvkCheckTimePoints();
+        M_Events.IvkCheckDynamicTimePointChanges();
     }
 
     public void AddTime(float time) => TimeLeft += time;
