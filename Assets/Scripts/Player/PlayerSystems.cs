@@ -12,6 +12,7 @@ public class PlayerSystems : Singleton
     Vector2 _lastSafePos;
 
     PlayerMovement _move;
+    M_Transition _transition;
 
     public bool Invincible => _invTimer > 0;
     public bool Dead => HP <= 0;
@@ -25,6 +26,7 @@ public class PlayerSystems : Singleton
             HP = StartingHP;
 
         _move = GetComponent<PlayerMovement>();
+        _transition = Get<M_Transition>();
     }
 
     private void Update()
@@ -44,9 +46,10 @@ public class PlayerSystems : Singleton
 
     public void TakeDamage(int amount)
     {
-        Debug.Log("Took " + amount + " damage");
-        if (Dead || Invincible)
+        if (Dead || Invincible || _move.MovementDisabled)
             return;
+
+        Debug.Log("Took " + amount + " damage");
 
         HP -= amount;
 
@@ -62,16 +65,29 @@ public class PlayerSystems : Singleton
 
         // SFX, Effects
 
-        Get<M_World>().LoadScene("SampleScene");
+        Get<M_World>().LoadScene("Block-Out-Test");
     }
 
-    void SendToLastSafePos()
+    async void SendToLastSafePos()
     {
+        _move.DisableMovement();
+
+        await _transition.TransitionAsync(inwards: true);
+
+        Debug.Log("Waited");
+
         transform.position = _lastSafePos;
+
+        await _transition.TransitionAsync(inwards: false);
+
+        _move.ReEnableMovement();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
+        if (Dead || Invincible || _move.MovementDisabled)
+            return;
+
         if (collision.gameObject.TryGetComponent(out ContactDamage contact))
         {
             TakeDamage(contact.Damage);

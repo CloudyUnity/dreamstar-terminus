@@ -30,7 +30,10 @@ public class M_Transition : Singleton
     public async Task TransitionAsync(bool inwards)
     {
         if (Transitioning)
+        {
+            Debug.Log("Transition not ready, do not call");
             return;
+        }
 
         Transitioning = true;
 
@@ -74,5 +77,7 @@ public class M_Transition : Singleton
         }
 
         Transitioning = false;
+
+        Debug.Log("Done");
     }
 }

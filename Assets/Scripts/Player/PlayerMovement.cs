@@ -112,41 +112,7 @@ public class PlayerMovement : Singleton
 
 		JumpChecks();
 
-		#region GRAVITY
-		float gravMult = _data.gravityScale;
-		bool anyJumping = Jumping || WallJumping || JumpFalling;
-
-		// Sliding
-		if (_sliding)
-		{
-			gravMult *= 0;
-		}
-		// Fast Fall
-		else if (_rb.velocity.y < 0 && _input.ArrowKeys.y < 0 && _input.ArrowKeys.x == 0)
-		{
-			gravMult *= _data.fastFallGravityMult;
-			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -_data.maxFastFallSpeed));
-		}
-		// Early Jump Cut
-		else if (_jumpCutting)
-		{
-			gravMult *= _data.jumpCutGravityMult;
-			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -_data.maxFallSpeed));
-		}
-		// Jumping
-		else if (anyJumping && Mathf.Abs(_rb.velocity.y) < _data.jumpHangTimeThreshold)
-		{
-			gravMult *= _data.jumpHangGravityMult;
-		}
-		// Falling
-		else if (_rb.velocity.y < 0)
-		{
-			gravMult *= _data.fallGravityMult;
-			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -_data.maxFallSpeed));
-		}
-
-		_rb.gravityScale = gravMult;
-        #endregion
+		_rb.gravityScale = _data.gravityScale * GravityMult();
 
         #region HIT GROUND/WALL
         if (_lastOnGroundTime > 0 && !_wasGrounded)
@@ -166,13 +132,48 @@ public class PlayerMovement : Singleton
 			CornerCorrection();  
     }
 
+	float GravityMult()
+    {
+		bool anyJumping = Jumping || WallJumping || JumpFalling;
+
+		if (_sliding || MovementDisabled)
+			return 0;
+
+		bool fastFall = _rb.velocity.y < 0 && _input.ArrowKeys.y < 0 && _input.ArrowKeys.x == 0;
+		if (fastFall)
+		{
+			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -_data.maxFastFallSpeed));
+			return _data.fastFallGravityMult;			
+		}
+
+		if (_jumpCutting)
+		{
+			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -_data.maxFallSpeed));
+			return _data.jumpCutGravityMult;			
+		}
+
+		if (anyJumping && Mathf.Abs(_rb.velocity.y) < _data.jumpHangTimeThreshold)
+			return _data.jumpHangGravityMult;
+
+		if (_rb.velocity.y < 0)
+		{
+			_rb.velocity = new Vector2(_rb.velocity.x, Mathf.Max(_rb.velocity.y, -_data.maxFallSpeed));
+			return _data.fallGravityMult;			
+		}
+
+		return 1;
+	}
+
     private void FixedUpdate()
 	{
 		bool wasSliding = _sliding;
 		_sliding = Walled && !Jumping && !WallJumping && !Grounded && _input.ArrowKeys.x != -_lastWallTouched;
 
 		if (MovementDisabled)
+        {
+			_rb.velocity = Vector2.zero;
 			return;
+        }
 
 		if (_sliding)
 		{
