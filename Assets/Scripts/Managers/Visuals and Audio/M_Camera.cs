@@ -6,11 +6,13 @@ public class M_Camera : Singleton
 {
     PlayerMovement _player;
     M_Transition _transition;
+    M_Options _options;
 
     Camera _cam;
     bool _shaking { get { return _curMag != 0; } }
     float _curMag;
     float _camSpeed;
+    Vector2? _lock = null;
 
     [SerializeField] List<FocalPoint> _focalPoints = new List<FocalPoint>();
     [Space(5)]
@@ -25,13 +27,12 @@ public class M_Camera : Singleton
     [Space(5)]
     [SerializeField] float _playerFarMult;
     [SerializeField] float _playerFarDistance;
-    [Space(5)]
-    [SerializeField] bool _disableScreenShake;
 
     private void Start()
     {
         _player = Get<PlayerMovement>();
         _transition = Get<M_Transition>();
+        _options = Get<M_Options>();
         _cam = GetComponent<Camera>();        
 
         SetAspect();        
@@ -47,13 +48,41 @@ public class M_Camera : Singleton
         if (_shaking || _player == null || _transition.Transitioning)
             return;
 
-        transform.position = GetPosition();
+        transform.position = GetNextPosition();
     }
     
     public void AddFocalPoint(FocalPoint fp) => _focalPoints.Add(fp);
 
-    Vector3 GetPosition()
+    Vector3 GetNextPosition()
+    {       
+        Vector3 pos = GetTargetPos(out bool noFocalPoints);
+        pos.z = -10;
+        pos += _offset;
+
+        float targetSpeed = noFocalPoints ? _targetSpeed : _targetSpeedFocal;
+
+        float dis = Vector3.Distance(pos, transform.position);
+        if (dis >= _playerFarDistance)
+            targetSpeed *= dis - 3;
+
+        if (!_player.Grounded && !_player.Walled)
+            targetSpeed *= _playerFarMult;
+
+        if (targetSpeed < _camSpeed)
+            _camSpeed = targetSpeed;
+
+        _camSpeed = Mathf.Lerp(_camSpeed, targetSpeed, Time.deltaTime * 0.55f);
+
+        return Vector3.Lerp(transform.position, pos, Time.deltaTime * _camSpeed);
+    }
+
+    Vector2 GetTargetPos(out bool noFocalPoints)
     {
+        noFocalPoints = true;
+
+        if (_lock != null)
+            return (Vector2)_lock;
+
         #region FocalPoints
         List<Vector3> validFocalPoints = new List<Vector3>();
         for (int i = _focalPoints.Count - 1; i >= 0; i--)
@@ -78,50 +107,33 @@ public class M_Camera : Singleton
         }
         #endregion
 
-        Vector3 averageFocalPoint = AverageOfPoints(validFocalPoints, out bool error);
+        Vector3 averageFocalPoint = AverageOfPoints(validFocalPoints, out noFocalPoints);
         Vector3 dir = Vector3.zero;
 
-        if (!error)
+        if (!noFocalPoints)
         {
             dir = averageFocalPoint - _player.transform.position;
         }
 
-        Vector3 pos = _player.transform.position + (dir * _focalPointMag);
-        pos.z = -10;
-        pos += _offset;
-
-        float targetSpeed = error ? _targetSpeed : _targetSpeedFocal;
-
-        float dis = Vector3.Distance(pos, transform.position);
-        if (dis >= _playerFarDistance)
-            targetSpeed *= dis - 3;
-
-        if (!_player.Grounded && !_player.Walled)
-            targetSpeed *= _playerFarMult;
-
-        if (targetSpeed < _camSpeed)
-            _camSpeed = targetSpeed;
-
-        _camSpeed = Mathf.Lerp(_camSpeed, targetSpeed, Time.deltaTime * 0.55f);
-
-        return Vector3.Lerp(transform.position, pos, Time.deltaTime * _camSpeed);
+        return _player.transform.position + (dir * _focalPointMag);
     }
 
-    Vector3 AverageOfPoints(List<Vector3> points, out bool error)
+    Vector3 AverageOfPoints(List<Vector3> points, out bool noFocalPoints)
     {        
         if (points.Count == 0)
         {
-            error = true;
+            noFocalPoints = true;
             return Vector3.zero;
         }
 
-        error = false;
+        noFocalPoints = false;
 
         Vector3 average = Vector3.zero;
         foreach (Vector3 point in points)
         {
             average += point;
         }
+
         return average / points.Count;
     }
 
@@ -130,7 +142,7 @@ public class M_Camera : Singleton
         if (mag <= _curMag)
             return;
 
-        if (Application.isEditor && _disableScreenShake)
+        if (!_options.CurrentOptionData.ScreenshakeOn)
             return;
 
         StopAllCoroutines();
@@ -147,7 +159,7 @@ public class M_Camera : Singleton
 
         while (elapsed < dur)
         {
-            Vector3 pos = GetPosition();
+            Vector3 pos = GetNextPosition();
 
             pos.x += (Mathf.PerlinNoise(seed, elapsed * 4) - 0.5f) * mag;
             pos.y += (Mathf.PerlinNoise(seed + 5, elapsed * 4 + 1) - 0.5f) * mag;
@@ -199,4 +211,8 @@ public class M_Camera : Singleton
             _cam.rect = rect;
         }
     }
+
+    public void SetLock(Vector2 pos) => _lock = pos;
+
+    public void RemoveLock() => _lock = null;
 }
