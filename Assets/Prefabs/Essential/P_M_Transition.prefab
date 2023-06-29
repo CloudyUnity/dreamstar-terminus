@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 7848319970572370854}
   - component: {fileID: 7848319970572370853}
   m_Layer: 0
-  m_Name: TransitionManager
+  m_Name: P_M_Transition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

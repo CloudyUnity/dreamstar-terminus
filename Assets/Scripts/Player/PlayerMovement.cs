@@ -40,6 +40,8 @@ public class PlayerMovement : Singleton
 	int _movementDisablers;
 	public bool MovementDisabled => _movementDisablers > 0;
 
+	bool _sceneChangeTriggerActive;
+
 	int _doubleJumpsDone;
 
 	// To-do:
@@ -166,14 +168,15 @@ public class PlayerMovement : Singleton
 
     private void FixedUpdate()
 	{
+		if (MovementDisabled)
+		{
+			if (!_sceneChangeTriggerActive)
+				_rb.velocity = Vector2.zero;
+			return;
+		}
+
 		bool wasSliding = _sliding;
 		_sliding = Walled && !Jumping && !WallJumping && !Grounded && _input.ArrowKeys.x != -_lastWallTouched;
-
-		if (MovementDisabled)
-        {
-			_rb.velocity = Vector2.zero;
-			return;
-        }
 
 		if (_sliding)
 		{
@@ -472,6 +475,13 @@ public class PlayerMovement : Singleton
 
     public void DisableMovement() => _movementDisablers++;
 	public void ReEnableMovement() => _movementDisablers--;
+
+	public void ActivateSceneChange(Vector2 dir)
+    {
+		_sceneChangeTriggerActive = true;
+
+		_rb.velocity = dir * _data.runMaxSpeed;
+    }
 
 	#region EDITOR METHODS
 	private void OnDrawGizmosSelected()

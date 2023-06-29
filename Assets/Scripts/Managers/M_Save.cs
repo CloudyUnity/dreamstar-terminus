@@ -13,15 +13,15 @@ public class M_Save : Singleton
         public int HP;
     }
 
-    string _filePath;
+    public string FilePath => Application.persistentDataPath + "/saveData.json";
 
     const string VERSION = "v0.0.5";
 
+    [ButtonInvoke(nameof(MakeEmptySave))] public bool DeleteSaveData;
+
     private void Start()
     {
-        _filePath = Application.persistentDataPath + "/saveData.json";
-
-        if (!File.Exists(_filePath))
+        if (!File.Exists(FilePath))
         {
             MakeEmptySave();
         }
@@ -48,14 +48,14 @@ public class M_Save : Singleton
         SaveData data = GetData();
 
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText(_filePath, json);
+        File.WriteAllText(FilePath, json);
 
         Debug.Log("Data Saved");
     }
 
     public void DeleteData()
     {       
-        File.Delete(_filePath);
+        File.Delete(FilePath);
 
         Debug.Log("Data Deleted");
     }
@@ -64,7 +64,7 @@ public class M_Save : Singleton
     {
         Debug.Log("Save Data Loaded");
 
-        string jsonString = File.ReadAllText(_filePath);
+        string jsonString = File.ReadAllText(FilePath);
         SaveData data = JsonUtility.FromJson<SaveData>(jsonString);        
 
         if (data.Version != VERSION)
@@ -95,6 +95,6 @@ public class M_Save : Singleton
         };
 
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText(_filePath, json);
+        File.WriteAllText(FilePath, json);
     }
 }

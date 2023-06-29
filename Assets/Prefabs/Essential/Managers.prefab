@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 2108051730139612127}
   - component: {fileID: 2108051730139612101}
   - component: {fileID: 2108051730139612123}
-  - component: {fileID: 2108051730139612126}
-  - component: {fileID: 2108051730139612121}
   - component: {fileID: 2108051730139612100}
   - component: {fileID: 2108051730139612096}
   - component: {fileID: 2108051730139612103}
@@ -86,35 +84,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d5193b9a8388e4b94b0139f66fa93e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2108051730139612126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2108051730139612125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 124b64f49268a2245a54f2d3235e112f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CurrentTravs: []
-  _timeCreationSpeed: 1
-  _historyMaxLength: 50
-  _corpsePrefab: {fileID: 4546068435638330836, guid: 5eaae26c9c76d8249904fb122bc8977c, type: 3}
-  _paradoxesOn: 0
---- !u!114 &2108051730139612121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2108051730139612125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9a7aeac1be91454f85072ee6691edfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2108051730139612100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e83d4eec1492342873068a06fe7253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DeleteSaveData: 0
 --- !u!114 &2108051730139612097
 MonoBehaviour:
   m_ObjectHideFlags: 0

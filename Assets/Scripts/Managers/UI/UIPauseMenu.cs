@@ -29,7 +29,7 @@ public class UIPauseMenu : Singleton, ICloseMenu
             ChainOfMenus.Add(this);
         }
 
-        _menu.SetActive(true);                
+        _menu.SetActive(true);
     }
 
     public void CloseMenu()

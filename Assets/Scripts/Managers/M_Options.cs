@@ -19,53 +19,51 @@ public class M_Options : Singleton
 
     [SerializeField] OptionData _defaultOptionData;
 
-    [ButtonInvoke(nameof(MakeEmptySave))] public bool SetToDefault;
+    [ButtonInvoke(nameof(MakeEmptySaveOptions))] public bool SetToDefault;
 
     public OptionData CurrentOptionData;
 
-    string _filePath;
+    public string FilePath => Application.persistentDataPath + "/optionData.json";
 
     protected override void Awake()
     {
         base.Awake();
 
-        _filePath = Application.persistentDataPath + "/optionData.json";
-
-        if (!File.Exists(_filePath))
+        if (!File.Exists(FilePath))
         {
-            MakeEmptySave();
+            MakeEmptySaveOptions();
         }
 
-        LoadData();
+        LoadDataOptions();
     }
 
-    public void SaveTheData()
+    public void SaveTheDataOptions()
     {
         string json = JsonUtility.ToJson(CurrentOptionData);
-        File.WriteAllText(_filePath, json);
+        File.WriteAllText(FilePath, json);
 
         Debug.Log("Option Data Saved");
     }
 
-    public void DeleteData()
+    public void DeleteDataOptions()
     {
-        File.Delete(_filePath);
+        File.Delete(FilePath);
 
         Debug.Log("Option Data Deleted");
     }
 
-    public void LoadData()
+    public void LoadDataOptions()
     {
-        string jsonString = File.ReadAllText(_filePath);
+        string jsonString = File.ReadAllText(FilePath);
         CurrentOptionData = JsonUtility.FromJson<OptionData>(jsonString);
 
         Debug.Log("Option Data Loaded");
     }
 
-    public void MakeEmptySave()
+    public void MakeEmptySaveOptions()
     {
         string json = JsonUtility.ToJson(_defaultOptionData);
-        File.WriteAllText(_filePath, json);
+        File.WriteAllText(FilePath, json);
     }
 
     public void ChangeOptions(OptionData data)
@@ -74,6 +72,6 @@ public class M_Options : Singleton
             return;
 
         CurrentOptionData = data;
-        SaveTheData();
+        SaveTheDataOptions();
     }
 }

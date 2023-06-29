@@ -22,7 +22,8 @@ public class PlayerInput : Singleton
 
     private void OnDisable()
     {
-        Controls.Gameplay.Disable();
+        if (Controls != null)
+            Controls.Gameplay.Disable();
     }
 
     private void Start()

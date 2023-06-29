@@ -165,25 +165,6 @@ public class M_Camera : Singleton
         _curMag = 0;
     }
 
-    //public async Task C_Transition(bool inwards)
-    //{
-    //    float elapsed = 0;
-    //    float dur = 1.5f;
-
-    //    while (elapsed < dur)
-    //    {
-    //        float curved = M_Extensions.CosCurve(elapsed / dur);
-
-    //        if (!inwards)
-    //            curved = 1 - curved;
-
-    //        _transition.SetAlpha(curved);
-
-    //        elapsed += Time.deltaTime;
-    //        await Task.Yield();
-    //    }
-    //}
-
     void SetAspect()
     {
         float targetaspect = 16.0f / 9.0f;

@@ -10,8 +10,6 @@ public class Singleton : MonoBehaviour
 
     const bool DEBUG_MODE = false;
 
-    public static bool RemovedNulls = false;
-
     public static void RemoveNulls()
     {
         foreach (System.Type key in Instances.Keys.Reverse())
@@ -23,12 +21,6 @@ public class Singleton : MonoBehaviour
 
     protected virtual void Awake()
     {
-        if (!RemovedNulls)
-        {
-            RemoveNulls();
-            RemovedNulls = true;
-        }
-
         if (DEBUG_MODE)
             Debug.Log("Checking type: " + GetType());
 
@@ -76,9 +68,10 @@ public class Singleton : MonoBehaviour
         throw new System.Exception("Instances contains mismatched key-value pair: " + typeof(T).Name + " " + Instances[typeof(T)].name);
     }
 
-    public static void ClearMemory()
+    private void OnDestroy()
     {
-        Instances.Clear();
+        if (Instances.ContainsKey(GetType()))
+            Instances.Remove(GetType());
     }
 }
 #pragma warning restore CS0162 // Unreachable code detected

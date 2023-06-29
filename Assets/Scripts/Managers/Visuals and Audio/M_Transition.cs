@@ -12,8 +12,10 @@ public class M_Transition : Singleton
 
     List<SpriteRenderer> _boxes = new List<SpriteRenderer>();
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
+
         DontDestroyOnLoad(gameObject);
 
         _transition = transform.GetChild(0).GetComponent<SpriteRenderer>();       
@@ -22,7 +24,10 @@ public class M_Transition : Singleton
     private void Update()
     {
         if (_cam == null)
+        {
             _cam = Get<M_Camera>();
+            return;
+        }
 
         transform.position = (Vector2)_cam.transform.position;
     }
@@ -77,7 +82,5 @@ public class M_Transition : Singleton
         }
 
         Transitioning = false;
-
-        Debug.Log("Done");
     }
 }

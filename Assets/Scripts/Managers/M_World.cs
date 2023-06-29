@@ -6,36 +6,47 @@ using UnityEngine.SceneManagement;
 
 public class M_World : Singleton
 {
+    PlayerMovement _move;
+    M_Transition _transition;
+
     private async void Start()
     {
         DontDestroyOnLoad(gameObject);
 
-        Get<PlayerMovement>().DisableMovement();
-        await Get<M_Transition>().TransitionAsync(inwards: false);
-        Get<PlayerMovement>().ReEnableMovement();
+        _move = Get<PlayerMovement>();
+        _transition = Get<M_Transition>();
+
+        _move.DisableMovement();
+        await _transition.TransitionAsync(inwards: false);
+        _move.ReEnableMovement();
     }
 
     public async Task LoadScene(string name)
     {
         Get<M_Save>().SaveTheData();
 
-        Get<PlayerMovement>().DisableMovement();
-        await Get<M_Transition>().TransitionAsync(inwards: true);
+        _move.DisableMovement();
+        await _transition.TransitionAsync(inwards: true);
 
         // TODO: Loading screen/bar/wheel/etc with LoadSceneAsync
         SceneManager.LoadScene(name);
+
+        Singleton.RemoveNulls();
+
         await Task.Delay(100);
 
         M_Events.IvkSceneReloaded();
 
-        Get<PlayerMovement>().DisableMovement();
-        await Get<M_Transition>().TransitionAsync(inwards: false);
-        Get<PlayerMovement>().ReEnableMovement();
+        _move = Get<PlayerMovement>();
+
+        _move.DisableMovement();
+        await _transition.TransitionAsync(inwards: false);
+        _move.ReEnableMovement();
     }
 
     public async void QuickRestart()
     {
-        await LoadScene("Block-Out-Test");
+        await LoadScene("1-1");
     }
 
     public void NewSave()

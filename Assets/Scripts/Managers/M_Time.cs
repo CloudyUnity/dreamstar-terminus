@@ -26,7 +26,7 @@ public class M_Time : Singleton
 
         if (TimePassed > TimeLeft)
         {
-            Debug.Log("Implosion");
+            //Debug.Log("Implosion");
         }
     }
 

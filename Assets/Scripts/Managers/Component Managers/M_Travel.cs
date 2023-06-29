@@ -54,6 +54,9 @@ public class M_Travel : Singleton
     #region CREATING TIME POINTS
     private void Update()
     {
+        if (_move == null || _move.MovementDisabled || _timeManager == null)
+            return;
+
         _cooldown -= Time.deltaTime;
 
         float timeSinceLastPoint = _timeManager.TimePassed - (Timeline.Count * _timeCreationSpeed);

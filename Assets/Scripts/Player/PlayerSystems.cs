@@ -63,7 +63,7 @@ public class PlayerSystems : Singleton
     {
         // SFX, Effects
 
-        await Get<M_World>().LoadScene("Block-Out-Test");
+        await Get<M_World>().LoadScene("1-1");
     }
 
     async void SendToLastSafePos()
