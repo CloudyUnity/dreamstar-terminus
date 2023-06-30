@@ -8,12 +8,14 @@ public class UIPauseMenu : Singleton, ICloseMenu
 
     GameObject _menu;
     UIOptionsMenu _options;
+    PlayerMovement _move;
 
     public bool Paused => ChainOfMenus.Count > 0;
 
     private void Start()
     {
         _options = Get<UIOptionsMenu>();
+        _move = Get<PlayerMovement>();
 
         ChainOfMenus.Clear();
 
@@ -23,9 +25,12 @@ public class UIPauseMenu : Singleton, ICloseMenu
 
     public void OpenPause()
     {
+        if (_move.MovementDisabled)
+            return;
+
         if (ChainOfMenus.Count == 0)
         {
-            Get<PlayerMovement>().DisableMovement();
+            _move.DisableMovement();
             ChainOfMenus.Add(this);
         }
 
@@ -35,7 +40,7 @@ public class UIPauseMenu : Singleton, ICloseMenu
     public void CloseMenu()
     {
         _menu.SetActive(false);
-        Get<PlayerMovement>().ReEnableMovement();
+        _move.ReEnableMovement();
         ChainOfMenus.Clear();
     }
 
@@ -48,7 +53,7 @@ public class UIPauseMenu : Singleton, ICloseMenu
     public void Restart()
     {
         CloseMenu();
-        Get<M_World>().QuickRestart();
+        Get<M_World>().Restart();
     }
 
     public void Help()

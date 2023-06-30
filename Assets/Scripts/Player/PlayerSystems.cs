@@ -59,11 +59,11 @@ public class PlayerSystems : Singleton
             Die();
     }
 
-    async void Die()
+    void Die()
     {
         // SFX, Effects
 
-        await Get<M_World>().LoadScene("1-1");
+        Get<M_World>().Restart();
     }
 
     async void SendToLastSafePos()

@@ -44,10 +44,17 @@ public class PlayerMovement : Singleton
 
 	int _doubleJumpsDone;
 
-	// To-do:
-	// particles, change keybinds
+    // To-do:
+    // particles, change keybinds
 
-	private void Start()
+    protected override void Awake()
+    {
+		DisableMovement();
+
+        base.Awake();
+    }
+
+    private void Start()
 	{
 		_rb = GetComponent<Rigidbody2D>();
 		_col = GetComponent<BoxCollider2D>();
@@ -57,6 +64,8 @@ public class PlayerMovement : Singleton
 		_cam = Get<M_Camera>();
 
 		_rb.gravityScale = _data.gravityScale;
+
+		ReEnableMovement();
 	}
 
 	private void Update()
@@ -476,11 +485,27 @@ public class PlayerMovement : Singleton
     public void DisableMovement() => _movementDisablers++;
 	public void ReEnableMovement() => _movementDisablers--;
 
-	public void ActivateSceneChange(Vector2 dir)
+	public void ActivateSceneChange(Vector2 dir, float dur = 99999)
     {
+		if (_sceneChangeTriggerActive)
+			return;
+
 		_sceneChangeTriggerActive = true;
 
 		_rb.velocity = dir * _data.runMaxSpeed;
+
+		_sprite.ForceMoveSceneChange = dir;
+
+		StartCoroutine(C_WaitSceneChange(dur));	
+    }
+
+	IEnumerator C_WaitSceneChange(float dur)
+    {
+		yield return new WaitForSeconds(dur);
+
+		_sceneChangeTriggerActive = false;
+
+		_sprite.ForceMoveSceneChange = Vector2.zero;
     }
 
 	#region EDITOR METHODS

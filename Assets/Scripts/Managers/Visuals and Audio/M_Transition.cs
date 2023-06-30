@@ -12,13 +12,20 @@ public class M_Transition : Singleton
 
     List<SpriteRenderer> _boxes = new List<SpriteRenderer>();
 
+    public const float DURATION = 1.5f;
+    public const float BOX_SCALE = 0.15f;
+    public const float SCROLL_SPEED = 0.75f;
+
     protected override void Awake()
     {
         base.Awake();
-
-        DontDestroyOnLoad(gameObject);
-
+       
         _transition = transform.GetChild(0).GetComponent<SpriteRenderer>();       
+    }
+
+    private void Start()
+    {
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update()
@@ -42,18 +49,15 @@ public class M_Transition : Singleton
 
         Transitioning = true;
 
-        float elapsed = 0;
-        float dur = 1.5f;
-        float boxScale = 0.15f;
-        float scrollSpeed = 0.75f;        
+        float elapsed = 0;      
 
         if (_boxes.Count == 0)
         {
-            for (float i = -7; i < 7; i += boxScale)
-                for (float j = -4; j < 4; j += boxScale)
+            for (float i = -7; i < 7; i += BOX_SCALE)
+                for (float j = -4; j < 4; j += BOX_SCALE)
                 {
                     SpriteRenderer rend = Instantiate(_transition, transform);
-                    rend.transform.localScale = Vector3.one * boxScale;
+                    rend.transform.localScale = Vector3.one * BOX_SCALE;
                     rend.transform.localPosition = new Vector3(i, j);
                     _boxes.Add(rend);
                 }
@@ -61,15 +65,18 @@ public class M_Transition : Singleton
 
         float pureSeed = Random.Range(0, 9999f);
 
-        while (elapsed < dur)
+        while (elapsed < DURATION)
         {
             for (int i = 0; i < _boxes.Count; i++)
             {
                 if (_boxes[i] == null)
                     return;
 
-                float seed = (Mathf.PerlinNoise(_boxes[i].transform.position.x + pureSeed + (elapsed * scrollSpeed), _boxes[i].transform.position.y + pureSeed + (elapsed * scrollSpeed)) - 0.5f) * 2;
-                float curved = M_Extensions.ParametricVaryCurve(elapsed / dur, seed);
+                float perlinX = _boxes[i].transform.position.x + pureSeed + (elapsed * SCROLL_SPEED);
+                float perlinY = _boxes[i].transform.position.y + pureSeed + (elapsed * SCROLL_SPEED);
+                float seed = (Mathf.PerlinNoise(perlinX, perlinY) - 0.5f) * 2;
+
+                float curved = M_Extensions.ParametricVaryCurve(elapsed / DURATION, seed);
 
                 if (!inwards)
                     curved = 1 - curved;

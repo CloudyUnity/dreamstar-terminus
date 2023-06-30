@@ -81,7 +81,7 @@ public class M_Camera : Singleton
         noFocalPoints = true;
 
         if (_lock != null)
-            return (Vector2)_lock;
+            return _lock.GetValueOrDefault();
 
         #region FocalPoints
         List<Vector3> validFocalPoints = new List<Vector3>();

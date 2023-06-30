@@ -10,15 +10,6 @@ public class Singleton : MonoBehaviour
 
     const bool DEBUG_MODE = false;
 
-    public static void RemoveNulls()
-    {
-        foreach (System.Type key in Instances.Keys.Reverse())
-        {
-            if (Instances[key] == null)
-                Instances.Remove(key);
-        }
-    }
-
     protected virtual void Awake()
     {
         if (DEBUG_MODE)
@@ -30,15 +21,21 @@ public class Singleton : MonoBehaviour
                 Debug.Log("Instancing: " + GetType());
 
             Instances.Add(GetType(), this);
+            return;
         }
-        else
-        {
-            if (DEBUG_MODE)
-                Debug.Log("Already instanced as: " + Instances[GetType()]);
 
-            // Kills self
-            enabled = false;
+        if (Instances[GetType()] == null)
+        {
+            Instances[GetType()] = this;
+            return;
         }
+
+        if (DEBUG_MODE)
+            Debug.Log("Already instanced as: " + Instances[GetType()]);
+
+        gameObject.name = gameObject.name + " (Deactivated Singleton)";
+
+        enabled = false;
     }    
 
     public static void ShowInside()
@@ -62,16 +59,13 @@ public class Singleton : MonoBehaviour
         if (DEBUG_MODE)
             Debug.Log("Value: " + Instances[typeof(T)]);
 
+        if (Instances[typeof(T)] == null && Application.isEditor)
+            throw new System.NullReferenceException("Singleton Get returning null!");
+
         if (Instances[typeof(T)] is T instance)
             return instance;
 
         throw new System.Exception("Instances contains mismatched key-value pair: " + typeof(T).Name + " " + Instances[typeof(T)].name);
-    }
-
-    private void OnDestroy()
-    {
-        if (Instances.ContainsKey(GetType()))
-            Instances.Remove(GetType());
     }
 }
 #pragma warning restore CS0162 // Unreachable code detected

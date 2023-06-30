@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerSprite : Singleton
 {
     [SerializeField] bool _debugColors;
-    [SerializeField] bool _idle, _run, _jump, _fall;
+    [SerializeField] bool _runOn, _jumpOn, _fallOn;
     SpriteRenderer _rend;
     PlayerInput _input;
     Animator _anim;
@@ -14,32 +14,34 @@ public class PlayerSprite : Singleton
     bool _squashing;
     PlayerMovement _move;
 
+    public Vector2 ForceMoveSceneChange;
+
     private void Start()
     {
         _rend = GetComponent<SpriteRenderer>();
-        _input = Get<PlayerInput>();
         _anim = GetComponent<Animator>();
+
+        _input = Get<PlayerInput>();
         _move = Get<PlayerMovement>();
         _systems = Get<PlayerSystems>();
     }
 
     private void Update()
     {
-        if (_input.ArrowKeys.x != 0)
-            _rend.flipX = _input.ArrowKeys.x == -1;
+        float movement = ForceMoveSceneChange.x != 0 ? ForceMoveSceneChange.x : _input.ArrowKeys.x;
+        _rend.flipX = movement < 0;
+
+        bool run = _runOn && _move.Grounded && movement != 0;        
+        _anim.SetBool("Running", run);
+
+        bool jump = _jumpOn && (_move.Jumping || _move.WallJumping || ForceMoveSceneChange.y > 0);
+        _anim.SetBool("Jumping", jump);
+
+        bool fall = _fallOn && (_move.JumpFalling || ForceMoveSceneChange.y < 0);
+        _anim.SetBool("Falling", fall);
 
         if (_debugColors)
             _rend.color = Debug_Colors();
-
-        if (_run)
-        {
-            _anim.SetBool("Running", _input.ArrowKeys.x != 0 && _move.Grounded);
-        }
-
-        if (_jump)
-            _anim.SetBool("Jumping", _move.Jumping || _move.WallJumping);        
-        if (_fall)
-            _anim.SetBool("Falling", _move.JumpFalling);
 
         // Sliding
         // Taking Damage

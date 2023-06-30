@@ -48,7 +48,13 @@ public class M_Travel : Singleton
         _move = Get<PlayerMovement>();
     }
 
-    void ApplyNearestTimePoint() => ApplyTimeInfo(Timeline[Timeline.Count - 1]);
+    void ApplyNearestTimePoint()
+    {
+        if (Timeline.Count == 0)
+            return;
+
+        ApplyTimeInfo(Timeline[Timeline.Count - 1]);
+    }
     #endregion
 
     #region CREATING TIME POINTS

@@ -14,16 +14,17 @@ public class ButtonInvokeDrawer : PropertyDrawer
     {
         ButtonInvoke settings = (ButtonInvoke)attribute;
 
-        if (!DisplayButton(ref settings)) return;
+        if (!DisplayButton(ref settings))
+            return;
 
-        string buttonLabel = (!string.IsNullOrEmpty(settings.customLabel)) ? settings.customLabel : label.text;
+        string buttonLabel = string.IsNullOrEmpty(settings.customLabel) ? label.text : settings.customLabel;
 
-        if (property.serializedObject.targetObject is MonoBehaviour mb)
+        if (!(property.serializedObject.targetObject is MonoBehaviour mb))
+            return;
+
+        if (GUI.Button(position, buttonLabel))
         {
-            if (GUI.Button(position, buttonLabel))
-            {
-                mb.SendMessage(settings.methodName, settings.methodParameter);
-            }
+            mb.SendMessage(settings.methodName, settings.methodParameter);
         }
     }
 

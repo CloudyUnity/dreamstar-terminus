@@ -659,10 +659,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _debugColors: 0
-  _idle: 1
-  _run: 1
-  _jump: 1
-  _fall: 1
+  _runOn: 1
+  _jumpOn: 1
+  _fallOn: 1
+  ForceMoveSceneChange: {x: 0, y: 0}
 --- !u!114 &6460561729793368377
 MonoBehaviour:
   m_ObjectHideFlags: 0

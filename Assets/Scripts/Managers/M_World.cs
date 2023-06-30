@@ -6,53 +6,76 @@ using UnityEngine.SceneManagement;
 
 public class M_World : Singleton
 {
-    PlayerMovement _move;
     M_Transition _transition;
+
+    public Vector2 LastEntrance;
 
     private async void Start()
     {
         DontDestroyOnLoad(gameObject);
 
-        _move = Get<PlayerMovement>();
+        PlayerMovement move = Get<PlayerMovement>();
         _transition = Get<M_Transition>();
 
-        _move.DisableMovement();
+        move.DisableMovement();
         await _transition.TransitionAsync(inwards: false);
-        _move.ReEnableMovement();
+        move.ReEnableMovement();
     }
 
-    public async Task LoadScene(string name)
+    public async void SaveAndLoadScene(string name, Vector2 entrance, Vector2 directionOfMovement)
     {
+        LastEntrance = entrance;
+
         Get<M_Save>().SaveTheData();
 
-        _move.DisableMovement();
+        await LoadScene(name, entrance, directionOfMovement);
+    }
+
+    public async Task LoadScene(string name, Vector2 entrance, Vector2 directionOfMovement)
+    {
+        PlayerMovement move = Get<PlayerMovement>();
+
+        // In
+        move.DisableMovement();
         await _transition.TransitionAsync(inwards: true);
 
-        // TODO: Loading screen/bar/wheel/etc with LoadSceneAsync
+        Debug.Log("Loading Scene: " + name);
         SceneManager.LoadScene(name);
+        Debug.Log("Loaded Scene: " + name);
 
-        Singleton.RemoveNulls();
-
+        // Wait for Awake();
         await Task.Delay(100);
 
         M_Events.IvkSceneReloaded();
 
-        _move = Get<PlayerMovement>();
+        #region LOAD PLAYER
+        move = Get<PlayerMovement>();
+        move.DisableMovement();
+        
+        if (entrance != Vector2.zero)
+            move.transform.position = entrance;
 
-        _move.DisableMovement();
+        if (directionOfMovement != Vector2.zero)
+            move.ActivateSceneChange(directionOfMovement, M_Transition.DURATION);
+        #endregion
+
+        Get<M_Camera>().transform.position = move.transform.position;
+
+        // Out
         await _transition.TransitionAsync(inwards: false);
-        _move.ReEnableMovement();
+        move.ReEnableMovement();
     }
 
-    public async void QuickRestart()
+    public async void Restart()
     {
-        await LoadScene("1-1");
+        NewSave();
+
+        await LoadScene("1-1", Vector2.zero, Vector2.zero);
     }
 
     public void NewSave()
     {
         Get<M_Save>().MakeEmptySave();
         Get<M_Travel>().ClearAllData();
-        QuickRestart();
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class SceneTransTrigger : MonoBehaviour
 {
     [SerializeField] string _sceneChangeName;
+    [SerializeField] Vector2 _entrancePos;
     [SerializeField] Vector2 _directionOfMovement;
 
     private void Start()
@@ -12,7 +13,7 @@ public class SceneTransTrigger : MonoBehaviour
         GetComponent<SpriteRenderer>().enabled = false;
     }
 
-    private async void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         PlayerMovement move = Singleton.Get<PlayerMovement>();
 
@@ -22,6 +23,6 @@ public class SceneTransTrigger : MonoBehaviour
 
         move.ActivateSceneChange(_directionOfMovement);
 
-        await Singleton.Get<M_World>().LoadScene(_sceneChangeName);
+        Singleton.Get<M_World>().SaveAndLoadScene(_sceneChangeName, _entrancePos, _directionOfMovement);
     }
 }

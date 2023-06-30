@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class M_Save : Singleton
 {
@@ -11,6 +12,9 @@ public class M_Save : Singleton
         public List<string> Items;
         public float TimePassed;
         public int HP;
+
+        public string CurrentScene;
+        public Vector2 LastEntrance;
     }
 
     public string FilePath => Application.persistentDataPath + "/saveData.json";
@@ -39,6 +43,9 @@ public class M_Save : Singleton
         data.Items = new List<string>(Get<PlayerItems>().Items);
         data.TimePassed = Get<M_Time>().TimePassed;
         data.HP = Get<PlayerSystems>().HP;
+
+        data.CurrentScene = SceneManager.GetActiveScene().name;
+        data.LastEntrance = Get<M_World>().LastEntrance;
 
         return data;
     }
@@ -92,6 +99,8 @@ public class M_Save : Singleton
         {
             Version = VERSION,
             Items = new List<string>(),
+
+            CurrentScene = "1-1",
         };
 
         string json = JsonUtility.ToJson(data);

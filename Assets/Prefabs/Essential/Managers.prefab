@@ -19,12 +19,13 @@ GameObject:
   - component: {fileID: 2108051730139612122}
   - component: {fileID: 2108051730139612097}
   - component: {fileID: 7003431189273851697}
+  - component: {fileID: 4165170740896344733}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2108051730139612120
 Transform:
@@ -195,3 +196,15 @@ MonoBehaviour:
     PromptsOn: 0
     SFXVolume: 0
     MusicVolume: 0
+--- !u!114 &4165170740896344733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108051730139612125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcf48fac666b82b46bfa54c162841be8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -36,9 +36,6 @@ public class PlayerInput : Singleton
         if (Controls.Gameplay.Pause.triggered)
             Get<UIPauseMenu>().CloseChainMenu();
 
-        if (Controls.Gameplay.QuickRestart.triggered)
-            Get<M_World>().QuickRestart();
-
         if (_move.MovementDisabled)
         {
             ArrowKeys = Vector2.zero;
@@ -50,6 +47,9 @@ public class PlayerInput : Singleton
             CheatTravel = false;
             return;
         }
+
+        if (Controls.Gameplay.QuickRestart.triggered && Time.timeSinceLevelLoad >= 1)
+            Get<M_World>().Restart();
 
         #region ARROWKEYS
         if (Controls.Gameplay.Left.triggered)
@@ -67,6 +67,7 @@ public class PlayerInput : Singleton
         JumpUp = Controls.Gameplay.Jump.WasReleasedThisFrame();
 
         Attack = Controls.Gameplay.Attack.triggered;
+
         Interact = Controls.Gameplay.Interact.triggered;
 
         // TO-DO: Make ManagerCheat class to manage cheats, editor only (w/ secret option to enable?)
