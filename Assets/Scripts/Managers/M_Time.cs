@@ -16,6 +16,7 @@ public class M_Time : Singleton
 
     private void Update()
     {
+        Time.timeScale = _pause.Paused ? 0 : 1;
         if (_pause.Paused)
         {
             // TODO: Change color or somethin

@@ -15,6 +15,8 @@ public class M_Save : Singleton
 
         public string CurrentScene;
         public Vector2 LastEntrance;
+
+        public bool ActiveSave;
     }
 
     public string FilePath => Application.persistentDataPath + "/saveData.json";
@@ -31,6 +33,10 @@ public class M_Save : Singleton
         }
 
         SaveData data = LoadData();
+
+        if (!data.ActiveSave)
+            return;
+
         ApplyData(data);
     }
 
@@ -46,6 +52,8 @@ public class M_Save : Singleton
 
         data.CurrentScene = SceneManager.GetActiveScene().name;
         data.LastEntrance = Get<M_World>().LastEntrance;
+
+        data.ActiveSave = true;
 
         return data;
     }

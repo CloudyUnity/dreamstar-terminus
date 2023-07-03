@@ -16,6 +16,8 @@ public class PlayerSprite : Singleton
 
     public Vector2 ForceMoveSceneChange;
 
+    bool _invFramesRunning;
+
     private void Start()
     {
         _rend = GetComponent<SpriteRenderer>();
@@ -39,6 +41,9 @@ public class PlayerSprite : Singleton
 
         bool fall = _fallOn && (_move.JumpFalling || ForceMoveSceneChange.y < 0);
         _anim.SetBool("Falling", fall);
+
+        if (_systems.Invincible && !_invFramesRunning)
+            StartCoroutine(C_InvicibilityFrames());
 
         if (_debugColors)
             _rend.color = Debug_Colors();
@@ -91,5 +96,29 @@ public class PlayerSprite : Singleton
 
         transform.localScale = start;
         _squashing = false;
+    }
+
+    IEnumerator C_InvicibilityFrames()
+    {
+        _invFramesRunning = true;
+
+        float elapsed = 0;
+        float changeDur = 0.5f;
+
+        while (_systems.Invincible)
+        {
+            elapsed += Time.deltaTime;
+
+            if (elapsed > changeDur)
+            {
+                _rend.enabled = !_rend.enabled;
+                elapsed = 0;
+            }
+
+            yield return null;
+        }
+
+        _rend.enabled = true;
+        _invFramesRunning = false;
     }
 }

@@ -9,6 +9,7 @@ public class TimePortal : MonoBehaviour
     M_Transition _transition;
 
     [SerializeField] float _timeBack;
+    [SerializeField] bool _collisionBased = false;
 
     private void Start()
     {
@@ -17,15 +18,23 @@ public class TimePortal : MonoBehaviour
         _transition = Singleton.Get<M_Transition>();
     }
 
-    private async void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!_collisionBased)
+            return;
+
         if (collision.gameObject == _move.gameObject)
         {
-            _move.DisableMovement();
-            await _transition.TransitionAsync(inwards: true);
-            await _travel.TimeTravelBackAsync(_timeBack);
-            await _transition.TransitionAsync(inwards: false);
-            _move.ReEnableMovement();
+            TimeTravel();
         }
+    }
+
+    public async void TimeTravel()
+    {
+        _move.DisableMovement();
+        await _transition.TransitionAsync(inwards: true);
+        await _travel.TimeTravelBackAsync(_timeBack);
+        await _transition.TransitionAsync(inwards: false);
+        _move.ReEnableMovement();
     }
 }

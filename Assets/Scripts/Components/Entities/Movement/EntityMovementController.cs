@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class EntityMovementController : MonoBehaviour
 {
-    Rigidbody2D _rb;
+    protected Rigidbody2D _rb;
 
     private void Start()
     {

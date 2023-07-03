@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartingHP: 5
-  _invSeconds: 0.5
+  _invSeconds: 3
   HP: 0
 --- !u!114 &6460561728445179279
 MonoBehaviour:

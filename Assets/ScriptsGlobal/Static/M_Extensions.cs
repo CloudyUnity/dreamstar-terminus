@@ -167,7 +167,7 @@ public static class M_Extensions
 
     public static RaycastHit2D Ray(Vector2 origin, Vector2 dir, float dis = 1) => Ray(origin, dir, ~0, dis);
 
-    public static bool CheckTag(this GameObject obj, string tag) => M_Tags.CheckTag(obj, tag);
+    //public static bool CheckTag(this GameObject obj, string tag) => M_Tags.CheckTag(obj, tag);
 
     public static IEnumerable<string> SplitToLines(this string input)
     {

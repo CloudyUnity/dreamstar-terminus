@@ -10,7 +10,7 @@ public class UIPauseMenu : Singleton, ICloseMenu
     UIOptionsMenu _options;
     PlayerMovement _move;
 
-    public bool Paused => ChainOfMenus.Count > 0;
+    public bool Paused => ChainOfMenus.Count > 0 && _menu.activeSelf;
 
     private void Start()
     {

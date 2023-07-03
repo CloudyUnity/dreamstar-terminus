@@ -108,10 +108,10 @@ public class PlayerMovement : Singleton
 		if (!Jumping)
         {
 			Collider2D right = Physics2D.OverlapBox(_frontWallCheckPoint.position, _wallCheckSize, 0, M_LayerMasks.Ground);
-			bool touchingRight = right && !right.gameObject.CheckTag("Slippy") && _isFacingRight;
+			bool touchingRight = right && !M_Tags.CheckTag(right.gameObject, "Slippy") && _isFacingRight;
 
 			Collider2D left = Physics2D.OverlapBox(_backWallCheckPoint.position, _wallCheckSize, 0, M_LayerMasks.Ground);
-			bool touchingLeft = left && !left.gameObject.CheckTag("Slippy") && !_isFacingRight;
+			bool touchingLeft = left && !M_Tags.CheckTag(left.gameObject, "Slippy") && !_isFacingRight;
 
 			if ((touchingLeft || touchingRight) && !WallJumping)
 			{
