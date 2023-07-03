@@ -7438,6 +7438,7 @@ MonoBehaviour:
   _bottom: {fileID: 2709416939514500706}
   _right: {fileID: 2709416937788028966}
   _bg: {fileID: 2709416938938652706}
+  _growSpeed: 0
 --- !u!4 &2709416938611768144
 Transform:
   m_ObjectHideFlags: 0
@@ -8242,7 +8243,7 @@ PrefabInstance:
     - target: {fileID: 5336064627127662234, guid: 3054fcdc22360924f8819db20100f08e, type: 3}
       propertyPath: Messages.Array.data[0].Text
       value: I'll be your guide through this tutorial. Let's start by jumping with
-        (B) or Space
+        {Jump}
       objectReference: {fileID: 0}
     - target: {fileID: 5336064627127662235, guid: 3054fcdc22360924f8819db20100f08e, type: 3}
       propertyPath: m_RootOrder

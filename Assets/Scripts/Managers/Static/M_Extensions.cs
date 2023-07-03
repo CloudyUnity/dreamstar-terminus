@@ -185,4 +185,20 @@ public static class M_Extensions
             }
         }
     }
+
+    public static void LerpTo(this Transform transform, Vector3 position, float speed, bool local = false)
+    {
+        if (local)
+        {
+            transform.localPosition = Vector3.Lerp(transform.localPosition, position, speed * Time.deltaTime);
+            return;
+        }
+
+        transform.position = Vector3.Lerp(transform.position, position, speed * Time.deltaTime);
+    }
+
+    public static void LerpToScale(this Transform transform, Vector3 scale, float speed)
+    {
+        transform.localScale = Vector3.Lerp(transform.localScale, scale, speed * Time.deltaTime);
+    }
 }

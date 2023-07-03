@@ -13,6 +13,7 @@ Branching dialogue
 public class Dialogue : MonoBehaviour
 {
     NPCTextbox _textBox;
+    M_Dialogue _dialogueManager;
 
     [System.Serializable]
     public struct Message
@@ -45,6 +46,7 @@ public class Dialogue : MonoBehaviour
     private void Start()
     {
         _textBox = GetComponentInChildren<NPCTextbox>();
+        _dialogueManager = Singleton.Get<M_Dialogue>();
 
         TryFindMessage("default", out _speakMessage);
     }
@@ -101,17 +103,19 @@ public class Dialogue : MonoBehaviour
         float elapsed = 0;
         int i = 0;
 
+        string fixedText = _dialogueManager.ReplaceWithCorrectButtons(message.Text);
+
         while (_textBox.transform.localScale.x < 1)
             yield return null;
 
-        while (i < message.Text.Length)
+        while (i < fixedText.Length)
         {
             float dur = message.GetSpeed;
-            if (i >= 1 && message.Text[i - 1].Is('.', '?', '!', ','))
+            if (i >= 1 && fixedText[i - 1].Is('.', '?', '!', ','))
                 dur *= message.PunctuationMult;
 
             // First i characters of the string
-            _textBox.SetText(message.Text.Substring(0, i));
+            _textBox.SetText(fixedText.Substring(0, i));
 
             if (elapsed >= dur)
             {                
@@ -124,7 +128,7 @@ public class Dialogue : MonoBehaviour
             yield return null;
         }
 
-        _textBox.SetText(message.Text);
+        _textBox.SetText(fixedText);
         
         // If player steps away, close dialogue box
     }

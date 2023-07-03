@@ -8,6 +8,7 @@ public class NPCTextbox : MonoBehaviour
 {
     [SerializeField] TMP_Text _text;
     [SerializeField] GameObject _crnr1, _crnr2, _crnr3, _crnr4, _top, _left, _bottom, _right, _bg;
+    [SerializeField] float _growSpeed;
 
     const bool DEBUG_MODE = false;
 
@@ -45,28 +46,31 @@ public class NPCTextbox : MonoBehaviour
 
         float height = 0.169f * newLineBonus;
 
-        _crnr1.transform.localPosition = new Vector3(-0.1325f - growAmount, _crnr1.transform.localPosition.y);
-        _crnr2.transform.localPosition = new Vector3(0.1665f + growAmount, _crnr2.transform.localPosition.y);
-        _crnr3.transform.localPosition = new Vector3(0.1665f + growAmount, 0.687f + height);
-        _crnr4.transform.localPosition = new Vector3(-0.1325f - growAmount, 0.687f + height);
+        _crnr1.transform.LerpTo(new Vector3(-0.1325f - growAmount, _crnr1.transform.localPosition.y), _growSpeed, local: true);
+        _crnr2.transform.LerpTo(new Vector3(0.1665f + growAmount, _crnr2.transform.localPosition.y), _growSpeed, local: true);
+        _crnr3.transform.LerpTo(new Vector3(0.1665f + growAmount, 0.687f + height), _growSpeed, local: true);
+        _crnr4.transform.LerpTo(new Vector3(-0.1325f - growAmount, 0.687f + height), _growSpeed, local: true);
 
         float width = clamped * 0.13f;
-        _top.transform.localPosition = new Vector3(Mathf.Lerp(0.0134f, 0, clamped / 20f), 0.65587f + height);
-        _top.transform.localScale = new Vector3(_top.transform.localScale.x, 0.267f + width);
+        _top.transform.LerpTo(new Vector3(Mathf.Lerp(0.0134f, 0, clamped / 20f), 0.65587f + height), _growSpeed, local: true);
+        _top.transform.LerpToScale(new Vector3(_top.transform.localScale.x, 0.267f + width), _growSpeed);
 
-        _bottom.transform.localScale = new Vector3(_bottom.transform.localScale.x, 0.267f + width);
+        _bottom.transform.LerpToScale(new Vector3(_bottom.transform.localScale.x, 0.267f + width), _growSpeed);
 
         float mid = Mathf.Clamp(Mathf.Lerp(_crnr1.transform.localPosition.y, _crnr4.transform.localPosition.y, 0.5f), 0.1f, 99f);
-        _left.transform.localPosition = new Vector3(-0.101373f - growAmount, mid);
-        _left.transform.localScale = new Vector3(_left.transform.localScale.x, 0.1f + 0.16f * newLineBonus);
 
-        _right.transform.localPosition = new Vector3(0.13207f + growAmount, mid);
-        _right.transform.localScale = new Vector3(_right.transform.localScale.x, 0.1f + 0.16f * newLineBonus);
+        _left.transform.LerpTo(new Vector3(-0.101373f - growAmount, mid), _growSpeed, local: true);
+        _left.transform.LerpToScale(new Vector3(_left.transform.localScale.x, 0.1f + 0.16f * newLineBonus), _growSpeed);
 
-        _bg.transform.position = M_Extensions.AveragePoint(_crnr1, _crnr2, _crnr3, _crnr4);
+        _right.transform.LerpTo(new Vector3(0.13207f + growAmount, mid), _growSpeed, local: true);
+        _right.transform.LerpToScale(new Vector3(_right.transform.localScale.x, 0.1f + 0.16f * newLineBonus), _growSpeed);
+
+        Vector3 averagePoint = M_Extensions.AveragePoint(_crnr1, _crnr2, _crnr3, _crnr4);
+        _bg.transform.LerpTo(averagePoint, _growSpeed);
+
         float disX = Mathf.Clamp(Vector2.Distance(_crnr1.transform.position, _crnr2.transform.position), 0, 99);
         float disY = Mathf.Clamp(Vector2.Distance(_crnr1.transform.position, _crnr4.transform.position), 0, 99);
-        _bg.transform.localScale = new Vector2(disX, disY);
+        _bg.transform.LerpToScale(new Vector2(disX, disY), _growSpeed);
 
         _text.alignment = newLineBonus > 0 ? TextAlignmentOptions.BottomLeft : TextAlignmentOptions.Bottom;
     }
