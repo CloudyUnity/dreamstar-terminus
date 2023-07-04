@@ -59,7 +59,7 @@ public class M_World : Singleton
             move.ActivateSceneChange(directionOfMovement, M_Transition.DURATION);
         #endregion
 
-        Get<M_Camera>().transform.position = move.transform.position;
+        Get<M_Camera>().transform.position = new Vector3(move.transform.position.x, move.transform.position.y, -10);
 
         // Out
         await _transition.TransitionAsync(inwards: false);

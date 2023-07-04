@@ -25,7 +25,7 @@ public class Singleton : MonoBehaviour
         }
 
         if (Instances[GetType()] == null)
-        {
+        { 
             Instances[GetType()] = this;
             return;
         }

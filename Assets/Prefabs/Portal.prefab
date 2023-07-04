@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimePoints:
-  - Time: 5
+  - Time: 12
     FlipBool: 0
     Method:
       m_PersistentCalls:
@@ -78,19 +78,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 3620191402637089852}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
     Active: 0
+  _endPos: {x: 0, y: 0}
 --- !u!114 &3620191402238591855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beef88a7515976d41bdfd4997d5c16c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeBack: 5
+  _timeBack: 10
   _collisionBased: 0
 --- !u!212 &3620191402238591840
 SpriteRenderer:
@@ -171,7 +160,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.8
 --- !u!114 &1431699379357036005
 MonoBehaviour:
   m_ObjectHideFlags: 0
