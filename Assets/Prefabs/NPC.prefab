@@ -433,6 +433,7 @@ MonoBehaviour:
     Speed: 0
     PunctuationMult: 0
     AudioClip: 
+    TimeToClose: 0
   ReadDefault: 0
 --- !u!61 &5336064627127662233
 BoxCollider2D:
@@ -622,7 +623,7 @@ MonoBehaviour:
   _bottom: {fileID: 5336064626572149937}
   _right: {fileID: 5336064628028107509}
   _bg: {fileID: 5336064627030690545}
-  _growSpeed: 16
+  _growSpeed: 30
 --- !u!114 &8229447514857284391
 MonoBehaviour:
   m_ObjectHideFlags: 0

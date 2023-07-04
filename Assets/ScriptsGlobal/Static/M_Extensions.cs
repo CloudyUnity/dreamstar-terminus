@@ -103,6 +103,16 @@ public static class M_Extensions
     }
     public static T RandomItem<T>(this List<T> list) => list[Random.Range(0, list.Count)];
     public static T RandomItem<T>(this T[] array) => array[Random.Range(0, array.Length)];
+
+    public static void LogAll<T>(this IEnumerable<T> list)
+    {
+        int counter = 0;
+        foreach (T item in list)
+        {
+            Debug.Log(counter + " : " + item.ToString());
+            counter++;
+        }
+    }
     #endregion
 
     #region Curves

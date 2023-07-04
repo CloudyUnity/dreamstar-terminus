@@ -22,6 +22,7 @@ public class PlayerMovement : Singleton
 	PlayerAbilities _abilities;
 	PlayerSprite _sprite;
 	M_Camera _cam;
+	M_Time _time;
 
 	bool _isFacingRight = true;
 	bool _sliding, _jumpCutting, _wasGrounded, _wasWalled;
@@ -62,6 +63,7 @@ public class PlayerMovement : Singleton
 		_sprite = Get<PlayerSprite>();
 		_input = Get<PlayerInput>();
 		_cam = Get<M_Camera>();
+		_time = Get<M_Time>();
 
 		_rb.gravityScale = _data.gravityScale;
 
@@ -311,13 +313,17 @@ public class PlayerMovement : Singleton
 		}
 	}
 
-	#region RUN METHODS
 	private void Run(float lerpAmount)
 	{
 		float targetSpeed = _input.ArrowKeys.x * _data.runMaxSpeed;
 
-		if (_input.ArrowKeysUnRaw.x <= 1 && _input.ArrowKeysUnRaw.x >= -1 && _input.ArrowKeysUnRaw.x != 0)
-			targetSpeed *= Mathf.Abs(_input.ArrowKeysUnRaw.x);
+		if (_time.InHalfTime)
+			targetSpeed *= 1.5f;
+
+		// NEEDS TESTING
+		float walkMult = Mathf.Abs(_input.ArrowKeysUnRaw.x);
+		if (walkMult > 0)
+			targetSpeed *= walkMult;
 
 		targetSpeed = Mathf.Lerp(_rb.velocity.x, targetSpeed, lerpAmount);
 
@@ -353,7 +359,6 @@ public class PlayerMovement : Singleton
 
 		_rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
 	}
-	#endregion
 
 	#region JUMP METHODS
 	private void Jump()

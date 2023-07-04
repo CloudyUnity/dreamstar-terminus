@@ -8,16 +8,21 @@ public class M_Time : Singleton
     public float TimeLeft = 60;
 
     UIPauseMenu _pause;
+    M_Transition _trans;
+
+    public bool InHalfTime => TimePassed >= 5 && TimePassed < 10;
 
     private void Start()
     {
         _pause = Get<UIPauseMenu>();
+        _trans = Get<M_Transition>();
     }
 
     private void Update()
     {
-        Time.timeScale = _pause.Paused ? 0 : 1;
-        if (_pause.Paused)
+        Time.timeScale = GetTimeScale();
+
+        if (_pause.Paused || _trans.Transitioning)
         {
             // TODO: Change color or somethin
             return;
@@ -39,4 +44,15 @@ public class M_Time : Singleton
     }
 
     public void AddTime(float time) => TimeLeft += time;
+
+    public float GetTimeScale()
+    {
+        if (_pause.Paused)
+            return 0;
+
+        if (InHalfTime)
+            return 0.5f;
+
+        return 1;
+    }
 }

@@ -35,7 +35,7 @@ SpriteAtlas:
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     packingSettings:
       serializedVersion: 2
-      padding: 4
+      padding: 8
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
@@ -49,6 +49,8 @@ SpriteAtlas:
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 5642012044021194823, guid: 89ea3560da13ce64f92347d638c8403e, type: 3}
+  - {fileID: 4432793351920879750, guid: 89ea3560da13ce64f92347d638c8403e, type: 3}
   - {fileID: 904636675761448042, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
   - {fileID: -7972259999253833018, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
   - {fileID: -6656834737248956984, guid: f23b3ea02d506d941823f280ece50dfb, type: 3}
@@ -127,6 +129,8 @@ SpriteAtlas:
   - {fileID: -214718753063088332, guid: 0aab21cd35ba1984ea5d4c06cefc9e21, type: 3}
   - {fileID: 9156156023691482455, guid: 0aab21cd35ba1984ea5d4c06cefc9e21, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Hearts_1
+  - Hearts_0
   - NPCs_11
   - NPCs_10
   - NPCs_13

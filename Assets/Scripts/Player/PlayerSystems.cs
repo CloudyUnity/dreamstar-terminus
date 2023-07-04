@@ -6,6 +6,7 @@ public class PlayerSystems : Singleton
 {
     public int StartingHP;
     [SerializeField] float _invSeconds;
+    [SerializeField] float _knockback;
     float _invTimer;
     public int HP;
 
@@ -45,7 +46,7 @@ public class PlayerSystems : Singleton
         }
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int amount, GameObject cause = null)
     {
         if (Dead || Invincible || _move.MovementDisabled)
             return;
@@ -55,6 +56,13 @@ public class PlayerSystems : Singleton
         HP -= amount;
 
         _invTimer = _invSeconds;
+
+        if (cause != null)
+        {
+            Vector2 dir = cause.transform.position.x > transform.position.x ? Vector2.left : Vector2.right;
+            dir.y = 0.1f;
+            _move.Fling(_knockback * dir, ForceMode2D.Impulse);
+        }
 
         if (HP <= 0)
             Die();
@@ -89,7 +97,7 @@ public class PlayerSystems : Singleton
 
         if (collision.gameObject.TryGetComponent(out ContactDamage contact))
         {
-            TakeDamage(contact.Damage);
+            TakeDamage(contact.Damage, contact.gameObject);
 
             if (M_Tags.CheckTag(contact.gameObject, "SendPlayer"))
                 SendToLastSafePos();

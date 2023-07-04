@@ -77,11 +77,15 @@ public class NPCTextbox : MonoBehaviour
 
     public void EndDialogue()
     {
+        _text.text = "";
         StartCoroutine(C_ChangeSize(Vector2.zero));
     }
 
     public void StartDialogue()
     {
+        if (transform.localScale.x == 1)
+            return;
+
         StartCoroutine(C_ChangeSize(Vector2.one));
     }
 

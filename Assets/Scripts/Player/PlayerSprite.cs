@@ -31,7 +31,8 @@ public class PlayerSprite : Singleton
     private void Update()
     {
         float movement = ForceMoveSceneChange.x != 0 ? ForceMoveSceneChange.x : _input.ArrowKeys.x;
-        _rend.flipX = movement < 0;
+        if (movement != 0)
+            _rend.flipX = movement < 0;
 
         bool run = _runOn && _move.Grounded && movement != 0;        
         _anim.SetBool("Running", run);

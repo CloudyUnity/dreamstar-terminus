@@ -7,6 +7,6 @@ public class NPC_Test : DialogueLogic
     private void Update()
     {
         if (Input.Jump && Dia.ReadDefault)
-            Dia.PlayDialogue("Jumped");
+            Dia.TryPlayDialogue("Jumped");
     }
 }
